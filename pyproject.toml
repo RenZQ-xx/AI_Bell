@@ -1,0 +1,15 @@
+[project]
+name = "ai-bell"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mosek>=11.0.30",
+    "ncpol2sdpa",
+    "numpy>=2.4.0",
+    "tqdm>=4.67.1",
+]
+
+[tool.uv.sources]
+ncpol2sdpa = { git = "https://github.com/peterjbrown519/ncpol2sdpa.git", rev = "6fbae1d5afa4e8a3a1f67890878b8ac31f30ae55" }
