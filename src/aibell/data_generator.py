@@ -1,5 +1,5 @@
 from src.aibell.sampler import Sampler222
-from src.aibell.temp_text import get_quantum_bound_batch
+from src.aibell.Solver_222 import get_quantum_bound_batch
 
 import numpy as np
 sampler2 = Sampler222()
