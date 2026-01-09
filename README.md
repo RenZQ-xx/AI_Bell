@@ -1,5 +1,5 @@
-# Project AI Bell
-
+# Project AI Bell 
+AI搜索bell不等式，详见[**文档资料**](./docs/index.md)
 ## 🛠️ 安装与环境配置 (Installation)
 
 本项目使用 **[uv](https://github.com/astral-sh/uv)** 进行极速依赖管理。请确保已安装 uv，然后按照以下步骤操作：
@@ -137,6 +137,7 @@ Git 仓库**不适合**存储大文件。GitHub 对单文件超过 50MB 会警�
     ```
 
 **注意**: 对于超过 100MB 的超大文件，建议上传至网盘或 NAS，并在文档中提供下载链接，**不要**强行存入 Git。
+
 
 
 
