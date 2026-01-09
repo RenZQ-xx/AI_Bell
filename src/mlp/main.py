@@ -234,7 +234,7 @@ def main():
     print("\n1. 加载和预处理数据...")
     try:
         X_train, X_test, y_train, y_test = load_or_create_data(
-            data_path="../../data/data.npz", create_sample=False
+            data_path="../../data/data_222.npz", create_sample=False
         )
     except Exception as e:
         print(f"Data loading failed: {e}")
