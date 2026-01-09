@@ -14,7 +14,7 @@ def get_classical_bound_batch(s_data, points):
         result[i] = result_tmp
     return result
 
-def get_quantum_bound_batch(s_data, level=1):
+def get_quantum_bound_batch(s_data, level=1, verbose=False):
     """
     单核批处理函数：
     1. 只初始化一次 SDP (速度最快)。
@@ -62,10 +62,11 @@ def get_quantum_bound_batch(s_data, level=1):
     # =========================================================
     # 2. 带有进度条的循环求解
     # =========================================================
-    # 使用 tqdm 包装 range，会显示进度条、预计剩余时间
-    print(f"开始处理 {n_samples} 条数据 (Level={level})...")
+    if verbose == True:
+        # 使用 tqdm 包装 range，会显示进度条、预计剩余时间
+        print(f"开始处理 {n_samples} 条数据 (Level={level})...")
 
-    for i in tqdm(range(n_samples), desc="Solving SDP", unit="sample"):
+    for i in tqdm(range(n_samples), desc="Solving SDP", unit="sample", disable=not verbose):
         s_vector = s_data[i]
 
         # 构建目标函数
