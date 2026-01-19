@@ -106,6 +106,8 @@ def verify_hyperplane_equation(points: np.ndarray, normal: np.ndarray) -> bool:
     
     return True
 
+# check if inputs are boundary points
+
 def main():
     points = []
     
@@ -163,7 +165,7 @@ def main():
     for indices, normal in results:
         C_value = get_true_C(normal, points)
         Q_value = get_true_Q(normal)
-        value = abs(Q_value[0][0] + C_value[0])
+        value = - Q_value[0][0] - C_value[0]
         if value > best_value:
             best_value = value
             best_indices.clear()
