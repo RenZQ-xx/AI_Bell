@@ -42,3 +42,16 @@
 
     output: 算符A,B,..
 ---
+##  2026-1-13 会议纪要
+
+文献分享，确定计划
+
+| 文档名称                                                                                                                                               |                                                         原文                                                         | 讲解  | 
+|:---------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------:|:---:|
+| [**可微凸优化**](./Differentiable Convex Optimization Layers note.md)                                                                                                                   |  [**arXiv:1910.12430**](./Differentiable Convex Optimization Layers.pdf)   | Li  | 
+| [**机器学习判别非定域性**](https://mixed-polonium-133.notion.site/Machine-learning-non-local-correlations-2e3ec9f8b93280e8b19cc7799e048da4?source=copy_link) |                       [**arXiv:1808.07069**](./Machine learning non-local correlations.pdf)                        | Ren |
+聚焦两个问题：
+1. Q(s)的拟合问题
+2. 给定顶点集，强化学习寻找最佳顶点组合
+
+---
