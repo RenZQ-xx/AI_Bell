@@ -2,7 +2,8 @@ import numpy as np
 import ncpol2sdpa as ncp
 from tqdm import tqdm  # 进度条库，单核跑大数据的神器
 
-def get_classical_bound_batch(s_data, points):
+def get_classical_bound_batch(s_data: list | np.ndarray, points):
+    s_data = np.array(s_data)
     num_points, dim = points.shape
     if len(s_data.shape) == 1:
         s_data = np.reshape(s_data, (1, dim))

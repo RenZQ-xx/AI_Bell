@@ -1,30 +1,37 @@
-from aibell import true_Q_solver
-from math import sqrt
+# ===============================
+# How to calculate C(s) and Q(s)?
+# ===============================
+
+from aibell import true_Q_solver, get_true_C, Points_222
+# We discard the function "get_ture_Q"
 import numpy as np
+
+# ============================================================================
 # 2-2-2 scenario, 8-dim
 # p = [<A_0>, <A_1>, <B_0>, <B_1>, <A_0*B_0>, <A_0*B_1>, <A_1*B_0>, <A_1*B_1>,]
+# ============================================================================
 
-# 初始化 2-Party Solver
-solver = true_Q_solver(n_parties=2, level=1)
+# Step 1: Initialize 2-Party Solver and settings (only once)
+solver = true_Q_solver(n_parties=2, level=1, verbose=False)
+points = Points_222()
 
-# ==============================
-# 场景一：直接输入向量
-# ==============================
-# 可能出现的s向量：
-s_1 = [0.5, -0.5, 0, 0, 0, 0.5, 0, -0.5]
-s_2 = [0.5773502691896258, 0, 0, 0.5773502691896258, 0, 0.5773502691896258, 0, 0]
-s_3 = [-0.5773502691896258, 0, 0, -0.5773502691896258, 0, -0.5773502691896258, 0, 0]
-s_4 = [0, 0, 0, 0, -0.5, 0.5, -0.5, -0.5]
-s_5 = [0.000, -0.447, -0.447, 0.000, 0.447, -0.447, 0.000, 0.447]
-s_6 = [0.000, 0.447, 0.447, 0.000, -0.447, 0.447, 0.000, -0.447]
+# Step 2: Generate s_vector batch
+s_batch = [[0.5, -0.5, 0, 0, 0, 0.5, 0, -0.5],
+           [0.5773502691896258, 0, 0, 0.5773502691896258, 0, 0.5773502691896258, 0, 0],
+           [-0.5773502691896258, 0, 0, -0.5773502691896258, 0, -0.5773502691896258, 0, 0],
+           [0, 0, 0, 0, -0.5, 0.5, -0.5, -0.5],
+           [0.000, -0.447, -0.447, 0.000, 0.447, -0.447, 0.000, 0.447],
+           [0.000, 0.447, 0.447, 0.000, -0.447, 0.447, 0.000, -0.447]]
+
+# Step 3: Calculate Q and C
 # Batch 计算：
-Q_values_batch = solver.compute_from_batch([s_1,s_2,s_3,s_4,s_5,s_6])
-print(f"s: {s_1}, Q_values: {Q_values_batch[0]}")
-print(f"s: {s_2}, Q_values: {Q_values_batch[1]}")
-print(f"s: {s_3}, Q_values: {Q_values_batch[2]}")
-print(f"s: {s_4}, Q_values: {Q_values_batch[3]}")
-print(f"s: {s_5}, Q_values: {Q_values_batch[4]}")
-print(f"s: {s_6}, Q_values: {Q_values_batch[5]}")
+Q_values_batch = solver.compute_from_batch(s_batch)
+C_values_batch = get_true_C(s_batch, points)
+for i in range(len(s_batch)):
+    print(f"s: {s_batch[i]}, \n Q_values: {Q_values_batch[i]}, C_values: {C_values_batch[i]}")
+
+
+'''
 # ==============================
 # 场景二：从变量名间接生成s向量（不常用）
 # ==============================
@@ -51,5 +58,5 @@ if None not in [idx1, idx2, idx3, idx4]:
     print(f"CHSH 计算结果: {rewards[0]:.5f}")
     print(f"理论值: {2 * np.sqrt(2):.5f}")
 
-
+'''
 
