@@ -98,11 +98,12 @@ def classify_results_detailed(results: List[Tuple[List[int], np.ndarray]], all_p
             # 1. 在循环外初始化 Solver (这是提速的关键！)
             # 请确保 n_parties 和 level 与你的问题设置一致
             # 根据你之前的代码，貌似是 2-party, level 1 ?
-            solver = true_Q_solver(n_parties=2, level=1)
+            solver = true_Q_solver(n_parties=2, level=1, verbose=True)
+
 
             # 2. 调用 Batch 计算接口
             # 假设 compute_from_batch 返回 (N,)
-            raw_q = solver.compute_from_batch(normals_batch, verbose=True)
+            raw_q = solver.compute_from_batch(normals_batch)
             q_values = np.array(raw_q).flatten()
 
         except Exception as e:
@@ -163,10 +164,9 @@ def main():
     print(f"总计找到 {len(results)} 个有效的超平面组合。")
 
     # --- 3. 详细分类 (Batch 优化版) ---
-    # 使用上一轮提供的优化版函数
     categories = classify_results_detailed(results, points)
 
-    # --- 4. 展示结果 (修改部分) ---
+    # --- 4. 展示结果 (修改部分：展示前10个) ---
     print("\n" + "=" * 80)
     print("细致分类统计结果 (Key: 非零分量数 -> 子类: C值, Q值)")
     print("=" * 80)
@@ -191,30 +191,35 @@ def main():
         print(f"\n  >>> 子类 [C={c_val:.4f}, Q={q_val:.4f}, Q/C={ratio_str}]")
         print(f"      包含数量: {count}")
 
-        # 取第一个作为示例
-        ex_indices, ex_normal = items[0]
-
         # ---------------------------------------------------------
-        # 【修改点】展示详细的点组合信息
+        # 【修改点】 循环展示最多10个示例
         # ---------------------------------------------------------
-        print(f"      [示例详情]")
-        print(f"      1. 法向量 Normal: {format_vector(ex_normal)}")
-        print(f"      2. 点集索引 Indices: {ex_indices}")
+        num_to_show = min(len(items), 10)
+        print(f"      [展示前 {num_to_show} 个示例详情]")
 
-        # 提取这8个点的坐标，并转为int类型（因为原始点通常是+1/-1，int看起来更干净）
-        ex_points_matrix = points[ex_indices].astype(int)
+        for k in range(num_to_show):
+            ex_indices, ex_normal = items[k]
 
-        print(f"      3. 点集坐标矩阵 (8x8):")
-        # 使用 numpy 的 array2string 设置格式，使输出对齐更漂亮
-        print(np.array2string(ex_points_matrix, prefix="         "))
+            # 缩进打印
+            print(f"      > 示例 {k + 1}:")
+            print(f"        Normal : {format_vector(ex_normal)}")
+            print(f"        Indices: {ex_indices}")
 
-        # 检查是否等权
-        non_zeros = ex_normal[np.abs(ex_normal) > 1e-9]
-        if len(non_zeros) > 0 and np.allclose(np.abs(non_zeros), np.abs(non_zeros[0])):
-            print(f"      (备注: 等权向量)")
+            # 仅在第一个示例中展示矩阵（避免输出太长）
+            if k == 0:
+                ex_points_matrix = points[ex_indices].astype(int)
+                print(f"        Matrix (仅首例展示):")
+                print(np.array2string(ex_points_matrix, prefix="         "))
 
-        print("-" * 40)  # 子类之间的分割线
+                # 检查是否等权
+                non_zeros = ex_normal[np.abs(ex_normal) > 1e-9]
+                if len(non_zeros) > 0 and np.allclose(np.abs(non_zeros), np.abs(non_zeros[0])):
+                    print(f"        (备注: 等权向量)")
 
+            # 每个小示例之间稍微留一点空隙，或者紧凑一点
+            # 这里不加分割线，保持紧凑，只在整个类结束加分割线
+
+        print("-" * 60)  # 类与类之间的分割线
 
 if __name__ == "__main__":
     main()

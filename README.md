@@ -71,6 +71,7 @@ python -c "import mosek; env = mosek.Env(); print('✅ MOSEK 许可证验证成�
 
 1.  **同步主分支** (每日开工第一步):
     ```bash
+    git fetch -p
     git checkout main
     git pull origin main
     ```
