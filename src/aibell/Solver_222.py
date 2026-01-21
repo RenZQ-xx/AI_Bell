@@ -11,7 +11,7 @@ def get_classical_bound_batch(s_data: list | np.ndarray, points):
     for i in range(s_data.shape[0]):
         result_tmp = 0
         for j in range(num_points):
-            result_tmp = max(result_tmp, abs(np.dot(points[j], s_data[i])))
+            result_tmp = max(result_tmp, np.dot(points[j], s_data[i]))
         result[i] = result_tmp
     return result
 
