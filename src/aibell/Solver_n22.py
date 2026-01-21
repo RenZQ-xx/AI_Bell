@@ -6,14 +6,14 @@ import itertools
 
 
 class BellInequalitySolver:
-    def __init__(self, n_parties, level=1):
+    def __init__(self, n_parties, level=1, verbose=False):
         self.n_parties = n_parties
         self.level = level
         self.sdp = None
         self.term_list = []  # 存储算符对象
         self.term_strings = []  # 存储算符的字符串表示，用于快速查找
         self.vars_list = []  # 存储原始变量 [[A0, A1], [B0, B1]...]
-
+        self.verbose = verbose
         self._initialize_sdp()
 
     def _initialize_sdp(self):
@@ -196,7 +196,7 @@ class BellInequalitySolver:
 
         return np.mean(times), np.array(results)
 
-    def compute_from_batch(self, coeffs_batch, verbose=True):
+    def compute_from_batch(self, coeffs_batch: list | np.ndarray):
         """
         输入指定的系数 batch 计算最大违背值。
 
@@ -207,6 +207,7 @@ class BellInequalitySolver:
         Returns:
             np.ndarray: 形状为 (batch_size,) 的最大违背值数组。
         """
+        verbose = self.verbose
         # 1. 输入格式校验
         coeffs_batch = np.array(coeffs_batch)
         if coeffs_batch.ndim == 1:
