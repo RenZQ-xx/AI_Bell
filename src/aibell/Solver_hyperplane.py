@@ -71,6 +71,6 @@ def solve_222_hyperplane_from_index(index: list, points: np.ndarray) -> Tuple[bo
 
 if __name__ == "__main__":
     points = Points_222()
-    index = [1,2,3,4,5,6,7,8]
+    index = [15, 14, 13, 11, 9, 7, 1, 0]
     print(solve_222_hyperplane_from_index(index, points))
 

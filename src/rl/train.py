@@ -5,7 +5,7 @@ import numpy as np
 def train_dqn(episodes=2000, max_steps=50):
     env = PointSetEnv()
     state_size = 64  # 8*8
-    action_size = 8   # 新的8种动作
+    action_size = 21
     
     agent = DQNAgent(state_size, action_size)
     boundary_sets = []
@@ -13,8 +13,10 @@ def train_dqn(episodes=2000, max_steps=50):
     
     # 动作名称，用于调试
     action_names = [
-        "A-0-flip", "A-0-shift", "A-0-flip-shift", "A-0-flip-only",
-        "B-0-flip", "B-0-shift", "B-0-flip-shift", "B-0-flip-only"
+        "AB-I", "AB-NOT", "AB-XOR", "AB-NOR",
+        "B-0-A-FA+", "B-0-A-FA-", "B-y-A-FA+", "B-y-A-FA-", "B-ny-A-FA+", "B-ny-A-FA-", "B-1-A-FA+", "B-1-A-FA-",
+        "A-0-B-FA+", "A-0-B-FA-", "A-y-B-FA+", "A-y-B-FA-", "A-ny-B-FA+", "A-ny-B-FA-", "A-1-B-FA+", "A-1-B-FA-",
+        "AB-swap"
     ]
     
     for e in range(episodes):
