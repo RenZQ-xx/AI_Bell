@@ -51,79 +51,191 @@ class PointSetEnv:
         
         # 初始状态：随机选择8个点
         self.reset()
-    
+
     def reset(self):
+        # 1. 重置步数计数器（配合防止死循环）
+        self.current_step = 0
+
+        # 2. 【关键】完全随机初始化
+        # 无论上一轮结束时状态如何，这一轮我们重新从16个点里抽8个
+        # 这就是你说的“多条路径搜索”的起点
         indices = np.random.choice(16, 8, replace=False)
+
         self.state = self.all_points[indices].copy()
-        self.state = self.state[np.lexsort(self.state.T[::-1])]  # 排序
+        self.state = self.state[np.lexsort(self.state.T[::-1])]  # 排序保持状态一致性
+
+        # 3. 返回初始状态
         return self.state.flatten()
-    
+
+    @staticmethod
+    def FA(first, second, mode):
+        # 1. 确保输入是 numpy 数组
+        first = np.asarray(first, dtype=float)
+        second = np.asarray(second, dtype=float)
+
+        # 2. 初始化输出数组（形状与输入相同）
+        out1 = np.empty_like(first)
+        out2 = np.empty_like(first)
+
+        # 3. 创建条件掩码（找出哪些位置满足特定条件）
+        # 注意：比较浮点数时，最好使用 np.isclose，但如果只有 1.0 和 -1.0，直接比较也可以
+        cond_1_1 = (first == 1.) & (second == 1.)
+        cond_n1_n1 = (first == -1.) & (second == -1.)
+        cond_n1_1 = (first == -1.) & (second == 1.)
+        cond_1_n1 = (first == 1.) & (second == -1.)
+
+        # 4. 根据 mode 填充输出数组
+        if mode == 1:
+            # 对应 (1., 1.) -> (-1., -1.)
+            out1[cond_1_1] = -1.
+            out2[cond_1_1] = -1.
+
+            # 对应 (-1., -1.) -> (-1., 1.)
+            out1[cond_n1_n1] = -1.
+            out2[cond_n1_n1] = 1.
+
+            # 对应 (-1., 1.) -> (1., -1.)
+            out1[cond_n1_1] = 1.
+            out2[cond_n1_1] = -1.
+
+            # 对应 (1., -1.) -> (1., 1.)
+            out1[cond_1_n1] = 1.
+            out2[cond_1_n1] = 1.
+
+        else:  # mode != 1 的情况
+            # 对应 (1., 1.) -> (1., -1.)
+            out1[cond_1_1] = 1.
+            out2[cond_1_1] = -1.
+
+            # 对应 (-1., -1.) -> (1., 1.)
+            out1[cond_n1_n1] = 1.
+            out2[cond_n1_n1] = 1.
+
+            # 对应 (-1., 1.) -> (-1., -1.)
+            out1[cond_n1_1] = -1.
+            out2[cond_n1_1] = -1.
+
+            # 对应 (1., -1.) -> (-1., 1.)
+            out1[cond_1_n1] = -1.
+            out2[cond_1_n1] = 1.
+
+        return out1, out2
+
     def step(self, action):
         """执行动作并返回新状态、奖励、是否结束"""
         new_state = self.state.copy()
         
         # 根据动作类型执行不同的操作
-        if action == 0:  # A-0-flip
-            # 找出所有满足 a0=a1=1 的点
-            mask1 = (new_state[:, 0] == 1) & (new_state[:, 1] == 1)
-            # 找出所有满足 a0=a1=-1 的点
-            mask2 = (new_state[:, 0] == -1) & (new_state[:, 1] == -1)
-            
-            # 对mask1的点：将a0, a1从1变为-1
-            new_state[mask1, 0] = -1
-            new_state[mask1, 1] = -1
-            
-            # 对mask2的点：将a0, a1从-1变为1
-            new_state[mask2, 0] = 1
-            new_state[mask2, 1] = 1
-            
-        elif action == 1:  # A-0-shift
-            # 对所有满足 a0=1 的点，对a1位取反
-            mask = new_state[:, 0] == 1
-            new_state[mask, 1] *= -1
-            
-        elif action == 2:  # A-0-flip-shift
-            # 对所有满足 a1=1 的点，对a0位取反
-            mask = new_state[:, 1] == 1
-            new_state[mask, 0] *= -1
-            
-        elif action == 3:  # A-0-flip-only
-            # 随机选择一个点（或者可以选择第一个点，但为了探索，最好随机）
-            idx = np.random.randint(0, len(new_state))
-            # 对该点的a0和a1取反
-            new_state[idx, 0] *= -1
-            new_state[idx, 1] *= -1
-            
-        elif action == 4:  # B-0-flip
+        if action == 0:  # AB-I
+            new_state = new_state
+        elif action == 1:  # AB-NOT
+            new_state *= np.array([-1, -1, -1, -1, 1, 1, 1, 1])
+        elif action == 2:  # AB-XOR
+            new_state *= np.array([1, -1, 1, -1, 1, -1, -1, 1])
+        elif action == 3:  # AB-NOR
+            new_state *= np.array([-1, 1, -1, 1, 1, -1, -1, 1])
+
+        elif action == 4:  # B-0-A-FA+
             # 找出所有满足 b0=b1=1 的点
-            mask1 = (new_state[:, 2] == 1) & (new_state[:, 3] == 1)
-            # 找出所有满足 b0=b1=-1 的点
-            mask2 = (new_state[:, 2] == -1) & (new_state[:, 3] == -1)
-            
-            # 对mask1的点：将b0, b1从1变为-1
-            new_state[mask1, 2] = -1
-            new_state[mask1, 3] = -1
-            
-            # 对mask2的点：将b0, b1从-1变为1
-            new_state[mask2, 2] = 1
-            new_state[mask2, 3] = 1
-            
-        elif action == 5:  # B-0-shift
-            # 对所有满足 b0=1 的点，对b1位取反
-            mask = new_state[:, 2] == 1
-            new_state[mask, 3] *= -1
-            
-        elif action == 6:  # B-0-flip-shift
-            # 对所有满足 b1=1 的点，对b0位取反
-            mask = new_state[:, 3] == 1
-            new_state[mask, 2] *= -1
-            
-        elif action == 7:  # B-0-flip-only
-            # 随机选择一个点
-            idx = np.random.randint(0, len(new_state))
-            # 对该点的b0和b1取反
-            new_state[idx, 2] *= -1
-            new_state[idx, 3] *= -1
+            mask = (new_state[:, 2] == 1) & (new_state[:, 3] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], 1)
+
+        elif action == 5:  # B-0-A-FA-
+            # 找出所有满足 b0=b1=1 的点
+            mask = (new_state[:, 2] == 1) & (new_state[:, 3] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], -1)
+
+        elif action == 6:  # B-y-A-FA+
+            # 找出所有满足 b0=1,b1=-1 的点
+            mask = (new_state[:, 2] == 1) & (new_state[:, 3] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], 1)
+
+        elif action == 7:  # B-y-A-FA-
+            # 找出所有满足 b0=1,b1=-1 的点
+            mask = (new_state[:, 2] == 1) & (new_state[:, 3] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], -1)
+
+        elif action == 8:  # B-ny-A-FA+
+            # 找出所有满足 b0=-1,b1=1 的点
+            mask = (new_state[:, 2] == -1) & (new_state[:, 3] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], 1)
+
+        elif action == 9:  # B-ny-A-FA-
+            # 找出所有满足 b0=-1,b1=1 的点
+            mask = (new_state[:, 2] == -1) & (new_state[:, 3] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], -1)
+
+        elif action == 10:  # B-1-A-FA+
+            # 找出所有满足 b0=-1,b1=-1 的点
+            mask = (new_state[:, 2] == -1) & (new_state[:, 3] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], 1)
+
+        elif action == 11:  # B-1-A-FA-
+            # 找出所有满足 b0=-1,b1=-1 的点
+            mask = (new_state[:, 2] == -1) & (new_state[:, 3] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 0], new_state[mask, 1] = self.FA(new_state[mask, 0], new_state[mask, 1], -1)
+
+        elif action == 12:  # A-0-B-FA+
+            # 找出所有满足 b0=b1=1 的点
+            mask = (new_state[:, 0] == 1) & (new_state[:, 1] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], 1)
+
+        elif action == 13:  # A-0-B-FA-
+            # 找出所有满足 b0=b1=1 的点
+            mask = (new_state[:, 0] == 1) & (new_state[:, 1] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], -1)
+
+        elif action == 14:  # A-x-B-FA+
+            # 找出所有满足 b0=1,b1=-1 的点
+            mask = (new_state[:, 0] == 1) & (new_state[:, 1] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], 1)
+
+        elif action == 15:  # A-x-B-FA-
+            # 找出所有满足 b0=1,b1=-1 的点
+            mask = (new_state[:, 0] == 1) & (new_state[:, 1] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], -1)
+
+        elif action == 16:  # A-nx-B-FA+
+            # 找出所有满足 b0=-1,b1=1 的点
+            mask = (new_state[:, 0] == -1) & (new_state[:, 1] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], 1)
+
+        elif action == 17:  # A-nx-B-FA-
+            # 找出所有满足 b0=-1,b1=1 的点
+            mask = (new_state[:, 0] == -1) & (new_state[:, 1] == 1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], -1)
+
+        elif action == 18:  # A-1-B-FA+
+            # 找出所有满足 b0=-1,b1=-1 的点
+            mask = (new_state[:, 0] == -1) & (new_state[:, 1] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], 1)
+
+        elif action == 19:  # A-1-B-FA-
+            # 找出所有满足 b0=-1,b1=-1 的点
+            mask = (new_state[:, 0] == -1) & (new_state[:, 1] == -1)
+            # 对mask的点：将a0, a1做加法变换
+            new_state[mask, 2], new_state[mask, 3] = self.FA(new_state[mask, 2], new_state[mask, 3], -1)
+
+        elif action == 20:  # AB-swap
+            # a0, a1与b0, b1交换
+            new_state[:] = new_state[:, [2, 3, 0, 1, 4, 5, 6, 7]]
+
+
         
         # 重新计算后4位（因为a0,a1,b0,b1可能改变了）
         for i in range(len(new_state)):
@@ -135,12 +247,19 @@ class PointSetEnv:
         
         # 更新状态
         self.state = new_state
-        
+        self.current_step += 1
         # 计算奖励
         reward, done = self._compute_reward()
         
         return self.state.flatten(), reward, done
-    
+
+    # 修改 points.py 中的 helper 函数
+    def get_matrix_rank(self):
+        homogeneous_matrix = np.column_stack((self.state, np.ones(8)))
+        return np.linalg.matrix_rank(homogeneous_matrix)
+
+
+
     def _compute_reward(self):
         """
         检查当前8个点是否构成边界超平面
@@ -150,13 +269,18 @@ class PointSetEnv:
         输出：奖励和是否结束
         """
         points = self.state
+        rank = self.get_matrix_rank()
         is_hyperplane, normal, b = check_points_form_hyperplane(points)
         is_boundary = False
         positive = []
         negative = []
+        # 1. 基础奖励：基于矩阵的秩 (Rank 4 -> -4, Rank 7 -> -1, Rank 8 -> +5)
+        # 这能引导 Agent 优先把点散开，避免共面
+        r1 = (rank - 8) * 1.0
         if is_hyperplane:
             # 判断是否为边界（即所有其他点均在同一侧）
-            r1 = 5.0  # 仿射无关奖励
+            r1 += 5.0  # 仿射无关奖励
+
             for i, point in enumerate(self.all_points):
                 if any(np.allclose(point, p) for p in points):
                     continue  # 跳过当前8个点
@@ -168,7 +292,7 @@ class PointSetEnv:
             # compute r2
             if len(positive) == 0 or len(negative) == 0:
                 is_boundary = True
-                r2 = 10.0  # 边界奖励
+                r2 = 100.0  # 边界奖励
             else:
                 r2 = -min(len(positive), len(negative))/len(self.all_points) * 3 # 非边界惩罚
             # compute r3
@@ -176,12 +300,14 @@ class PointSetEnv:
             # Q_value = get_true_Q(normal)
             # r3 = (- Q_value[0][0] - C_value[0]) * 10
             r3 = 0.0  # 暂时不计算Q-C奖励
+            r4 = -1.0
         else:
             r1 = -5.0  # 非仿射无关惩罚
             r2 = 0.0  # 非边界惩罚
             r3 = 0.0
+            r4 = -1.0
         
-        reward = r1 + r2 + r3
+        reward = r1 + r2 + r3 + r4
         return reward, is_boundary
     
     def _get_current_indices(self):
