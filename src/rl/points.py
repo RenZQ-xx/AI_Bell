@@ -292,7 +292,7 @@ class PointSetEnv:
             # compute r2
             if len(positive) == 0 or len(negative) == 0:
                 is_boundary = True
-                r2 = 10.0  # 边界奖励
+                r2 = 100.0  # 边界奖励
             else:
                 r2 = -min(len(positive), len(negative))/len(self.all_points) * 3 # 非边界惩罚
             # compute r3
@@ -300,12 +300,14 @@ class PointSetEnv:
             # Q_value = get_true_Q(normal)
             # r3 = (- Q_value[0][0] - C_value[0]) * 10
             r3 = 0.0  # 暂时不计算Q-C奖励
+            r4 = -1.0
         else:
             r1 = -5.0  # 非仿射无关惩罚
             r2 = 0.0  # 非边界惩罚
             r3 = 0.0
+            r4 = -1.0
         
-        reward = r1 + r2 + r3
+        reward = r1 + r2 + r3 + r4
         return reward, is_boundary
     
     def _get_current_indices(self):
