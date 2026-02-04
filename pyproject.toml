@@ -10,12 +10,22 @@ dependencies = [
     "ncpol2sdpa",
     "numpy>=2.4.0",
     "scikit-learn>=1.8.0",
-    "torch>=2.9.1",
+    "torch<=2.6.0",
     "tqdm>=4.67.1",
 ]
 
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+
+
 [tool.uv.sources]
 ncpol2sdpa = { git = "https://github.com/peterjbrown519/ncpol2sdpa.git", rev = "6fbae1d5afa4e8a3a1f67890878b8ac31f30ae55" }
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }
 
 [build-system]
 requires = ["hatchling"]
