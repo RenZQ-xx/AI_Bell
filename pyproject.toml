@@ -9,6 +9,7 @@ dependencies = [
     "mosek>=11.0.30",
     "ncpol2sdpa",
     "numpy>=2.4.0",
+    "pynauty>=2.8.8.1",
     "scikit-learn>=1.8.0",
     "torch<=2.6.0",
     "tqdm>=4.67.1",
