@@ -17,12 +17,9 @@ def solve_hyperplane_from_index(index: list, points: np.ndarray) -> Tuple[bool, 
     return check_points_form_hyperplane(points[index])
 
 if __name__ == "__main__":
-    '''
+
     points = Points_222()
-    index = [15, 14, 13, 11, 9, 7, 1, 0]
+    index = [0, 1, 6, 7, 9, 11, 12, 14]
     print(solve_hyperplane_from_index(index, points))
-    '''
-    points = Points_322()
-    index = [i for i in range(4,30)]
-    print(solve_hyperplane_from_index(index, points))
+
 
