@@ -1,0 +1,38 @@
+*mplrs:lrslib_v.7.3_2024.5.30(128bit,hybrid arithmetic,gmp v.6.3)4 processes
+*Input taken from /home/dministrator/workspace/AI_Bell/data/polytope_222.ext
+*Starting depth of 2 maxcobases=50 maxdepth=0 lmin=3 lmax=3 scale=100
+*Phase 1 time: 0 seconds.
+H-representation
+begin
+***** 9 rational
+ 1 -1  0 -1  0  1  0  0  0 
+ 1 -1  0  0 -1  0  1  0  0 
+ 1  0 -1 -1  0  0  0  1  0 
+ 1  0 -1  0 -1  0  0  0  1 
+ 1 -1  0  0  1  0 -1  0  0 
+ 1 -1  0  1  0 -1  0  0  0 
+ 1  0 -1  0  1  0  0  0 -1 
+ 1  0 -1  1  0  0  0 -1  0 
+ 1  0  1 -1  0  0  0 -1  0 
+ 1  1  0 -1  0 -1  0  0  0 
+ 1  0  1  0 -1  0  0  0 -1 
+ 1  1  0  0 -1  0 -1  0  0 
+ 2  0  0  0  0 -1 -1 -1  1 
+ 2  0  0  0  0 -1  1 -1 -1 
+ 2  0  0  0  0 -1 -1  1 -1 
+ 2  0  0  0  0  1 -1 -1 -1 
+ 1  0  1  0  1  0  0  0  1 
+ 2  0  0  0  0 -1  1  1  1 
+ 1  0  1  1  0  0  0  1  0 
+ 2  0  0  0  0  1 -1  1  1 
+ 1  1  0  0  1  0  1  0  0 
+ 2  0  0  0  0  1  1 -1  1 
+ 1  1  0  1  0  1  0  0  0 
+ 2  0  0  0  0  1  1  1 -1 
+end
+
+*Total number of jobs: 10, L became empty 1 times, tree depth 6, deepest output depth 4
+*Finished with 2 64-bit, 0 128-bit, 0 GMP workers
+*Totals: facets=24 bases=64
+*mplrs:lrslib_v.7.3_2024.5.30(128bit,hybrid arithmetic,gmp v.6.3)4 processes
+*Elapsed time: 0 seconds.
