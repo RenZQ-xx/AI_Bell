@@ -1,0 +1,10 @@
+start
+points 0.04
+graph 0.04
+setup 2.84
+rollout 2.85
+orbit_terminal 2.85
+loss 68.932266 2.86
+backward 2.87
+optimizer 2.88
+done 2.90

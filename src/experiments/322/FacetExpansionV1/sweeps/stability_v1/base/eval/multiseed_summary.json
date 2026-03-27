@@ -1,0 +1,877 @@
+{
+  "config": {
+    "checkpoint": "sweeps\\stability_v1\\base\\train\\facet_expander_v1.pt",
+    "device": "cpu",
+    "seed_start": 0,
+    "seed_count": 8,
+    "archive_size": 64,
+    "frontier_size": 4,
+    "rounds": 6,
+    "num_samples": 16,
+    "temperature": 1.2,
+    "stochastic": true,
+    "prefer_novel": true
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 8,
+    "num_seeds_with_non44": 6,
+    "fraction_seeds_with_non44": 0.75,
+    "non44_seed_indices": [
+      0,
+      2,
+      3,
+      5,
+      6,
+      7
+    ],
+    "class_histogram": {
+      "17": 1,
+      "23": 2,
+      "43": 6,
+      "44": 8
+    },
+    "top_canonical_histogram": [
+      [
+        "1,-1,0,-1,0,-1,0,1,0,0,0,1,0,0,0,1,0,0,0,-1,0,0,0,0,0,0,0",
+        775
+      ],
+      [
+        "2,-2,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,1,1,1,0,0,1,-1,0,0",
+        72
+      ],
+      [
+        "3,-1,0,-1,0,-1,0,-1,0,0,0,0,-1,-1,1,0,1,-1,-1,1,1,1,0,0,1,-1,0",
+        15
+      ],
+      [
+        "6,-2,-2,-2,0,0,0,1,-1,1,-1,-1,-1,-1,1,-2,0,-2,0,1,2,1,2,2,-1,-2,1",
+        1
+      ]
+    ]
+  },
+  "per_seed": [
+    {
+      "seed_index": 0,
+      "seed_class_id": 1,
+      "exact_count": 102,
+      "canonical_count": 2,
+      "matched_classes": [
+        43,
+        44
+      ],
+      "non44_classes": [
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 8,
+          "exact_count": 8,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 2,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 32,
+          "exact_count": 32,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_000.json"
+    },
+    {
+      "seed_index": 1,
+      "seed_class_id": 1,
+      "exact_count": 93,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 13,
+          "exact_count": 13,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_001.json"
+    },
+    {
+      "seed_index": 2,
+      "seed_class_id": 1,
+      "exact_count": 125,
+      "canonical_count": 3,
+      "matched_classes": [
+        23,
+        43,
+        44
+      ],
+      "non44_classes": [
+        23,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            23,
+            43,
+            44
+          ],
+          "new_canonical_added": 3,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 48,
+          "exact_count": 48,
+          "matched_classes": [
+            23,
+            43,
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_002.json"
+    },
+    {
+      "seed_index": 3,
+      "seed_class_id": 2,
+      "exact_count": 107,
+      "canonical_count": 2,
+      "matched_classes": [
+        43,
+        44
+      ],
+      "non44_classes": [
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 2,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 31,
+          "exact_count": 31,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_003.json"
+    },
+    {
+      "seed_index": 4,
+      "seed_class_id": 2,
+      "exact_count": 89,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_004.json"
+    },
+    {
+      "seed_index": 5,
+      "seed_class_id": 2,
+      "exact_count": 124,
+      "canonical_count": 3,
+      "matched_classes": [
+        17,
+        43,
+        44
+      ],
+      "non44_classes": [
+        17,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            17,
+            43,
+            44
+          ],
+          "new_canonical_added": 3,
+          "seen_exact_classes": [
+            17,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 47,
+          "exact_count": 47,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            17,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            17,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            17,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            17,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 15,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            17,
+            43,
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_005.json"
+    },
+    {
+      "seed_index": 6,
+      "seed_class_id": 3,
+      "exact_count": 100,
+      "canonical_count": 2,
+      "matched_classes": [
+        43,
+        44
+      ],
+      "non44_classes": [
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 13,
+          "exact_count": 13,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 2,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 30,
+          "exact_count": 30,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 14,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 13,
+          "exact_count": 13,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            43,
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_006.json"
+    },
+    {
+      "seed_index": 7,
+      "seed_class_id": 3,
+      "exact_count": 123,
+      "canonical_count": 3,
+      "matched_classes": [
+        23,
+        43,
+        44
+      ],
+      "non44_classes": [
+        23,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "num_results": 12,
+          "exact_count": 12,
+          "matched_classes": [
+            23,
+            43,
+            44
+          ],
+          "new_canonical_added": 3,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 2,
+          "num_results": 47,
+          "exact_count": 47,
+          "matched_classes": [
+            23,
+            43,
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 3,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 4,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 5,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        },
+        {
+          "round": 6,
+          "num_results": 16,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "new_canonical_added": 1,
+          "seen_exact_classes": [
+            23,
+            43,
+            44
+          ],
+          "archive_size": 64
+        }
+      ],
+      "output": "sweeps\\stability_v1\\base\\eval\\seed_007.json"
+    }
+  ]
+}

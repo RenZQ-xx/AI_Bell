@@ -19,7 +19,7 @@ def solve_hyperplane_from_index(index: list, points: np.ndarray) -> Tuple[bool, 
 if __name__ == "__main__":
 
     points = Points_222()
-    index = [0, 1, 6, 7, 9, 11, 12, 14]
+    index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13]
     print(solve_hyperplane_from_index(index, points))
 
 

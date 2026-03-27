@@ -1,0 +1,37 @@
+{
+  "dataset": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill\\distill.jsonl",
+  "num_records": 42,
+  "best_loss": 1.3848791008903867,
+  "feature_names": [
+    "round_index",
+    "parent_depth",
+    "history_length",
+    "candidate_cardinality",
+    "hard_energy",
+    "novelty_score",
+    "seed_jaccard",
+    "archive_mean_absdiff"
+  ],
+  "training_history": [
+    {
+      "epoch": 1,
+      "loss": 1.5824032936777388
+    },
+    {
+      "epoch": 2,
+      "loss": 1.5253026896998996
+    },
+    {
+      "epoch": 3,
+      "loss": 1.4778000024102984
+    },
+    {
+      "epoch": 4,
+      "loss": 1.4296735241299583
+    },
+    {
+      "epoch": 5,
+      "loss": 1.3848791008903867
+    }
+  ]
+}

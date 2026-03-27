@@ -1,0 +1,734 @@
+{
+  "source_class_id": 44,
+  "source_seed_indices": [
+    129,
+    130,
+    131
+  ],
+  "num_source_seeds": 3,
+  "num_target_candidates": 135,
+  "top_k_global": 24,
+  "top_k_per_class": 1,
+  "selected_prototypes": [
+    {
+      "seed_index": 126,
+      "class_id": 43,
+      "example_id": 1,
+      "cardinality": 48,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.2068965517241379,
+      "best_hamming_distance": 12,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.32258064516129037,
+          "hamming_distance": 20
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.32258064516129037,
+          "hamming_distance": 20
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.2068965517241379,
+          "hamming_distance": 12
+        }
+      ]
+    },
+    {
+      "seed_index": 84,
+      "class_id": 29,
+      "example_id": 1,
+      "cardinality": 41,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.29824561403508776,
+      "best_hamming_distance": 17,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.3833333333333333,
+          "hamming_distance": 23
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.4354838709677419,
+          "hamming_distance": 27
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.29824561403508776,
+          "hamming_distance": 17
+        }
+      ]
+    },
+    {
+      "seed_index": 66,
+      "class_id": 23,
+      "example_id": 1,
+      "cardinality": 40,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.4,
+      "best_hamming_distance": 24,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.4,
+          "hamming_distance": 24
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.4,
+          "hamming_distance": 24
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.4,
+          "hamming_distance": 24
+        }
+      ]
+    },
+    {
+      "seed_index": 82,
+      "class_id": 28,
+      "example_id": 2,
+      "cardinality": 35,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.4035087719298246,
+      "best_hamming_distance": 23,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.4833333333333333,
+          "hamming_distance": 29
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.532258064516129,
+          "hamming_distance": 33
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.4035087719298246,
+          "hamming_distance": 23
+        }
+      ]
+    },
+    {
+      "seed_index": 39,
+      "class_id": 14,
+      "example_id": 1,
+      "cardinality": 34,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.42105263157894735,
+      "best_hamming_distance": 24,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.47457627118644063,
+          "hamming_distance": 28
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5714285714285714,
+          "hamming_distance": 36
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.42105263157894735,
+          "hamming_distance": 24
+        }
+      ]
+    },
+    {
+      "seed_index": 44,
+      "class_id": 15,
+      "example_id": 3,
+      "cardinality": 34,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.42105263157894735,
+      "best_hamming_distance": 24,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.47457627118644063,
+          "hamming_distance": 28
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5714285714285714,
+          "hamming_distance": 36
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.42105263157894735,
+          "hamming_distance": 24
+        }
+      ]
+    },
+    {
+      "seed_index": 21,
+      "class_id": 8,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.45614035087719296,
+      "best_hamming_distance": 26,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.45614035087719296,
+          "hamming_distance": 26
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.45614035087719296,
+          "hamming_distance": 26
+        }
+      ]
+    },
+    {
+      "seed_index": 48,
+      "class_id": 17,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.45614035087719296,
+      "best_hamming_distance": 26,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.45614035087719296,
+          "hamming_distance": 26
+        }
+      ]
+    },
+    {
+      "seed_index": 123,
+      "class_id": 42,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.45614035087719296,
+      "best_hamming_distance": 26,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.45614035087719296,
+          "hamming_distance": 26
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5084745762711864,
+          "hamming_distance": 30
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5573770491803278,
+          "hamming_distance": 34
+        }
+      ]
+    },
+    {
+      "seed_index": 72,
+      "class_id": 25,
+      "example_id": 1,
+      "cardinality": 34,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.47457627118644063,
+      "best_hamming_distance": 28,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.47457627118644063,
+          "hamming_distance": 28
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.47457627118644063,
+          "hamming_distance": 28
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5245901639344263,
+          "hamming_distance": 32
+        }
+      ]
+    },
+    {
+      "seed_index": 95,
+      "class_id": 32,
+      "example_id": 3,
+      "cardinality": 32,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.48275862068965514,
+      "best_hamming_distance": 28,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5806451612903225,
+          "hamming_distance": 36
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.48275862068965514,
+          "hamming_distance": 28
+        }
+      ]
+    },
+    {
+      "seed_index": 122,
+      "class_id": 41,
+      "example_id": 3,
+      "cardinality": 32,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.48275862068965514,
+      "best_hamming_distance": 28,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5573770491803278,
+          "hamming_distance": 34
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.625,
+          "hamming_distance": 40
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.48275862068965514,
+          "hamming_distance": 28
+        }
+      ]
+    },
+    {
+      "seed_index": 132,
+      "class_id": 45,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.48275862068965514,
+      "best_hamming_distance": 28,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.48275862068965514,
+          "hamming_distance": 28
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        }
+      ]
+    },
+    {
+      "seed_index": 135,
+      "class_id": 46,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.48275862068965514,
+      "best_hamming_distance": 28,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.48275862068965514,
+          "hamming_distance": 28
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        }
+      ]
+    },
+    {
+      "seed_index": 19,
+      "class_id": 7,
+      "example_id": 2,
+      "cardinality": 30,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.49122807017543857,
+      "best_hamming_distance": 28,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5423728813559322,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.6349206349206349,
+          "hamming_distance": 40
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.49122807017543857,
+          "hamming_distance": 28
+        }
+      ]
+    },
+    {
+      "seed_index": 114,
+      "class_id": 39,
+      "example_id": 1,
+      "cardinality": 36,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.4918032786885246,
+      "best_hamming_distance": 30,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5396825396825398,
+          "hamming_distance": 34
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5396825396825398,
+          "hamming_distance": 34
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.4918032786885246,
+          "hamming_distance": 30
+        }
+      ]
+    },
+    {
+      "seed_index": 57,
+      "class_id": 20,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 130,
+      "best_source_example_id": 2,
+      "best_jaccard_distance": 0.5084745762711864,
+      "best_hamming_distance": 30,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5573770491803278,
+          "hamming_distance": 34
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5084745762711864,
+          "hamming_distance": 30
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5573770491803278,
+          "hamming_distance": 34
+        }
+      ]
+    },
+    {
+      "seed_index": 78,
+      "class_id": 27,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.5084745762711864,
+      "best_hamming_distance": 30,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5084745762711864,
+          "hamming_distance": 30
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5806451612903225,
+          "hamming_distance": 36
+        }
+      ]
+    },
+    {
+      "seed_index": 102,
+      "class_id": 35,
+      "example_id": 1,
+      "cardinality": 32,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.5084745762711864,
+      "best_hamming_distance": 30,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5084745762711864,
+          "hamming_distance": 30
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5333333333333333,
+          "hamming_distance": 32
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5806451612903225,
+          "hamming_distance": 36
+        }
+      ]
+    },
+    {
+      "seed_index": 3,
+      "class_id": 2,
+      "example_id": 1,
+      "cardinality": 29,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.5087719298245614,
+      "best_hamming_distance": 29,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5087719298245614,
+          "hamming_distance": 29
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.6065573770491803,
+          "hamming_distance": 37
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5087719298245614,
+          "hamming_distance": 29
+        }
+      ]
+    },
+    {
+      "seed_index": 45,
+      "class_id": 16,
+      "example_id": 1,
+      "cardinality": 29,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.5087719298245614,
+      "best_hamming_distance": 29,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5833333333333333,
+          "hamming_distance": 35
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.6065573770491803,
+          "hamming_distance": 37
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5087719298245614,
+          "hamming_distance": 29
+        }
+      ]
+    },
+    {
+      "seed_index": 54,
+      "class_id": 19,
+      "example_id": 1,
+      "cardinality": 29,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.5087719298245614,
+      "best_hamming_distance": 29,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5087719298245614,
+          "hamming_distance": 29
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5833333333333333,
+          "hamming_distance": 35
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5344827586206897,
+          "hamming_distance": 31
+        }
+      ]
+    },
+    {
+      "seed_index": 90,
+      "class_id": 31,
+      "example_id": 1,
+      "cardinality": 29,
+      "best_source_seed_index": 129,
+      "best_source_example_id": 1,
+      "best_jaccard_distance": 0.5087719298245614,
+      "best_hamming_distance": 29,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.5087719298245614,
+          "hamming_distance": 29
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.5833333333333333,
+          "hamming_distance": 35
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5087719298245614,
+          "hamming_distance": 29
+        }
+      ]
+    },
+    {
+      "seed_index": 28,
+      "class_id": 10,
+      "example_id": 2,
+      "cardinality": 28,
+      "best_source_seed_index": 131,
+      "best_source_example_id": 3,
+      "best_jaccard_distance": 0.5263157894736843,
+      "best_hamming_distance": 30,
+      "all_source_distances": [
+        {
+          "source_seed_index": 129,
+          "source_example_id": 1,
+          "jaccard_distance": 0.576271186440678,
+          "hamming_distance": 34
+        },
+        {
+          "source_seed_index": 130,
+          "source_example_id": 2,
+          "jaccard_distance": 0.6451612903225806,
+          "hamming_distance": 40
+        },
+        {
+          "source_seed_index": 131,
+          "source_example_id": 3,
+          "jaccard_distance": 0.5263157894736843,
+          "hamming_distance": 30
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "checkpoint": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+  "seed_start": 0,
+  "seed_count": 3,
+  "seed_class_id": 44,
+  "rounds": 6,
+  "num_samples": 16,
+  "distill_scorer": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_embed_v2cov\\scorer_pairwise_critical_embed.pt",
+  "distill_mode": "critical_bucket_tiebreak",
+  "num_records": 528,
+  "num_exact_records": 192,
+  "num_policy_selected_records": 36,
+  "num_non44_records": 0,
+  "num_unique_gain_records": 0,
+  "export_embeddings": true,
+  "discovery_histogram": {}
+}

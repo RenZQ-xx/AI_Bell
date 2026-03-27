@@ -1,0 +1,10 @@
+{"stage": "start"}
+{"stage": "points", "sec": 0.002177715301513672}
+{"stage": "graph", "sec": 0.004266023635864258}
+{"stage": "model_setup", "sec": 0.8960254192352295}
+{"stage": "reference_and_tracker", "sec": 2.4362378120422363}
+{"stage": "rollout_done", "sec_total": 2.8266677856445312, "sec_stage": 0.38663792610168457}
+{"stage": "orbit_terminal_done", "sec_total": 2.8323256969451904, "sec_stage": 0.0030913352966308594, "num_terminal_items": 0}
+{"stage": "loss_done", "sec_total": 2.836930990219116, "sec_stage": 0.002051830291748047, "loss": 242.18365478515625}
+{"stage": "backward_done", "sec_total": 3.302598237991333, "sec_stage": 0.46254801750183105}
+{"stage": "optimizer_done", "sec_total": 3.3159728050231934, "sec_stage": 0.009169340133666992, "grad_norm": 323.0343322753906}

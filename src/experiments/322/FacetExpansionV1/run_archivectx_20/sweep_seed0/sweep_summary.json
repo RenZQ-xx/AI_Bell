@@ -1,0 +1,542 @@
+[
+  {
+    "name": "det_r6_n16",
+    "stochastic": false,
+    "temperature": 1.0,
+    "rounds": 6,
+    "num_samples": 16,
+    "exact_count": 96,
+    "matched_classes": [
+      44
+    ],
+    "canonical_count": 1,
+    "round_summaries": [
+      {
+        "round": 1,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 2,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 3,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 4,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 5,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 6,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      }
+    ],
+    "output": "src\\experiments\\322\\FacetExpansionV1\\run_archivectx_20\\sweep_seed0\\det_r6_n16.json"
+  },
+  {
+    "name": "stoch_t12_r6_n16",
+    "stochastic": true,
+    "temperature": 1.2,
+    "rounds": 6,
+    "num_samples": 16,
+    "exact_count": 132,
+    "matched_classes": [
+      16,
+      17,
+      23,
+      40,
+      43,
+      44
+    ],
+    "canonical_count": 6,
+    "round_summaries": [
+      {
+        "round": 1,
+        "num_results": 12,
+        "exact_count": 12,
+        "matched_classes": [
+          16,
+          17,
+          23,
+          40,
+          44
+        ],
+        "new_canonical_added": 5,
+        "archive_size": 64
+      },
+      {
+        "round": 2,
+        "num_results": 56,
+        "exact_count": 56,
+        "matched_classes": [
+          16,
+          17,
+          23,
+          40,
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 3,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 4,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 5,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 6,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      }
+    ],
+    "output": "src\\experiments\\322\\FacetExpansionV1\\run_archivectx_20\\sweep_seed0\\stoch_t12_r6_n16.json"
+  },
+  {
+    "name": "stoch_t15_r6_n16",
+    "stochastic": true,
+    "temperature": 1.5,
+    "rounds": 6,
+    "num_samples": 16,
+    "exact_count": 120,
+    "matched_classes": [
+      16,
+      23,
+      44
+    ],
+    "canonical_count": 3,
+    "round_summaries": [
+      {
+        "round": 1,
+        "num_results": 13,
+        "exact_count": 13,
+        "matched_classes": [
+          16,
+          23,
+          44
+        ],
+        "new_canonical_added": 3,
+        "archive_size": 64
+      },
+      {
+        "round": 2,
+        "num_results": 43,
+        "exact_count": 43,
+        "matched_classes": [
+          23,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 3,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 4,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 5,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 6,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      }
+    ],
+    "output": "src\\experiments\\322\\FacetExpansionV1\\run_archivectx_20\\sweep_seed0\\stoch_t15_r6_n16.json"
+  },
+  {
+    "name": "stoch_t18_r6_n16",
+    "stochastic": true,
+    "temperature": 1.8,
+    "rounds": 6,
+    "num_samples": 16,
+    "exact_count": 118,
+    "matched_classes": [
+      16,
+      23,
+      43,
+      44
+    ],
+    "canonical_count": 4,
+    "round_summaries": [
+      {
+        "round": 1,
+        "num_results": 13,
+        "exact_count": 13,
+        "matched_classes": [
+          16,
+          23,
+          44
+        ],
+        "new_canonical_added": 3,
+        "archive_size": 64
+      },
+      {
+        "round": 2,
+        "num_results": 41,
+        "exact_count": 41,
+        "matched_classes": [
+          23,
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 3,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 4,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 5,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 6,
+        "num_results": 16,
+        "exact_count": 16,
+        "matched_classes": [
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      }
+    ],
+    "output": "src\\experiments\\322\\FacetExpansionV1\\run_archivectx_20\\sweep_seed0\\stoch_t18_r6_n16.json"
+  },
+  {
+    "name": "stoch_t15_r8_n24",
+    "stochastic": true,
+    "temperature": 1.5,
+    "rounds": 8,
+    "num_samples": 24,
+    "exact_count": 246,
+    "matched_classes": [
+      1,
+      16,
+      23,
+      43,
+      44
+    ],
+    "canonical_count": 5,
+    "round_summaries": [
+      {
+        "round": 1,
+        "num_results": 18,
+        "exact_count": 18,
+        "matched_classes": [
+          1,
+          16,
+          23,
+          43,
+          44
+        ],
+        "new_canonical_added": 5,
+        "archive_size": 64
+      },
+      {
+        "round": 2,
+        "num_results": 84,
+        "exact_count": 84,
+        "matched_classes": [
+          23,
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 3,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 4,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 5,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 6,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 7,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 8,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      }
+    ],
+    "output": "src\\experiments\\322\\FacetExpansionV1\\run_archivectx_20\\sweep_seed0\\stoch_t15_r8_n24.json"
+  },
+  {
+    "name": "stoch_t20_r8_n24",
+    "stochastic": true,
+    "temperature": 2.0,
+    "rounds": 8,
+    "num_samples": 24,
+    "exact_count": 227,
+    "matched_classes": [
+      23,
+      43,
+      44
+    ],
+    "canonical_count": 3,
+    "round_summaries": [
+      {
+        "round": 1,
+        "num_results": 14,
+        "exact_count": 14,
+        "matched_classes": [
+          23,
+          43,
+          44
+        ],
+        "new_canonical_added": 3,
+        "archive_size": 64
+      },
+      {
+        "round": 2,
+        "num_results": 70,
+        "exact_count": 70,
+        "matched_classes": [
+          23,
+          43,
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 3,
+        "num_results": 23,
+        "exact_count": 23,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 4,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 5,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 6,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 7,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      },
+      {
+        "round": 8,
+        "num_results": 24,
+        "exact_count": 24,
+        "matched_classes": [
+          44
+        ],
+        "new_canonical_added": 1,
+        "archive_size": 64
+      }
+    ],
+    "output": "src\\experiments\\322\\FacetExpansionV1\\run_archivectx_20\\sweep_seed0\\stoch_t20_r8_n24.json"
+  }
+]

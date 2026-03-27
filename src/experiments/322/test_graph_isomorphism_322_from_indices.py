@@ -1,6 +1,6 @@
 from pynauty import Graph, isomorphic
 
-from test_graph_isomorphism_322_single_orbit import (
+from test_graph_isomorphism_322 import (
     ID_TO_STATE,
     N_VERTICES,
     build_augmented_graph_structure,

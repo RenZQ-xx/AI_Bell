@@ -1,0 +1,11 @@
+{
+  "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+  "seed_start": 0,
+  "seed_count": 8,
+  "rounds": 4,
+  "num_samples": 8,
+  "num_records": 384,
+  "num_exact_records": 137,
+  "num_selected_records": 55,
+  "num_non44_records": 15
+}

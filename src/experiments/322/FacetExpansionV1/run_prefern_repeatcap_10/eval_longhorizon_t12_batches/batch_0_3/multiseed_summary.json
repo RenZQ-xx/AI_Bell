@@ -1,0 +1,498 @@
+{
+  "config": {
+    "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+    "device": "cpu",
+    "seed_start": 0,
+    "seed_count": 4,
+    "archive_size": 64,
+    "frontier_size": 4,
+    "rounds": 6,
+    "num_samples": 16,
+    "temperature": 1.2
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 4,
+    "num_seeds_with_non44": 4,
+    "fraction_seeds_with_non44": 1.0,
+    "non44_seed_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "class_histogram": {
+      "1": 3,
+      "2": 1,
+      "16": 2,
+      "23": 3,
+      "40": 1,
+      "43": 2,
+      "44": 4
+    },
+    "top_canonical_histogram": [
+      [
+        "1,-1,0,-1,0,-1,0,1,0,0,0,1,0,0,0,1,0,0,0,-1,0,0,0,0,0,0,0",
+        591
+      ],
+      [
+        "2,-2,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,1,1,1,0,0,1,-1,0,0",
+        123
+      ],
+      [
+        "3,-1,0,-1,0,-1,0,-1,0,0,0,0,-1,-1,1,0,1,-1,-1,1,1,1,0,0,1,-1,0",
+        99
+      ],
+      [
+        "6,-1,-1,-1,-1,0,0,1,2,2,1,-1,0,1,0,0,-1,0,1,1,2,-1,-2,2,-2,1,-1",
+        29
+      ],
+      [
+        "4,0,0,0,0,0,0,-2,0,0,-2,0,0,0,0,0,0,0,0,-1,-1,1,1,-1,1,-1,1",
+        19
+      ],
+      [
+        "6,-1,-1,-1,-1,0,0,0,1,1,0,-1,0,1,0,0,-1,0,1,0,1,-2,-3,2,-2,1,-1",
+        7
+      ],
+      [
+        "5,-1,0,-1,0,-1,0,0,-1,-1,-1,0,-1,-1,-1,1,0,0,0,-2,0,1,2,2,-1,0,1",
+        1
+      ]
+    ]
+  },
+  "per_seed": [
+    {
+      "seed_index": 0,
+      "seed_class_id": 1,
+      "exact_count": 250,
+      "canonical_count": 5,
+      "matched_classes": [
+        1,
+        16,
+        23,
+        40,
+        44
+      ],
+      "non44_classes": [
+        1,
+        16,
+        23,
+        40
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 15,
+          "matched_classes": [
+            1,
+            16,
+            44
+          ],
+          "seen_exact_classes": [
+            16,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 3,
+          "exact_count": 32,
+          "matched_classes": [
+            16,
+            40,
+            44
+          ],
+          "seen_exact_classes": [
+            16,
+            40,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 3,
+          "exact_count": 44,
+          "matched_classes": [
+            16,
+            40,
+            44
+          ],
+          "seen_exact_classes": [
+            16,
+            40,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 3,
+          "exact_count": 47,
+          "matched_classes": [
+            16,
+            40,
+            44
+          ],
+          "seen_exact_classes": [
+            16,
+            40,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 4,
+          "exact_count": 48,
+          "matched_classes": [
+            16,
+            23,
+            40,
+            44
+          ],
+          "seen_exact_classes": [
+            16,
+            23,
+            40,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 4,
+          "exact_count": 64,
+          "matched_classes": [
+            16,
+            23,
+            40,
+            44
+          ],
+          "seen_exact_classes": [
+            16,
+            23,
+            40,
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\eval_longhorizon_t12_batches\\batch_0_3\\seed_000.json"
+    },
+    {
+      "seed_index": 1,
+      "seed_class_id": 1,
+      "exact_count": 172,
+      "canonical_count": 3,
+      "matched_classes": [
+        1,
+        43,
+        44
+      ],
+      "non44_classes": [
+        1,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 13,
+          "matched_classes": [
+            1,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            43,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            43,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            43,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 2,
+          "exact_count": 31,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            43,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            43,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            43,
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\eval_longhorizon_t12_batches\\batch_0_3\\seed_001.json"
+    },
+    {
+      "seed_index": 2,
+      "seed_class_id": 1,
+      "exact_count": 272,
+      "canonical_count": 5,
+      "matched_classes": [
+        1,
+        16,
+        23,
+        43,
+        44
+      ],
+      "non44_classes": [
+        1,
+        16,
+        23,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 10,
+          "matched_classes": [
+            1,
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 3,
+          "exact_count": 29,
+          "matched_classes": [
+            16,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            16,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 4,
+          "exact_count": 46,
+          "matched_classes": [
+            16,
+            23,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            16,
+            23,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 4,
+          "exact_count": 63,
+          "matched_classes": [
+            16,
+            23,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            16,
+            23,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 4,
+          "exact_count": 62,
+          "matched_classes": [
+            16,
+            23,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            16,
+            23,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 4,
+          "exact_count": 62,
+          "matched_classes": [
+            16,
+            23,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            16,
+            23,
+            43,
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\eval_longhorizon_t12_batches\\batch_0_3\\seed_002.json"
+    },
+    {
+      "seed_index": 3,
+      "seed_class_id": 2,
+      "exact_count": 175,
+      "canonical_count": 3,
+      "matched_classes": [
+        2,
+        23,
+        44
+      ],
+      "non44_classes": [
+        2,
+        23
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 15,
+          "matched_classes": [
+            2,
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            23,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            23,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            23,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            23,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            23,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 2,
+          "exact_count": 32,
+          "matched_classes": [
+            23,
+            44
+          ],
+          "seen_exact_classes": [
+            23,
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\eval_longhorizon_t12_batches\\batch_0_3\\seed_003.json"
+    }
+  ]
+}

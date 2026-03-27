@@ -1,0 +1,307 @@
+{
+  "config": {
+    "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+    "device": "cpu",
+    "seed_start": 0,
+    "seed_count": 4,
+    "archive_size": 64,
+    "frontier_size": 4,
+    "rounds": 4,
+    "num_samples": 8,
+    "temperature": 1.2,
+    "distill_scorer": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill\\scorer.pt",
+    "distill_weight": 1.0
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 4,
+    "num_seeds_with_non44": 2,
+    "fraction_seeds_with_non44": 0.5,
+    "non44_seed_indices": [
+      0,
+      2
+    ],
+    "class_histogram": {
+      "1": 2,
+      "43": 1,
+      "44": 4
+    },
+    "top_canonical_histogram": [
+      [
+        "1,-1,0,-1,0,-1,0,1,0,0,0,1,0,0,0,1,0,0,0,-1,0,0,0,0,0,0,0",
+        69
+      ],
+      [
+        "6,-1,-1,-1,-1,0,0,0,1,1,0,-1,0,1,0,0,-1,0,1,0,1,-2,-3,2,-2,1,-1",
+        7
+      ],
+      [
+        "2,-2,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,1,1,1,0,0,1,-1,0,0",
+        2
+      ],
+      [
+        "23,-23,0,-23,0,-18,-5,23,0,0,0,18,5,0,0,18,5,0,0,-18,0,0,0,-5,0,0,0",
+        1
+      ],
+      [
+        "3,-3,0,-3,0,-2,-1,3,0,0,0,2,1,0,0,2,1,0,0,-2,0,0,0,-1,0,0,0",
+        1
+      ],
+      [
+        "19,-19,0,-15,0,-15,0,15,0,0,0,15,0,0,0,17,-2,-2,-2,-17,2,0,0,2,2,0,0",
+        1
+      ]
+    ]
+  },
+  "per_seed": [
+    {
+      "seed_index": 0,
+      "seed_class_id": 1,
+      "exact_count": 24,
+      "canonical_count": 2,
+      "matched_classes": [
+        1,
+        44
+      ],
+      "non44_classes": [
+        1
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 3,
+          "matched_classes": [
+            1,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 2,
+          "exact_count": 8,
+          "matched_classes": [
+            1,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 2,
+          "exact_count": 5,
+          "matched_classes": [
+            1,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 2,
+          "exact_count": 8,
+          "matched_classes": [
+            1,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill\\eval4_with_scorer\\seed_000.json"
+    },
+    {
+      "seed_index": 1,
+      "seed_class_id": 1,
+      "exact_count": 16,
+      "canonical_count": 3,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 1,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 1,
+          "exact_count": 6,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 1,
+          "exact_count": 6,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 1,
+          "exact_count": 3,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill\\eval4_with_scorer\\seed_001.json"
+    },
+    {
+      "seed_index": 2,
+      "seed_class_id": 1,
+      "exact_count": 26,
+      "canonical_count": 4,
+      "matched_classes": [
+        1,
+        43,
+        44
+      ],
+      "non44_classes": [
+        1,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 4,
+          "matched_classes": [
+            1,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 2,
+          "exact_count": 9,
+          "matched_classes": [
+            1,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 2,
+          "exact_count": 9,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 2,
+          "exact_count": 4,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill\\eval4_with_scorer\\seed_002.json"
+    },
+    {
+      "seed_index": 3,
+      "seed_class_id": 2,
+      "exact_count": 12,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 0,
+          "matched_classes": [],
+          "seen_exact_classes": []
+        },
+        {
+          "round": 2,
+          "frontier_size": 1,
+          "exact_count": 2,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 1,
+          "exact_count": 6,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 1,
+          "exact_count": 4,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        }
+      ],
+      "output": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill\\eval4_with_scorer\\seed_003.json"
+    }
+  ]
+}

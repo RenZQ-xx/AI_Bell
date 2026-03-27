@@ -1,0 +1,2818 @@
+{
+  "checkpoint": "\\\\wsl$\\Ubuntu\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpensionV2\\outputs\\supervised_transition_fullfit_v2\\transition_model.pt",
+  "split": "full_fit",
+  "train_summary": {
+    "num_samples": 6348,
+    "exact_mask_rate": 1.0,
+    "target_class_hit_rate": 1.0,
+    "exact_but_wrong_class_rate": 0.0
+  },
+  "val_summary": {
+    "num_samples": 6348,
+    "exact_mask_rate": 1.0,
+    "target_class_hit_rate": 1.0,
+    "exact_but_wrong_class_rate": 0.0
+  },
+  "val_examples": [
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 1,
+      "target_index": 0,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        1
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 2,
+      "target_index": 4,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        2
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 3,
+      "target_index": 8,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        3
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 4,
+      "target_index": 10,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        4
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 5,
+      "target_index": 12,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        5
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 6,
+      "target_index": 17,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        6
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 7,
+      "target_index": 20,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        7
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 8,
+      "target_index": 23,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        8
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 9,
+      "target_index": 25,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        9
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 10,
+      "target_index": 27,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        10
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 11,
+      "target_index": 31,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        11
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 12,
+      "target_index": 35,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        12
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 13,
+      "target_index": 36,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        13
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 14,
+      "target_index": 40,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        14
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 15,
+      "target_index": 44,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        15
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 16,
+      "target_index": 45,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        16
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 17,
+      "target_index": 48,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        17
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 18,
+      "target_index": 52,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        18
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 19,
+      "target_index": 54,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        19
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 20,
+      "target_index": 59,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        20
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 21,
+      "target_index": 60,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        21
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 22,
+      "target_index": 65,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        22
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 23,
+      "target_index": 68,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        23
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 24,
+      "target_index": 69,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        24
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 25,
+      "target_index": 73,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        25
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 26,
+      "target_index": 75,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        26
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 27,
+      "target_index": 79,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        27
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 28,
+      "target_index": 81,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        28
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 29,
+      "target_index": 86,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        29
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 30,
+      "target_index": 88,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        30
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 31,
+      "target_index": 92,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        31
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 32,
+      "target_index": 93,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        32
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 33,
+      "target_index": 96,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        33
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 34,
+      "target_index": 100,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        34
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 35,
+      "target_index": 103,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        35
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 36,
+      "target_index": 105,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        36
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 37,
+      "target_index": 109,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        37
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 38,
+      "target_index": 113,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        38
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 39,
+      "target_index": 114,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        39
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 40,
+      "target_index": 118,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        40
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 41,
+      "target_index": 121,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        41
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 42,
+      "target_index": 124,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        42
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 43,
+      "target_index": 126,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        43
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 44,
+      "target_index": 131,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        44
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 45,
+      "target_index": 134,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        45
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 0,
+      "source_class_id": 1,
+      "source_example_id": 1,
+      "target_class_id": 46,
+      "target_index": 135,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        46
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 1,
+      "target_index": 1,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        1
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 2,
+      "target_index": 4,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        2
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 3,
+      "target_index": 8,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        3
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 4,
+      "target_index": 10,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        4
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 5,
+      "target_index": 12,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        5
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 6,
+      "target_index": 17,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        6
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 7,
+      "target_index": 20,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        7
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 8,
+      "target_index": 22,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        8
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 9,
+      "target_index": 24,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        9
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 10,
+      "target_index": 27,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        10
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 11,
+      "target_index": 31,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        11
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 12,
+      "target_index": 35,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        12
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 13,
+      "target_index": 36,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        13
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 14,
+      "target_index": 40,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        14
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 15,
+      "target_index": 44,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        15
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 16,
+      "target_index": 45,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        16
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 17,
+      "target_index": 48,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        17
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 18,
+      "target_index": 52,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        18
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 19,
+      "target_index": 54,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        19
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 20,
+      "target_index": 59,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        20
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 21,
+      "target_index": 60,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        21
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 22,
+      "target_index": 65,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        22
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 23,
+      "target_index": 68,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        23
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 24,
+      "target_index": 69,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        24
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 25,
+      "target_index": 73,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        25
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 26,
+      "target_index": 75,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        26
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 27,
+      "target_index": 79,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        27
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 28,
+      "target_index": 81,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        28
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 29,
+      "target_index": 86,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        29
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 30,
+      "target_index": 88,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        30
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 31,
+      "target_index": 92,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        31
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 32,
+      "target_index": 93,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        32
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 33,
+      "target_index": 96,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        33
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 34,
+      "target_index": 100,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        34
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 35,
+      "target_index": 103,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        35
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 36,
+      "target_index": 105,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        36
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 37,
+      "target_index": 109,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        37
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 38,
+      "target_index": 113,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        38
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 39,
+      "target_index": 114,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        39
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 40,
+      "target_index": 118,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        40
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 41,
+      "target_index": 121,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        41
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 42,
+      "target_index": 124,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        42
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 43,
+      "target_index": 126,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        43
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 44,
+      "target_index": 131,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        44
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 45,
+      "target_index": 134,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        45
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 1,
+      "source_class_id": 1,
+      "source_example_id": 2,
+      "target_class_id": 46,
+      "target_index": 135,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        46
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 1,
+      "target_index": 2,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        1
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 2,
+      "target_index": 4,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        2
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 3,
+      "target_index": 8,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        3
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 4,
+      "target_index": 10,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        4
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 5,
+      "target_index": 13,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        5
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 6,
+      "target_index": 17,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        6
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 7,
+      "target_index": 18,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        7
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 8,
+      "target_index": 23,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        8
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 9,
+      "target_index": 25,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        9
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 10,
+      "target_index": 27,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        10
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 11,
+      "target_index": 31,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        11
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 12,
+      "target_index": 33,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        12
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 13,
+      "target_index": 36,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        13
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 14,
+      "target_index": 40,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        14
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 15,
+      "target_index": 42,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        15
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 16,
+      "target_index": 46,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        16
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 17,
+      "target_index": 50,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        17
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 18,
+      "target_index": 52,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        18
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 19,
+      "target_index": 54,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        19
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 20,
+      "target_index": 59,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        20
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 21,
+      "target_index": 60,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        21
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 22,
+      "target_index": 65,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        22
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 23,
+      "target_index": 68,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        23
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 24,
+      "target_index": 69,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        24
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 25,
+      "target_index": 74,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        25
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 26,
+      "target_index": 75,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        26
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 27,
+      "target_index": 79,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        27
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 28,
+      "target_index": 82,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        28
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 29,
+      "target_index": 84,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        29
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 30,
+      "target_index": 88,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        30
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 31,
+      "target_index": 90,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        31
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 32,
+      "target_index": 94,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        32
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 33,
+      "target_index": 96,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        33
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 34,
+      "target_index": 100,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        34
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 35,
+      "target_index": 102,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        35
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 36,
+      "target_index": 105,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        36
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 37,
+      "target_index": 108,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        37
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 38,
+      "target_index": 111,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        38
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 39,
+      "target_index": 114,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        39
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 40,
+      "target_index": 118,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        40
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 41,
+      "target_index": 121,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        41
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 42,
+      "target_index": 123,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        42
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 43,
+      "target_index": 126,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        43
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 44,
+      "target_index": 131,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        44
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 45,
+      "target_index": 133,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        45
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 2,
+      "source_class_id": 1,
+      "source_example_id": 3,
+      "target_class_id": 46,
+      "target_index": 135,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        46
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 1,
+      "target_index": 1,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        1
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 2,
+      "target_index": 3,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        2
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 3,
+      "target_index": 8,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        3
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 4,
+      "target_index": 9,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        4
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 5,
+      "target_index": 12,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        5
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 6,
+      "target_index": 15,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        6
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 7,
+      "target_index": 19,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        7
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 8,
+      "target_index": 21,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        8
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 9,
+      "target_index": 26,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        9
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 10,
+      "target_index": 28,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        10
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 11,
+      "target_index": 31,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        11
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 12,
+      "target_index": 33,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        12
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 13,
+      "target_index": 36,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        13
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 14,
+      "target_index": 39,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        14
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 15,
+      "target_index": 44,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        15
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 16,
+      "target_index": 45,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        16
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 17,
+      "target_index": 48,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        17
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 18,
+      "target_index": 51,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        18
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 19,
+      "target_index": 55,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        19
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 20,
+      "target_index": 58,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        20
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 21,
+      "target_index": 60,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        21
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 22,
+      "target_index": 64,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        22
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 23,
+      "target_index": 67,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        23
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 24,
+      "target_index": 71,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        24
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 25,
+      "target_index": 74,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        25
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 26,
+      "target_index": 75,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        26
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 27,
+      "target_index": 79,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        27
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 28,
+      "target_index": 82,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        28
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 29,
+      "target_index": 86,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        29
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 30,
+      "target_index": 89,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        30
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 31,
+      "target_index": 91,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        31
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 32,
+      "target_index": 95,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        32
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 33,
+      "target_index": 96,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        33
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 34,
+      "target_index": 99,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        34
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 35,
+      "target_index": 103,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        35
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 36,
+      "target_index": 107,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        36
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 37,
+      "target_index": 109,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        37
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 38,
+      "target_index": 111,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        38
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 39,
+      "target_index": 114,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        39
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 40,
+      "target_index": 118,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        40
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 41,
+      "target_index": 120,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        41
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 42,
+      "target_index": 124,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        42
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 43,
+      "target_index": 126,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        43
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 44,
+      "target_index": 129,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        44
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 45,
+      "target_index": 132,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        45
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 3,
+      "source_class_id": 2,
+      "source_example_id": 1,
+      "target_class_id": 46,
+      "target_index": 137,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        46
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 1,
+      "target_index": 1,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        1
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 2,
+      "target_index": 4,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        2
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 3,
+      "target_index": 7,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        3
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 4,
+      "target_index": 10,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        4
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 5,
+      "target_index": 12,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        5
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 6,
+      "target_index": 17,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        6
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 7,
+      "target_index": 20,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        7
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 8,
+      "target_index": 21,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        8
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 9,
+      "target_index": 24,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        9
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 10,
+      "target_index": 29,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        10
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 11,
+      "target_index": 31,
+      "target_example_id": 2,
+      "mask_match": true,
+      "matched_classes": [
+        11
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 12,
+      "target_index": 35,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        12
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 13,
+      "target_index": 36,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        13
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 14,
+      "target_index": 41,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        14
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 15,
+      "target_index": 44,
+      "target_example_id": 3,
+      "mask_match": true,
+      "matched_classes": [
+        15
+      ],
+      "class_match": true,
+      "is_exact": true
+    },
+    {
+      "source_index": 4,
+      "source_class_id": 2,
+      "source_example_id": 2,
+      "target_class_id": 16,
+      "target_index": 45,
+      "target_example_id": 1,
+      "mask_match": true,
+      "matched_classes": [
+        16
+      ],
+      "class_match": true,
+      "is_exact": true
+    }
+  ]
+}

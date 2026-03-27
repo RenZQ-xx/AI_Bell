@@ -1,0 +1,16 @@
+{
+  "checkpoint": "src\\experiments\\322\\DIffUCO\\outputs_smoke\\geometric_diffuco_322.pt",
+  "best_loss": -0.1497461497783661,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": -0.1497461497783661,
+      "mean_energy": -0.10997235774993896,
+      "mean_plane": 0.9629163146018982,
+      "mean_boundary": 0.40401867032051086,
+      "mean_cardinality": 34.96321105957031,
+      "num_valid_facets": 0,
+      "best_cardinality": 0
+    }
+  ]
+}

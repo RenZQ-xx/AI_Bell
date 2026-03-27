@@ -1,0 +1,58 @@
+{
+  "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\tmp_iter4_bootstrap_bridge\\facet_expander_v1.pt",
+  "best_loss": 35.38362121582031,
+  "seed_summary": {
+    "num_seed_items": 138,
+    "num_classes": 46
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 206.29757690429688,
+      "mean_energy": 30.878570556640625,
+      "mean_expected_edit": 32.82715606689453,
+      "mean_archive_repulsion": 0.46804505586624146,
+      "mean_edit_entropy": 44.33052444458008,
+      "mean_entropy_floor_loss": 0.0,
+      "mean_novelty_logit": 0.1276804357767105,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 8,
+      "epoch_new_archive_items": 1,
+      "grad_norm": 1177.8978271484375,
+      "bridge_frontier_count": 2.0,
+      "bridge_frontier_fraction": 1.0,
+      "frontier_mean_similarity": 0.3409090909090909
+    },
+    {
+      "epoch": 2,
+      "loss": 35.38362121582031,
+      "mean_energy": 35.726112365722656,
+      "mean_expected_edit": 16.9569091796875,
+      "mean_archive_repulsion": 0.48591968417167664,
+      "mean_edit_entropy": 36.98469161987305,
+      "mean_entropy_floor_loss": 0.0,
+      "mean_novelty_logit": -0.4744269847869873,
+      "archive_size": 139,
+      "frontier_size": 3,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 17,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 178.38365173339844,
+      "bridge_frontier_count": 2.0,
+      "bridge_frontier_fraction": 0.6666666666666666,
+      "frontier_mean_similarity": 0.41391107167504687
+    }
+  ]
+}
