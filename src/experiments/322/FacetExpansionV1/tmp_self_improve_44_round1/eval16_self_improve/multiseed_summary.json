@@ -1,0 +1,285 @@
+{
+  "config": {
+    "checkpoint": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+    "device": "cpu",
+    "seed_start": 0,
+    "seed_count": 3,
+    "seed_class_id": 44,
+    "archive_size": 64,
+    "frontier_size": 4,
+    "rounds": 6,
+    "num_samples": 16,
+    "temperature": 1.2,
+    "distill_scorer": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_44_round1\\self_improve_scorer.pt",
+    "distill_weight": 1.0,
+    "distill_tiebreak_threshold": 0.15,
+    "distill_mode": "critical_bucket_tiebreak"
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 3,
+    "num_seeds_with_non44": 0,
+    "fraction_seeds_with_non44": 0.0,
+    "non44_seed_indices": [],
+    "num_seeds_escaped_initial_class": 0,
+    "fraction_seeds_escaped_initial_class": 0.0,
+    "escaped_seed_indices": [],
+    "class_histogram": {
+      "44": 3
+    },
+    "escaped_class_histogram": {},
+    "top_canonical_histogram": [
+      [
+        "1,-1,0,-1,0,-1,0,1,0,0,0,1,0,0,0,1,0,0,0,-1,0,0,0,0,0,0,0",
+        187
+      ]
+    ]
+  },
+  "per_seed": [
+    {
+      "seed_index": 129,
+      "seed_class_id": 44,
+      "exact_count": 47,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "escaped_classes": [],
+      "escaped_initial_class": false,
+      "first_escape_round": null,
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 8,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 1,
+          "exact_count": 10,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 1,
+          "exact_count": 8,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 1,
+          "exact_count": 7,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 1,
+          "exact_count": 7,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 1,
+          "exact_count": 7,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_44_round1\\eval16_self_improve\\seed_129.json"
+    },
+    {
+      "seed_index": 130,
+      "seed_class_id": 44,
+      "exact_count": 51,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "escaped_classes": [],
+      "escaped_initial_class": false,
+      "first_escape_round": null,
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 8,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 1,
+          "exact_count": 10,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 1,
+          "exact_count": 11,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 1,
+          "exact_count": 9,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 1,
+          "exact_count": 7,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 1,
+          "exact_count": 6,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_44_round1\\eval16_self_improve\\seed_130.json"
+    },
+    {
+      "seed_index": 131,
+      "seed_class_id": 44,
+      "exact_count": 89,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "escaped_classes": [],
+      "escaped_initial_class": false,
+      "first_escape_round": null,
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 1,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 1,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 1,
+          "exact_count": 14,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 1,
+          "exact_count": 15,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 1,
+          "exact_count": 16,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_44_round1\\eval16_self_improve\\seed_131.json"
+    }
+  ]
+}

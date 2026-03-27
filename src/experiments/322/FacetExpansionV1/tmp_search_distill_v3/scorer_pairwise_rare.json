@@ -1,0 +1,103 @@
+{
+  "dataset": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v3\\distill.jsonl",
+  "num_records": 3184,
+  "best_loss": 0.08269922720249166,
+  "feature_names": [
+    "round_index",
+    "parent_depth",
+    "history_length",
+    "candidate_cardinality",
+    "hard_energy",
+    "novelty_score",
+    "seed_jaccard",
+    "archive_mean_absdiff"
+  ],
+  "objective": "pairwise",
+  "margin": 0.2,
+  "min_target_gap": 0.25,
+  "rare_class_aware": true,
+  "rare_class_power": 0.5,
+  "pair_count": 3395,
+  "training_history": [
+    {
+      "epoch": 1,
+      "loss": 0.14627930587802263
+    },
+    {
+      "epoch": 2,
+      "loss": 0.12250899606232088
+    },
+    {
+      "epoch": 3,
+      "loss": 0.1146989985729879
+    },
+    {
+      "epoch": 4,
+      "loss": 0.1111783194831615
+    },
+    {
+      "epoch": 5,
+      "loss": 0.10660306350472047
+    },
+    {
+      "epoch": 6,
+      "loss": 0.10344368261950357
+    },
+    {
+      "epoch": 7,
+      "loss": 0.10121064514404544
+    },
+    {
+      "epoch": 8,
+      "loss": 0.0979068202127062
+    },
+    {
+      "epoch": 9,
+      "loss": 0.0954984916371344
+    },
+    {
+      "epoch": 10,
+      "loss": 0.09374727388413209
+    },
+    {
+      "epoch": 11,
+      "loss": 0.09335524426863717
+    },
+    {
+      "epoch": 12,
+      "loss": 0.09123727049848644
+    },
+    {
+      "epoch": 13,
+      "loss": 0.08893913416430596
+    },
+    {
+      "epoch": 14,
+      "loss": 0.08774197583741046
+    },
+    {
+      "epoch": 15,
+      "loss": 0.08731235649782358
+    },
+    {
+      "epoch": 16,
+      "loss": 0.08547735769021844
+    },
+    {
+      "epoch": 17,
+      "loss": 0.0847055797790217
+    },
+    {
+      "epoch": 18,
+      "loss": 0.08450607750701974
+    },
+    {
+      "epoch": 19,
+      "loss": 0.08315628093279163
+    },
+    {
+      "epoch": 20,
+      "loss": 0.08269922720249166
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "dataset": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_smoke\\self_improve.jsonl",
+  "dataset_summary": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_smoke\\self_improve.summary.json",
+  "scorer": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_smoke\\self_improve_scorer.pt",
+  "scorer_summary": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_smoke\\self_improve_scorer.json",
+  "eval_summary": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_self_improve_smoke\\eval16_self_improve\\multiseed_summary.json"
+}

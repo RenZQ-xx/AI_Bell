@@ -1,0 +1,16 @@
+{
+  "checkpoint": "\\\\wsl$\\Ubuntu\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\DIffUCO\\run_orbit_terminal_e2e_manual\\geometric_diffuco_322.pt",
+  "best_loss": 68.93226623535156,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 68.93226623535156,
+      "mean_log_p_0": -250.0,
+      "mean_geometric_log_p_0": -22.048362731933594,
+      "mean_terminal_cost": 250.0,
+      "mean_terminal_novelty_bonus": 0.0,
+      "num_terminal_items": 0,
+      "grad_norm": 903.5365600585938
+    }
+  ]
+}

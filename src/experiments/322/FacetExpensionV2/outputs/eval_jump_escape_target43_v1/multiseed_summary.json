@@ -1,0 +1,69 @@
+{
+  "config": {
+    "checkpoint": "src/experiments/322/FacetExpansionV1/run_prefern_repeatcap_10/facet_expander_v1.pt",
+    "jump_bank": "src/experiments/322/FacetExpensionV2/outputs/jump_proposal_bank_target43_v1.json",
+    "seed_class_id": 44,
+    "seed_count": 3,
+    "rounds": 4,
+    "num_samples": 16,
+    "jump_top_k": 10,
+    "jump_rounds": 2,
+    "jump_quality_bonus": 2.5,
+    "allow_nonexact_jumps": false,
+    "max_bridge_children": 2,
+    "bridge_similarity_threshold": 0.9
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 3,
+    "num_seeds_escaped_initial_class": 2,
+    "fraction_seeds_escaped_initial_class": 0.6666666666666666,
+    "escaped_seed_indices": [
+      129,
+      130
+    ],
+    "escaped_class_histogram": {
+      "43": 2
+    }
+  },
+  "per_seed": [
+    {
+      "seed_index": 129,
+      "seed_class_id": 44,
+      "matched_classes": [
+        43,
+        44
+      ],
+      "escaped_classes": [
+        43
+      ],
+      "first_escape_round": 1,
+      "canonical_count": 2,
+      "output": "src/experiments/322/FacetExpensionV2/outputs/eval_jump_escape_target43_v1/seed_129.json"
+    },
+    {
+      "seed_index": 130,
+      "seed_class_id": 44,
+      "matched_classes": [
+        43,
+        44
+      ],
+      "escaped_classes": [
+        43
+      ],
+      "first_escape_round": 1,
+      "canonical_count": 2,
+      "output": "src/experiments/322/FacetExpensionV2/outputs/eval_jump_escape_target43_v1/seed_130.json"
+    },
+    {
+      "seed_index": 131,
+      "seed_class_id": 44,
+      "matched_classes": [
+        44
+      ],
+      "escaped_classes": [],
+      "first_escape_round": null,
+      "canonical_count": 4,
+      "output": "src/experiments/322/FacetExpensionV2/outputs/eval_jump_escape_target43_v1/seed_131.json"
+    }
+  ]
+}

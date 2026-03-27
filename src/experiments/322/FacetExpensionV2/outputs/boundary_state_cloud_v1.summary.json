@@ -1,0 +1,194 @@
+{
+  "source_class_id": 44,
+  "source_seed_indices": [
+    129,
+    130,
+    131
+  ],
+  "num_source_seeds": 3,
+  "num_records": 384,
+  "num_exact_records": 129,
+  "num_non44_exact_records": 0,
+  "top_boundary_scores": [
+    {
+      "source_seed_index": 129,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3114698545556318,
+      "hard_energy": 3.020834445953369,
+      "hamming_distance": 3
+    },
+    {
+      "source_seed_index": 129,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3346726507889597,
+      "hard_energy": 2.9346084594726562,
+      "hamming_distance": 2
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.34087654063576145,
+      "hard_energy": 2.9470162391662598,
+      "hamming_distance": 2
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.34205204411556833,
+      "hard_energy": 3.081998825073242,
+      "hamming_distance": 3
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.34349459572842234,
+      "hard_energy": 3.08488392829895,
+      "hamming_distance": 3
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3517945425133955,
+      "hard_energy": 3.1014838218688965,
+      "hamming_distance": 3
+    },
+    {
+      "source_seed_index": 129,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3843111605393259,
+      "hard_energy": 3.0338854789733887,
+      "hamming_distance": 2
+    },
+    {
+      "source_seed_index": 129,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3843133063065378,
+      "hard_energy": 3.0338897705078125,
+      "hamming_distance": 2
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926925465935154,
+      "hard_energy": 2.9180166721343994,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926925465935154,
+      "hard_energy": 2.9180166721343994,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926925465935154,
+      "hard_energy": 2.9180166721343994,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926925465935154,
+      "hard_energy": 2.9180166721343994,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926925465935154,
+      "hard_energy": 2.9180166721343994,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926925465935154,
+      "hard_energy": 2.9180166721343994,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926961228722019,
+      "hard_energy": 2.9180238246917725,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.3926961228722019,
+      "hard_energy": 2.9180238246917725,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 129,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.39269838784870337,
+      "hard_energy": 2.9180283546447754,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.39269838784870337,
+      "hard_energy": 2.9180283546447754,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.39269838784870337,
+      "hard_energy": 2.9180283546447754,
+      "hamming_distance": 1
+    },
+    {
+      "source_seed_index": 130,
+      "candidate_type": "local_edit",
+      "matched_classes": [],
+      "exact": false,
+      "boundary_score": -0.39269838784870337,
+      "hard_energy": 2.9180283546447754,
+      "hamming_distance": 1
+    }
+  ]
+}

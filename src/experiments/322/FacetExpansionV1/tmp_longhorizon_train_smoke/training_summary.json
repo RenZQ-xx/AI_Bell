@@ -1,0 +1,42 @@
+{
+  "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\tmp_longhorizon_train_smoke\\facet_expander_v1.pt",
+  "best_loss": 80.79258728027344,
+  "seed_summary": {
+    "num_seed_items": 138,
+    "num_classes": 46
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 200.3845977783203,
+      "mean_energy": 36.28643035888672,
+      "mean_expected_edit": 32.34853744506836,
+      "mean_archive_repulsion": 0.4660838544368744,
+      "mean_edit_entropy": 44.294124603271484,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 138,
+      "frontier_size": 1,
+      "seen_exact_classes": [],
+      "epoch_exact_classes": [],
+      "epoch_candidate_records": 0,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 1209.34521484375
+    },
+    {
+      "epoch": 2,
+      "loss": 80.79258728027344,
+      "mean_energy": 28.62615203857422,
+      "mean_expected_edit": 26.1203670501709,
+      "mean_archive_repulsion": 0.4597528874874115,
+      "mean_edit_entropy": 43.08393859863281,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 138,
+      "frontier_size": 1,
+      "seen_exact_classes": [],
+      "epoch_exact_classes": [],
+      "epoch_candidate_records": 0,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 2627.400390625
+    }
+  ]
+}

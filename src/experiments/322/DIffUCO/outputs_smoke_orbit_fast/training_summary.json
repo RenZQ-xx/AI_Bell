@@ -1,0 +1,37 @@
+{
+  "checkpoint": "src\\experiments\\322\\DIffUCO\\outputs_smoke_orbit_fast\\geometric_diffuco_322.pt",
+  "best_loss": 68.93226623535156,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 68.93226623535156,
+      "objective_mode": "relaxed",
+      "reinforce_weight": 0.0,
+      "orbit_reward_scale": 1.0,
+      "orbit_reward_loss": -0.0,
+      "mean_orbit_reward": 0.0,
+      "num_orbit_rewarded": 0,
+      "num_canonical_hits": 0,
+      "num_matched_classes_seen_this_epoch": 0,
+      "matched_classes_seen_this_epoch": [],
+      "mean_energy": 22.048362731933594,
+      "reversekl_entropy_term": 44.268577575683594,
+      "reversekl_noise_term": 83.79609680175781,
+      "reversekl_energy_term": 29.40475082397461,
+      "reversekl_entropy_reinforce": 0.00019363313913345337,
+      "reversekl_noise_reinforce": 0.26751708984375,
+      "reversekl_energy_reinforce": -0.2708740234375,
+      "mean_log_q_trajectory": -88.48103332519531,
+      "mean_log_p_trajectory": -111.64575958251953,
+      "mean_log_p_0": -22.048362731933594,
+      "mean_plane": 0.03682513162493706,
+      "mean_facet_dim": 0.30230650305747986,
+      "mean_second_eigenvalue": 0.11929723620414734,
+      "mean_boundary": 5.723264217376709,
+      "mean_cardinality": 36.999900817871094,
+      "grad_norm": 903.5365600585938,
+      "seen_class_counter": {},
+      "seen_canonical_counter_size": 0
+    }
+  ]
+}

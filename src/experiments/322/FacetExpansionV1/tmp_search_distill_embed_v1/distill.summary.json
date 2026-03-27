@@ -1,0 +1,12 @@
+{
+  "checkpoint": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+  "seed_start": 0,
+  "seed_count": 16,
+  "rounds": 6,
+  "num_samples": 16,
+  "num_records": 2896,
+  "num_exact_records": 1291,
+  "num_selected_records": 202,
+  "num_non44_records": 42,
+  "export_embeddings": true
+}

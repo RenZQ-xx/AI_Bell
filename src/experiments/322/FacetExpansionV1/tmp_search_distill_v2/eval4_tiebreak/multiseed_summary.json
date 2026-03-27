@@ -1,0 +1,474 @@
+{
+  "config": {
+    "checkpoint": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+    "device": "cpu",
+    "seed_start": 0,
+    "seed_count": 4,
+    "archive_size": 64,
+    "frontier_size": 4,
+    "rounds": 6,
+    "num_samples": 16,
+    "temperature": 1.2,
+    "distill_scorer": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v2\\scorer.pt",
+    "distill_weight": 1.0,
+    "distill_mode": "tiebreak"
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 4,
+    "num_seeds_with_non44": 3,
+    "fraction_seeds_with_non44": 0.75,
+    "non44_seed_indices": [
+      1,
+      2,
+      3
+    ],
+    "class_histogram": {
+      "1": 2,
+      "2": 1,
+      "29": 1,
+      "43": 3,
+      "44": 4,
+      "45": 1
+    },
+    "top_canonical_histogram": [
+      [
+        "1,-1,0,-1,0,-1,0,1,0,0,0,1,0,0,0,1,0,0,0,-1,0,0,0,0,0,0,0",
+        157
+      ],
+      [
+        "2,-2,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,1,1,1,0,0,1,-1,0,0",
+        85
+      ],
+      [
+        "3,-1,0,-1,0,-1,0,0,-1,-1,1,0,-1,-1,1,0,-1,-1,1,1,1,1,0,1,0,0,-1",
+        10
+      ],
+      [
+        "6,-1,-1,-1,-1,0,0,0,1,1,0,-1,0,1,0,0,-1,0,1,0,1,-2,-3,2,-2,1,-1",
+        9
+      ],
+      [
+        "5,-1,0,-1,0,-1,0,0,-1,-1,-1,0,-1,-1,-1,1,0,0,0,-2,0,1,2,2,-1,0,1",
+        5
+      ],
+      [
+        "33,-20,-13,-20,-13,-7,0,20,0,0,13,20,0,-13,0,20,0,-13,0,-20,0,0,13,0,0,0,0",
+        2
+      ],
+      [
+        "2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,0,0,0,0,-1,1",
+        1
+      ],
+      [
+        "13,-10,-3,-10,-3,-10,-3,10,0,0,3,10,0,0,3,10,0,0,3,-10,0,0,0,0,0,0,-3",
+        1
+      ],
+      [
+        "13,-13,0,-5,0,-5,0,5,0,0,0,5,0,0,0,9,-4,-4,-4,-9,4,0,0,4,4,0,0",
+        1
+      ],
+      [
+        "450,-450,0,-99,0,-99,0,99,0,0,0,99,0,0,0,275,-176,-176,-176,-275,176,0,0,176,176,0,0",
+        1
+      ]
+    ]
+  },
+  "per_seed": [
+    {
+      "seed_index": 0,
+      "seed_class_id": 1,
+      "exact_count": 30,
+      "canonical_count": 1,
+      "matched_classes": [
+        44
+      ],
+      "non44_classes": [],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 3,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 1,
+          "exact_count": 9,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 1,
+          "exact_count": 5,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 1,
+          "exact_count": 3,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 1,
+          "exact_count": 7,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 1,
+          "exact_count": 3,
+          "matched_classes": [
+            44
+          ],
+          "seen_exact_classes": [
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v2\\eval4_tiebreak\\seed_000.json"
+    },
+    {
+      "seed_index": 1,
+      "seed_class_id": 1,
+      "exact_count": 69,
+      "canonical_count": 7,
+      "matched_classes": [
+        1,
+        43,
+        44,
+        45
+      ],
+      "non44_classes": [
+        1,
+        43,
+        45
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 6,
+          "matched_classes": [
+            1,
+            43,
+            44,
+            45
+          ],
+          "seen_exact_classes": [
+            1,
+            43
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 3,
+          "exact_count": 6,
+          "matched_classes": [
+            1,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 2,
+          "exact_count": 7,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 2,
+          "exact_count": 17,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 2,
+          "exact_count": 14,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 2,
+          "exact_count": 19,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v2\\eval4_tiebreak\\seed_001.json"
+    },
+    {
+      "seed_index": 2,
+      "seed_class_id": 1,
+      "exact_count": 97,
+      "canonical_count": 7,
+      "matched_classes": [
+        1,
+        43,
+        44
+      ],
+      "non44_classes": [
+        1,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 2,
+          "exact_count": 5,
+          "matched_classes": [
+            1,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            44
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 3,
+          "exact_count": 15,
+          "matched_classes": [
+            1,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 2,
+          "exact_count": 24,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 2,
+          "exact_count": 18,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 2,
+          "exact_count": 17,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 2,
+          "exact_count": 18,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            1,
+            43,
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v2\\eval4_tiebreak\\seed_002.json"
+    },
+    {
+      "seed_index": 3,
+      "seed_class_id": 2,
+      "exact_count": 71,
+      "canonical_count": 9,
+      "matched_classes": [
+        2,
+        29,
+        43,
+        44
+      ],
+      "non44_classes": [
+        2,
+        29,
+        43
+      ],
+      "round_summaries": [
+        {
+          "round": 1,
+          "frontier_size": 1,
+          "exact_count": 1,
+          "matched_classes": [
+            2
+          ],
+          "seen_exact_classes": [
+            2
+          ]
+        },
+        {
+          "round": 2,
+          "frontier_size": 2,
+          "exact_count": 6,
+          "matched_classes": [
+            2,
+            29,
+            44
+          ],
+          "seen_exact_classes": [
+            2,
+            29,
+            44
+          ]
+        },
+        {
+          "round": 3,
+          "frontier_size": 3,
+          "exact_count": 14,
+          "matched_classes": [
+            29,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            2,
+            29,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 4,
+          "frontier_size": 3,
+          "exact_count": 22,
+          "matched_classes": [
+            29,
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            2,
+            29,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 5,
+          "frontier_size": 2,
+          "exact_count": 13,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            2,
+            29,
+            43,
+            44
+          ]
+        },
+        {
+          "round": 6,
+          "frontier_size": 2,
+          "exact_count": 15,
+          "matched_classes": [
+            43,
+            44
+          ],
+          "seen_exact_classes": [
+            2,
+            29,
+            43,
+            44
+          ]
+        }
+      ],
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v2\\eval4_tiebreak\\seed_003.json"
+    }
+  ]
+}

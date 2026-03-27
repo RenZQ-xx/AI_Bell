@@ -1,0 +1,29 @@
+{
+  "checkpoint": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+  "seed_start": 0,
+  "seed_count": 16,
+  "rounds": 6,
+  "num_samples": 16,
+  "distill_scorer": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_embed_v2cov\\scorer_pairwise_critical_embed.pt",
+  "distill_mode": "critical_bucket_tiebreak",
+  "num_records": 4112,
+  "num_exact_records": 1761,
+  "num_policy_selected_records": 298,
+  "num_non44_records": 31,
+  "num_unique_gain_records": 31,
+  "export_embeddings": true,
+  "discovery_histogram": {
+    "1": 3,
+    "2": 2,
+    "3": 3,
+    "4": 2,
+    "5": 3,
+    "6": 1,
+    "23": 1,
+    "27": 1,
+    "29": 1,
+    "35": 1,
+    "37": 1,
+    "43": 5
+  }
+}

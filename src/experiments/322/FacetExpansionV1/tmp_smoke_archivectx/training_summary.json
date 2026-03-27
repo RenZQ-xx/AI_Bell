@@ -1,0 +1,55 @@
+{
+  "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\tmp_smoke_archivectx\\facet_expander_v1.pt",
+  "best_loss": 77.21583557128906,
+  "seed_summary": {
+    "num_seed_items": 138,
+    "num_classes": 46
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 208.56423950195312,
+      "mean_energy": 42.86662292480469,
+      "mean_plane": 0.9375247955322266,
+      "mean_boundary": 8.499460220336914,
+      "mean_cardinality": 31.831457138061523,
+      "mean_expected_edit": 32.41789245605469,
+      "mean_edit_band_loss": 207.8798065185547,
+      "mean_archive_repulsion": 0.46525663137435913,
+      "mean_edit_entropy": 44.269432067871094,
+      "archive_size": 138,
+      "grad_norm": 1631.77490234375,
+      "sample_valid": 0,
+      "sample_exact_classes": [],
+      "sample_new_archive_items": 0,
+      "sample_exact_count": 0
+    },
+    {
+      "epoch": 2,
+      "loss": 77.21583557128906,
+      "mean_energy": 29.123069763183594,
+      "mean_plane": 0.7898033261299133,
+      "mean_boundary": 5.127363204956055,
+      "mean_cardinality": 32.616703033447266,
+      "mean_expected_edit": 25.798851013183594,
+      "mean_edit_band_loss": 60.82537078857422,
+      "mean_archive_repulsion": 0.48275288939476013,
+      "mean_edit_entropy": 42.85908889770508,
+      "archive_size": 138,
+      "grad_norm": 1063.1751708984375,
+      "sample_valid": 8,
+      "sample_exact_classes": [
+        7,
+        9,
+        14,
+        26,
+        30,
+        32,
+        36,
+        39
+      ],
+      "sample_new_archive_items": 8,
+      "sample_exact_count": 8
+    }
+  ]
+}

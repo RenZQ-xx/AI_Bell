@@ -1,0 +1,84 @@
+{
+  "config": {
+    "checkpoint": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpansionV1\\run_prefern_repeatcap_10\\facet_expander_v1.pt",
+    "jump_bank": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpensionV2\\outputs\\jump_proposal_bank_v1.json",
+    "seed_class_id": 44,
+    "seed_count": 3,
+    "rounds": 6,
+    "num_samples": 16,
+    "jump_top_k": 3,
+    "jump_rounds": 6,
+    "jump_quality_bonus": 2.5
+  },
+  "aggregate": {
+    "total_seeds_evaluated": 3,
+    "num_seeds_escaped_initial_class": 3,
+    "fraction_seeds_escaped_initial_class": 1.0,
+    "escaped_seed_indices": [
+      129,
+      130,
+      131
+    ],
+    "escaped_class_histogram": {
+      "23": 3,
+      "29": 3,
+      "43": 3
+    }
+  },
+  "per_seed": [
+    {
+      "seed_index": 129,
+      "seed_class_id": 44,
+      "matched_classes": [
+        23,
+        29,
+        43,
+        44
+      ],
+      "escaped_classes": [
+        23,
+        29,
+        43
+      ],
+      "first_escape_round": 1,
+      "canonical_count": 5,
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpensionV2\\outputs\\eval_jump_escape_v1\\seed_129.json"
+    },
+    {
+      "seed_index": 130,
+      "seed_class_id": 44,
+      "matched_classes": [
+        23,
+        29,
+        43,
+        44
+      ],
+      "escaped_classes": [
+        23,
+        29,
+        43
+      ],
+      "first_escape_round": 1,
+      "canonical_count": 6,
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpensionV2\\outputs\\eval_jump_escape_v1\\seed_130.json"
+    },
+    {
+      "seed_index": 131,
+      "seed_class_id": 44,
+      "matched_classes": [
+        23,
+        29,
+        43,
+        44
+      ],
+      "escaped_classes": [
+        23,
+        29,
+        43
+      ],
+      "first_escape_round": 1,
+      "canonical_count": 5,
+      "output": "\\home\\dministrator\\workspace\\AI_Bell\\src\\experiments\\322\\FacetExpensionV2\\outputs\\eval_jump_escape_v1\\seed_131.json"
+    }
+  ]
+}

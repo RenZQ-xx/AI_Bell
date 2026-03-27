@@ -1,0 +1,191 @@
+{
+  "facets_path": "data/facets_322.txt",
+  "num_rows": 53856,
+  "num_classes": 46,
+  "class_sizes": [
+    {
+      "class_id": 1,
+      "size": 3072
+    },
+    {
+      "class_id": 2,
+      "size": 3072
+    },
+    {
+      "class_id": 3,
+      "size": 3072
+    },
+    {
+      "class_id": 4,
+      "size": 3072
+    },
+    {
+      "class_id": 5,
+      "size": 3072
+    },
+    {
+      "class_id": 6,
+      "size": 3072
+    },
+    {
+      "class_id": 7,
+      "size": 1536
+    },
+    {
+      "class_id": 8,
+      "size": 1536
+    },
+    {
+      "class_id": 9,
+      "size": 1536
+    },
+    {
+      "class_id": 10,
+      "size": 1536
+    },
+    {
+      "class_id": 11,
+      "size": 1536
+    },
+    {
+      "class_id": 12,
+      "size": 1536
+    },
+    {
+      "class_id": 13,
+      "size": 1536
+    },
+    {
+      "class_id": 14,
+      "size": 1536
+    },
+    {
+      "class_id": 15,
+      "size": 1536
+    },
+    {
+      "class_id": 16,
+      "size": 1536
+    },
+    {
+      "class_id": 17,
+      "size": 1536
+    },
+    {
+      "class_id": 18,
+      "size": 1536
+    },
+    {
+      "class_id": 19,
+      "size": 1536
+    },
+    {
+      "class_id": 20,
+      "size": 1536
+    },
+    {
+      "class_id": 21,
+      "size": 1536
+    },
+    {
+      "class_id": 22,
+      "size": 1536
+    },
+    {
+      "class_id": 23,
+      "size": 1536
+    },
+    {
+      "class_id": 24,
+      "size": 1536
+    },
+    {
+      "class_id": 25,
+      "size": 768
+    },
+    {
+      "class_id": 26,
+      "size": 768
+    },
+    {
+      "class_id": 27,
+      "size": 768
+    },
+    {
+      "class_id": 28,
+      "size": 512
+    },
+    {
+      "class_id": 29,
+      "size": 512
+    },
+    {
+      "class_id": 30,
+      "size": 512
+    },
+    {
+      "class_id": 31,
+      "size": 512
+    },
+    {
+      "class_id": 32,
+      "size": 384
+    },
+    {
+      "class_id": 33,
+      "size": 384
+    },
+    {
+      "class_id": 34,
+      "size": 384
+    },
+    {
+      "class_id": 35,
+      "size": 384
+    },
+    {
+      "class_id": 36,
+      "size": 384
+    },
+    {
+      "class_id": 37,
+      "size": 384
+    },
+    {
+      "class_id": 38,
+      "size": 256
+    },
+    {
+      "class_id": 39,
+      "size": 192
+    },
+    {
+      "class_id": 40,
+      "size": 192
+    },
+    {
+      "class_id": 41,
+      "size": 128
+    },
+    {
+      "class_id": 42,
+      "size": 128
+    },
+    {
+      "class_id": 43,
+      "size": 96
+    },
+    {
+      "class_id": 44,
+      "size": 64
+    },
+    {
+      "class_id": 45,
+      "size": 48
+    },
+    {
+      "class_id": 46,
+      "size": 16
+    }
+  ]
+}

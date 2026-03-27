@@ -1,0 +1,100 @@
+{
+  "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\tmp_longhorizon_memory_bridge3_smoke\\facet_expander_v1.pt",
+  "best_loss": 31.734413146972656,
+  "seed_summary": {
+    "num_seed_items": 138,
+    "num_classes": 46
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 205.76278686523438,
+      "mean_energy": 30.054981231689453,
+      "mean_expected_edit": 32.84547424316406,
+      "mean_archive_repulsion": 0.46682295203208923,
+      "mean_edit_entropy": 44.32959747314453,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 15,
+      "epoch_new_archive_items": 1,
+      "grad_norm": 1266.224853515625,
+      "bridge_frontier_count": 2.0,
+      "bridge_frontier_fraction": 1.0,
+      "frontier_mean_similarity": 0.2653061224489796
+    },
+    {
+      "epoch": 2,
+      "loss": 335.7061462402344,
+      "mean_energy": 44.052207946777344,
+      "mean_expected_edit": 37.11274719238281,
+      "mean_archive_repulsion": 0.4765465259552002,
+      "mean_edit_entropy": 43.48125457763672,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 17,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 3401.860107421875,
+      "bridge_frontier_count": 2.0,
+      "bridge_frontier_fraction": 1.0,
+      "frontier_mean_similarity": 0.34615384615384615
+    },
+    {
+      "epoch": 3,
+      "loss": 56.602256774902344,
+      "mean_energy": 39.179725646972656,
+      "mean_expected_edit": 22.73904037475586,
+      "mean_archive_repulsion": 0.4789588451385498,
+      "mean_edit_entropy": 41.58754348754883,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 17,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 800.605224609375,
+      "bridge_frontier_count": 2.0,
+      "bridge_frontier_fraction": 1.0,
+      "frontier_mean_similarity": 0.358974358974359
+    },
+    {
+      "epoch": 4,
+      "loss": 31.734413146972656,
+      "mean_energy": 32.09258270263672,
+      "mean_expected_edit": 12.030386924743652,
+      "mean_archive_repulsion": 0.4336282014846802,
+      "mean_edit_entropy": 30.917261123657227,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [],
+      "epoch_candidate_records": 16,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 301.620361328125,
+      "bridge_frontier_count": 2.0,
+      "bridge_frontier_fraction": 1.0,
+      "frontier_mean_similarity": 0.4166666666666667
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "checkpoint": "src\\experiments\\322\\FacetExpansionV1\\tmp_longhorizon_memory_bridge_smoke\\facet_expander_v1.pt",
+  "best_loss": 32.249900817871094,
+  "seed_summary": {
+    "num_seed_items": 138,
+    "num_classes": 46
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 205.76278686523438,
+      "mean_energy": 30.054981231689453,
+      "mean_expected_edit": 32.84547424316406,
+      "mean_archive_repulsion": 0.46682295203208923,
+      "mean_edit_entropy": 44.32959747314453,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 15,
+      "epoch_new_archive_items": 1,
+      "grad_norm": 1266.224853515625
+    },
+    {
+      "epoch": 2,
+      "loss": 332.1748046875,
+      "mean_energy": 40.52495574951172,
+      "mean_expected_edit": 37.11271286010742,
+      "mean_archive_repulsion": 0.47114574909210205,
+      "mean_edit_entropy": 43.48179626464844,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 20,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 3412.07177734375
+    },
+    {
+      "epoch": 3,
+      "loss": 55.0836296081543,
+      "mean_energy": 37.575923919677734,
+      "mean_expected_edit": 22.750747680664062,
+      "mean_archive_repulsion": 0.4731029272079468,
+      "mean_edit_entropy": 41.59403610229492,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 19,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 826.9834594726562
+    },
+    {
+      "epoch": 4,
+      "loss": 32.249900817871094,
+      "mean_energy": 32.59503936767578,
+      "mean_expected_edit": 12.229999542236328,
+      "mean_archive_repulsion": 0.46495550870895386,
+      "mean_edit_entropy": 31.20559310913086,
+      "mean_entropy_floor_loss": 0.0,
+      "archive_size": 139,
+      "frontier_size": 2,
+      "seen_exact_classes": [
+        44
+      ],
+      "epoch_exact_classes": [
+        44
+      ],
+      "epoch_candidate_records": 18,
+      "epoch_new_archive_items": 0,
+      "grad_norm": 89.86157989501953
+    }
+  ]
+}

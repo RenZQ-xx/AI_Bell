@@ -1,0 +1,97 @@
+{
+  "dataset": "src\\experiments\\322\\FacetExpansionV1\\tmp_search_distill_v2\\distill.jsonl",
+  "num_records": 384,
+  "best_loss": 0.7887709637482961,
+  "feature_names": [
+    "round_index",
+    "parent_depth",
+    "history_length",
+    "candidate_cardinality",
+    "hard_energy",
+    "novelty_score",
+    "seed_jaccard",
+    "archive_mean_absdiff"
+  ],
+  "training_history": [
+    {
+      "epoch": 1,
+      "loss": 1.056356966495514
+    },
+    {
+      "epoch": 2,
+      "loss": 0.9829492991169294
+    },
+    {
+      "epoch": 3,
+      "loss": 0.9253248870372772
+    },
+    {
+      "epoch": 4,
+      "loss": 0.9072133352359136
+    },
+    {
+      "epoch": 5,
+      "loss": 0.8849321107069651
+    },
+    {
+      "epoch": 6,
+      "loss": 0.8731639186541239
+    },
+    {
+      "epoch": 7,
+      "loss": 0.8661874383687973
+    },
+    {
+      "epoch": 8,
+      "loss": 0.8568460245927175
+    },
+    {
+      "epoch": 9,
+      "loss": 0.8485708832740784
+    },
+    {
+      "epoch": 10,
+      "loss": 0.8389486074447632
+    },
+    {
+      "epoch": 11,
+      "loss": 0.8330186506112417
+    },
+    {
+      "epoch": 12,
+      "loss": 0.8268634701768557
+    },
+    {
+      "epoch": 13,
+      "loss": 0.819755882024765
+    },
+    {
+      "epoch": 14,
+      "loss": 0.8172267029682795
+    },
+    {
+      "epoch": 15,
+      "loss": 0.8124341567357382
+    },
+    {
+      "epoch": 16,
+      "loss": 0.8014886478583018
+    },
+    {
+      "epoch": 17,
+      "loss": 0.7999597589174906
+    },
+    {
+      "epoch": 18,
+      "loss": 0.7934933304786682
+    },
+    {
+      "epoch": 19,
+      "loss": 0.7887709637482961
+    },
+    {
+      "epoch": 20,
+      "loss": 0.7988034437100092
+    }
+  ]
+}
