@@ -1,5 +1,6 @@
 import numpy as np
 import itertools
+from facet import check_points_form_hyperplane
 
 N = 3
 O = 2
@@ -25,7 +26,10 @@ def generate_points(n = N):
 
 if __name__ == "__main__":
     points = generate_points()
-    print(points[1])
-    
-    
+    tour = [3, 17, 19, 51, 40, 38, 49, 58, 34, 47, 53, 61, 45, 44, 10, 50, 59, 55, 14, 8, 41, 57, 13, 21, 26, 28]
+    facet_vertices = points[tour]
+    is_hyperplane, normal_vector, b, rank = check_points_form_hyperplane(facet_vertices)
+    print(is_hyperplane)
+    print(normal_vector)
+    print(b, rank)
     
