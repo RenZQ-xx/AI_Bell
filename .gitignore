@@ -10,4 +10,8 @@ __pycache__/
 *.lic
 mosek/
 args/
-artifacts/archived/
+docs/
+src/experiments/
+artifacts/
+tmp_page_*.txt
+src/data_generation/

@@ -1,0 +1,1439 @@
+{
+  "meta": {
+    "script": "src/baseline/run_strict_log_probe.py",
+    "row_class": 33,
+    "rep_index": 1,
+    "pattern_index": 0,
+    "seeds": [
+      20260506,
+      20260507
+    ],
+    "restarts_per_seed": 8,
+    "beam_width": 64,
+    "candidate_pool": 12,
+    "samples_per_state": 4,
+    "temperature": 0.75,
+    "max_blocks": 64,
+    "rank24_entrance_exists_weight": 4.0,
+    "terminal_scoring_mode": "static",
+    "dynamic_new_class_score": 100.0,
+    "dynamic_known_class_score": 10.0,
+    "dynamic_frequent_class_score": -5.0,
+    "dynamic_frequent_class_threshold": 16
+  },
+  "runs": [
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          7
+        ],
+        "path": [
+          2,
+          1,
+          4,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            2,
+            1,
+            4,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            1,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            8,
+            1,
+            2,
+            5
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 12,
+        "invalid:boundary": 49,
+        "invalid:non_coplanar": 299
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 0,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7
+        ],
+        "path": [
+          2,
+          0,
+          5,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7
+          ],
+          "path": [
+            2,
+            0,
+            5,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            3,
+            7
+          ],
+          "path": [
+            7,
+            0,
+            2,
+            3
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 311
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 1,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          7
+        ],
+        "path": [
+          2,
+          1,
+          4,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            2,
+            1,
+            4,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            1,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            8,
+            1,
+            2,
+            5
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 50,
+        "invalid:non_coplanar": 313
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 2,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7
+        ],
+        "path": [
+          2,
+          0,
+          5,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7
+          ],
+          "path": [
+            2,
+            0,
+            5,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            0,
+            2,
+            4
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7,
+            9
+          ],
+          "path": [
+            9,
+            7,
+            0,
+            5,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 52,
+        "invalid:non_coplanar": 320
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 3,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "path": [
+          2,
+          4,
+          1,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "path": [
+            2,
+            4,
+            1,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            1,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            8,
+            5,
+            2,
+            1
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 320
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 4,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          7
+        ],
+        "path": [
+          2,
+          4,
+          1,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            2,
+            4,
+            1,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            2,
+            3,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            4,
+            2,
+            3
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7,
+            9
+          ],
+          "path": [
+            9,
+            7,
+            0,
+            5,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 312
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 5,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          8
+        ],
+        "path": [
+          2,
+          5,
+          0,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            2,
+            5,
+            0,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            1,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            8,
+            5,
+            2,
+            1
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 51,
+        "invalid:non_coplanar": 309
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 6,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7
+        ],
+        "path": [
+          2,
+          5,
+          0,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7
+          ],
+          "path": [
+            2,
+            5,
+            0,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            4,
+            2,
+            0
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 52,
+        "invalid:non_coplanar": 316
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260506,
+      "restart_index": 7,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          8
+        ],
+        "path": [
+          2,
+          0,
+          5,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            2,
+            0,
+            5,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            0,
+            2,
+            4
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 307
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 0,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          8
+        ],
+        "path": [
+          2,
+          0,
+          5,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            2,
+            0,
+            5,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            3,
+            7
+          ],
+          "path": [
+            7,
+            0,
+            2,
+            3
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 315
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 1,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          8
+        ],
+        "path": [
+          2,
+          0,
+          5,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            2,
+            0,
+            5,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            0,
+            2,
+            4
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7,
+            9
+          ],
+          "path": [
+            7,
+            9,
+            0,
+            5,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 320
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 2,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "path": [
+          2,
+          1,
+          4,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "path": [
+            2,
+            1,
+            4,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            1,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            8,
+            1,
+            2,
+            5
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7,
+            9
+          ],
+          "path": [
+            7,
+            9,
+            0,
+            5,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 55,
+        "invalid:non_coplanar": 312
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 3,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          8
+        ],
+        "path": [
+          2,
+          0,
+          5,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            2,
+            0,
+            5,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            0,
+            2,
+            4
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            7,
+            9
+          ],
+          "path": [
+            7,
+            9,
+            0,
+            5,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 54,
+        "invalid:non_coplanar": 315
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 4,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "path": [
+          2,
+          1,
+          4,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "path": [
+            2,
+            1,
+            4,
+            8
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            1,
+            2,
+            5,
+            8
+          ],
+          "path": [
+            8,
+            1,
+            2,
+            5
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 53,
+        "invalid:non_coplanar": 313
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 5,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          7
+        ],
+        "path": [
+          2,
+          4,
+          1,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            2,
+            4,
+            1,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            8
+          ],
+          "path": [
+            2,
+            0,
+            8,
+            4
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 49,
+        "invalid:non_coplanar": 312
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 6,
+      "label": "exact:33"
+    },
+    {
+      "best": {
+        "label": "exact:class33",
+        "chosen_blocks": [
+          1,
+          2,
+          4,
+          7
+        ],
+        "path": [
+          2,
+          4,
+          1,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "terminal_bests": {
+        "exact:class33": {
+          "label": "exact:class33",
+          "chosen_blocks": [
+            1,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            2,
+            4,
+            1,
+            7
+          ],
+          "score": 100.0,
+          "rank": 25
+        },
+        "invalid:boundary": {
+          "label": "invalid:boundary",
+          "chosen_blocks": [
+            0,
+            2,
+            4,
+            7
+          ],
+          "path": [
+            7,
+            4,
+            2,
+            0
+          ],
+          "score": -44.0,
+          "rank": 25
+        },
+        "invalid:non_coplanar": {
+          "label": "invalid:non_coplanar",
+          "chosen_blocks": [
+            0,
+            2,
+            5,
+            6,
+            8
+          ],
+          "path": [
+            8,
+            6,
+            5,
+            0,
+            2
+          ],
+          "score": -44.0,
+          "rank": 26
+        }
+      },
+      "encountered_label_counts": {
+        "exact:class33": 14,
+        "invalid:boundary": 52,
+        "invalid:non_coplanar": 311
+      },
+      "exact_labels": [
+        "exact:class33"
+      ],
+      "steps_completed": 7,
+      "final_beam_size": 4,
+      "seed": 20260507,
+      "restart_index": 7,
+      "label": "exact:33"
+    }
+  ],
+  "summary": {
+    "label_counts": {
+      "exact:33": 16
+    },
+    "exact_class_counts": {
+      "33": 16
+    },
+    "opened_rare_target_classes": [
+      33
+    ],
+    "rare_target_coverage_count": 1,
+    "encountered_label_counts": {
+      "exact:33": 222,
+      "invalid:boundary": 835,
+      "invalid:non_coplanar": 5005
+    },
+    "encountered_rare_target_classes": [
+      33
+    ],
+    "encountered_rare_target_coverage_count": 1
+  }
+}

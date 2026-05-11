@@ -4,6 +4,12 @@
 
 ---
 
+## Project organization
+
+- [Project organization audit](./PROJECT_ORGANIZATION_AUDIT.md): 当前代码库结构脉络、保留/归档/删除建议，以及建议的目标目录结构。
+
+---
+
 ##  重要参考
 1. 问题背景，见[**RMP 86**](./Bell nonlocality.pdf)
 2. Q(s)，C(s)的[**计算方法**](https://mixed-polonium-133.notion.site/413d65c7cf194658994fabaf22aa9db6?source=copy_link)
