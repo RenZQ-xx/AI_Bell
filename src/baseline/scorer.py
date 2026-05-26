@@ -49,6 +49,8 @@ class ScorerConfig:
     dynamic_known_class_score: float = 10.0
     dynamic_frequent_class_score: float = -5.0
     dynamic_frequent_class_threshold: int = 16
+    cache_heavy_max_entries: int = 2000
+    cache_light_max_entries: int = 12000
 
 
 @dataclass(frozen=True)
@@ -119,16 +121,33 @@ class ExpansionScorer:
         self.terminal_cache: dict[BlockKey, FacetLabel] = {}
         self.rank24_entrance_cache: dict[BlockKey, dict[str, int]] = {}
 
+    def _cache_put(self, cache: dict, key: BlockKey, value: object, *, heavy: bool) -> None:
+        """Insert into cache with a bounded size to avoid unbounded memory growth."""
+        cache[key] = value
+        max_entries = self.config.cache_heavy_max_entries if heavy else self.config.cache_light_max_entries
+        if max_entries > 0 and len(cache) > max_entries:
+            cache.pop(next(iter(cache)))
+
     def vertex_indices(self, key: BlockKey) -> list[int]:
         """Expand selected blocks into deterministic vertex ids."""
         if key not in self.vertices_cache:
-            self.vertices_cache[key] = block_key_to_vertex_indices(key, self.blocks)
+            self._cache_put(
+                self.vertices_cache,
+                key,
+                block_key_to_vertex_indices(key, self.blocks),
+                heavy=True,
+            )
         return self.vertices_cache[key]
 
     def vertex_mask(self, key: BlockKey) -> np.ndarray:
         """Return the 64-bit hard support mask for a block key."""
         if key not in self.mask_cache:
-            self.mask_cache[key] = block_key_to_vertex_mask(key, self.blocks, vertex_count=len(self.points))
+            self._cache_put(
+                self.mask_cache,
+                key,
+                block_key_to_vertex_mask(key, self.blocks, vertex_count=len(self.points)),
+                heavy=True,
+            )
         return self.mask_cache[key]
 
     def affine_rank(self, key: BlockKey) -> int:
@@ -139,7 +158,7 @@ class ExpansionScorer:
                 rank = 0
             else:
                 rank = affine_rank(self.points[indices], rank_eps=self.config.rank_tol)
-            self.rank_cache[key] = rank
+            self._cache_put(self.rank_cache, key, rank, heavy=False)
         return self.rank_cache[key]
 
     def fit_boundary_metrics(self, key: BlockKey) -> dict[str, float]:
@@ -147,12 +166,17 @@ class ExpansionScorer:
         if key not in self.boundary_cache:
             indices = self.vertex_indices(key)
             if len(indices) <= 1:
-                self.boundary_cache[key] = {
-                    "closer_side": 32.0,
-                    "positive": 32.0,
-                    "negative": 32.0,
-                    "supporting_shift": 1e6,
-                }
+                self._cache_put(
+                    self.boundary_cache,
+                    key,
+                    {
+                        "closer_side": 32.0,
+                        "positive": 32.0,
+                        "negative": 32.0,
+                        "supporting_shift": 1e6,
+                    },
+                    heavy=False,
+                )
                 return self.boundary_cache[key]
             selected = self.points[indices]
             centroid = selected.mean(axis=0)
@@ -165,18 +189,23 @@ class ExpansionScorer:
             positive = int(np.sum(signed > self.config.support_tol))
             negative = int(np.sum(signed < -self.config.support_tol))
             supporting_shift = min(max(float(signed.max()), 0.0) ** 2, max(float(-signed.min()), 0.0) ** 2)
-            self.boundary_cache[key] = {
+            self._cache_put(
+                self.boundary_cache,
+                key,
+                {
                 "closer_side": float(min(positive, negative)),
                 "positive": float(positive),
                 "negative": float(negative),
                 "supporting_shift": float(supporting_shift),
-            }
+                },
+                heavy=False,
+            )
         return self.boundary_cache[key]
 
     def terminal_label(self, key: BlockKey) -> FacetLabel:
         """Terminal validation for a candidate that already reached rank >= 25."""
         if key not in self.terminal_cache:
-            self.terminal_cache[key] = self.validator.validate_mask(self.vertex_mask(key))
+            self._cache_put(self.terminal_cache, key, self.validator.validate_mask(self.vertex_mask(key)), heavy=False)
         return self.terminal_cache[key]
 
     def terminal_score(self, key: BlockKey) -> float:
@@ -219,16 +248,22 @@ class ExpansionScorer:
         if key not in self.flat_cache:
             if self.config.flat_capacity_method == "child_rank":
                 rank = self.affine_rank(key)
-                self.flat_cache[key] = sum(
-                    1 for action in unselected_blocks(key) if self.affine_rank(add_block(key, action)) == rank
+                self._cache_put(
+                    self.flat_cache,
+                    key,
+                    sum(1 for action in unselected_blocks(key) if self.affine_rank(add_block(key, action)) == rank),
+                    heavy=False,
                 )
                 return self.flat_cache[key]
 
             rank = self.affine_rank(key)
             indices = self.vertex_indices(key)
             if len(indices) <= 1:
-                self.flat_cache[key] = sum(
-                    1 for action in unselected_blocks(key) if self.affine_rank(add_block(key, action)) == rank
+                self._cache_put(
+                    self.flat_cache,
+                    key,
+                    sum(1 for action in unselected_blocks(key) if self.affine_rank(add_block(key, action)) == rank),
+                    heavy=False,
                 )
                 return self.flat_cache[key]
 
@@ -246,7 +281,7 @@ class ExpansionScorer:
                 residual = delta - (delta @ basis) @ basis.T if basis.shape[1] > 0 else delta
                 if float(np.max(np.linalg.norm(residual, axis=1))) <= 2.0 * self.config.rank_tol:
                     count += 1
-            self.flat_cache[key] = count
+            self._cache_put(self.flat_cache, key, count, heavy=False)
         return self.flat_cache[key]
 
     def child_flat_p50(self, key: BlockKey) -> float:
@@ -260,7 +295,12 @@ class ExpansionScorer:
                 if child_rank <= rank:
                     continue
                 values.append(0.0 if child_rank >= 25 else float(self.flat_capacity(child)))
-            self.child_flat_p50_cache[key] = 0.0 if not values else float(np.percentile(np.asarray(values), 50))
+            self._cache_put(
+                self.child_flat_p50_cache,
+                key,
+                0.0 if not values else float(np.percentile(np.asarray(values), 50)),
+                heavy=False,
+            )
         return self.child_flat_p50_cache[key]
 
     def rank24_entrance_metrics(self, key: BlockKey) -> dict[str, int]:
@@ -285,12 +325,17 @@ class ExpansionScorer:
                     class44 += 1
                 else:
                     other_valid += 1
-            self.rank24_entrance_cache[key] = {
-                "rare": rare,
-                "class44": class44,
-                "invalid": invalid,
-                "other_valid": other_valid,
-            }
+            self._cache_put(
+                self.rank24_entrance_cache,
+                key,
+                {
+                    "rare": rare,
+                    "class44": class44,
+                    "invalid": invalid,
+                    "other_valid": other_valid,
+                },
+                heavy=False,
+            )
         return self.rank24_entrance_cache[key]
 
     def phase_weights(self, rank: int) -> tuple[float, float, float]:
