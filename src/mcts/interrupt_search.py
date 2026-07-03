@@ -26,13 +26,16 @@ from baseline.reference_classes import DEFAULT_EXAMPLES_PATH, parse_example_rows
 from baseline.scorer import ExpansionScorer, ScorerConfig, exact_class_id
 from mcts.queue_search import build_class_scorer, summarize
 from mcts.search import (
+    ClassCompatibilityBank,
     ExactClassDiscovery,
     ExpansionScore,
     MCTSConfig,
     MCTSNode,
     MCTSResult,
+    MCTSValueComponents,
     TerminalHit,
     _backpropagate,
+    _backpropagate_components,
     _choose_unexpanded_action,
     _estimate_state_value,
     _get_or_create_node,
@@ -187,11 +190,13 @@ def _write_json_snapshot(path: Path, payload: dict[str, object]) -> None:
 class InterruptSearchState:
     scorer: ExpansionScorer
     config: MCTSConfig
+    compatibility_bank: ClassCompatibilityBank | None = None
     nodes: dict[BlockKey, MCTSNode] = field(default_factory=dict)
     root: MCTSNode | None = None
     terminal_bests: dict[str, TerminalHit] = field(default_factory=dict)
     exact_discoveries: list[ExactClassDiscovery] = field(default_factory=list)
     discovered_exact_classes: set[int] = field(default_factory=set)
+    seen_signatures: Counter[tuple[int, ...]] = field(default_factory=Counter)
     encountered: Counter[str] = field(default_factory=Counter)
     best: TerminalHit | None = None
     iterations_completed: int = 0
@@ -259,8 +264,15 @@ def _build_state(config: InterruptSearchConfig, class_id: int, *, search_index: 
         expansion_candidate_pool=int(config.expansion_candidate_pool),
         rollout_candidate_pool=int(config.rollout_candidate_pool),
         seed=int(config.seed) + 1009 * (search_index - 1),
+        selection_survival_weight=1.0,
+        selection_novelty_weight=1.0,
+        compatibility_examples_path=config.examples_path,
     )
-    state = InterruptSearchState(scorer=scorer, config=mcts_config)
+    state = InterruptSearchState(
+        scorer=scorer,
+        config=mcts_config,
+        compatibility_bank=ClassCompatibilityBank.from_scorer(scorer, config.examples_path),
+    )
     root_key = empty_key(len(scorer.blocks))
     state.root = _get_or_create_node(state.nodes, scorer, root_key, path=[])
     return state, pattern_signature
@@ -283,6 +295,24 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
     node = root
     new_discoveries: list[ExactClassDiscovery] = []
 
+    def node_components(key: BlockKey, *, survival: float = 0.0) -> MCTSValueComponents:
+        bank = state.compatibility_bank
+        if bank is None or not state.discovered_exact_classes:
+            return MCTSValueComponents(escape=0.0, survival=float(survival), novelty=0.0)
+        active_classes = sorted(state.discovered_exact_classes)
+        current_total = bank.total_compat_count(key, active_classes)
+        escape = 0.0 if current_total <= 0 else 1.0 / (1.0 + float(current_total))
+        signature = bank.active_signature(key, active_classes)
+        novelty = 1.0 / (1.0 + float(state.seen_signatures[signature]))
+        return MCTSValueComponents(escape=float(escape), survival=float(survival), novelty=float(novelty))
+
+    def record_signature(key: BlockKey) -> None:
+        bank = state.compatibility_bank
+        if bank is None:
+            return
+        signature = bank.active_signature(key, state.discovered_exact_classes)
+        state.seen_signatures[signature] += 1
+
     def record_exact_discovery(
         terminal: object,
         *,
@@ -299,6 +329,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         if class_id is None or class_id in state.discovered_exact_classes:
             return
         state.discovered_exact_classes.add(class_id)
+        state.scorer.rare_target_classes.discard(class_id)
         discovery = ExactClassDiscovery(
             class_id=class_id,
             label=str(terminal_label),
@@ -311,6 +342,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         )
         state.exact_discoveries.append(discovery)
         new_discoveries.append(discovery)
+        record_signature(key)
 
     while True:
         if node.is_terminal:
@@ -324,6 +356,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     path=node.path,
                     rank=node.rank,
                 )
+            components = node_components(node.key, survival=terminal_score)
             state.best = _register_hit(
                 node,
                 terminal_score,
@@ -332,7 +365,12 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                 scorer=state.scorer,
                 best=state.best,
             )
-            _backpropagate(path_nodes, terminal_score)
+            _backpropagate_components(
+                path_nodes,
+                components,
+                survival_weight=state.config.selection_survival_weight,
+                novelty_weight=state.config.selection_novelty_weight,
+            )
             break
 
         if node.rank >= 25:
@@ -347,6 +385,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     path=node.path,
                     rank=node.rank,
                 )
+            components = node_components(node.key, survival=terminal_score)
             state.best = _register_hit(
                 node,
                 terminal_score,
@@ -356,7 +395,12 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                 scorer=state.scorer,
                 best=state.best,
             )
-            _backpropagate(path_nodes, terminal_score)
+            _backpropagate_components(
+                path_nodes,
+                components,
+                survival_weight=state.config.selection_survival_weight,
+                novelty_weight=state.config.selection_novelty_weight,
+            )
             break
 
         if not node.unexpanded_actions:
@@ -385,6 +429,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                         path=child.path,
                         rank=child.rank,
                     )
+                components = node_components(child.key, survival=terminal_score)
                 state.best = _register_hit(
                     child,
                     terminal_score,
@@ -394,7 +439,12 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     scorer=state.scorer,
                     best=state.best,
                 )
-                _backpropagate(path_nodes, terminal_score)
+                _backpropagate_components(
+                    path_nodes,
+                    components,
+                    survival_weight=state.config.selection_survival_weight,
+                    novelty_weight=state.config.selection_novelty_weight,
+                )
             else:
                 def _record_for_rollout(*args, **kwargs):
                     # _rollout may pass through an `iteration_index` keyword; strip it
@@ -402,7 +452,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     kwargs.pop("iteration_index", None)
                     return record_exact_discovery(*args, **kwargs)
 
-                rollout_value, state.best = _rollout(
+                rollout_value, rollout_components, state.best = _rollout(
                     child,
                     state.scorer,
                     state.config,
@@ -411,16 +461,46 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     state.encountered,
                     state.best,
                     _record_for_rollout,
+                    state.compatibility_bank,
+                    state.discovered_exact_classes,
+                    state.seen_signatures,
                     iteration_index,
                 )
-                total_value = float(step.score) + rollout_value
-                _backpropagate(path_nodes, total_value)
+                components = MCTSValueComponents(
+                    escape=rollout_components.escape,
+                    survival=float(step.score) + rollout_components.survival,
+                    novelty=rollout_components.novelty,
+                )
+                record_signature(child.key)
+                _backpropagate_components(
+                    path_nodes,
+                    components,
+                    survival_weight=state.config.selection_survival_weight,
+                    novelty_weight=state.config.selection_novelty_weight,
+                )
             break
 
-        next_node = _select_child(node, state.config.exploration_constant)
+        next_node = _select_child(
+            node,
+            state.config.exploration_constant,
+            survival_weight=state.config.selection_survival_weight,
+            novelty_weight=state.config.selection_novelty_weight,
+        )
         if next_node is None:
-            value = _estimate_state_value(node.key, state.scorer, state.config)
-            _backpropagate(path_nodes, value)
+            value = _estimate_state_value(
+                node.key,
+                state.scorer,
+                state.config,
+                compatibility_bank=state.compatibility_bank,
+                discovered_exact_classes=state.discovered_exact_classes,
+                seen_signatures=state.seen_signatures,
+            )
+            _backpropagate_components(
+                path_nodes,
+                value,
+                survival_weight=state.config.selection_survival_weight,
+                novelty_weight=state.config.selection_novelty_weight,
+            )
             break
         node = next_node
         path_nodes.append(node)
@@ -448,7 +528,7 @@ def run_interruptible_search(
     exact_class_counts: Counter[int] = Counter()
     search_index = 0
     using_default_task_factory = task_factory is None
-    task_factory = task_factory or _default_task_factory(config)
+    task_factory = task_factory or _default_task_factory(config, current_rare_target_classes)
     run_log_path = None if output_path is None else output_path.with_name(f"{output_path.stem}.runs.json")
     first_run_record = True
 
@@ -482,6 +562,10 @@ def run_interruptible_search(
         pushed_child = False
         for discovery in discoveries:
             exact_class_counts[discovery.class_id] += 1
+            rare_removed = False
+            if discovery.class_id in current_rare_target_classes:
+                current_rare_target_classes.remove(discovery.class_id)
+                rare_removed = True
             if discovery.class_id in started_class_ids:
                 continue
 
@@ -494,10 +578,6 @@ def run_interruptible_search(
             candidate_pattern_signature = _canonical_pattern_signature(candidate_pattern_signature)
             candidate_shape = _pattern_shape_key(candidate_pattern_signature)
             same_pattern = candidate_shape in claimed_pattern_shapes if enable_pattern_dedup else False
-            rare_removed = False
-            if discovery.class_id in current_rare_target_classes:
-                current_rare_target_classes.remove(discovery.class_id)
-                rare_removed = True
 
             if not same_pattern:
                 claimed_pattern_shapes.add(candidate_shape)
@@ -669,12 +749,15 @@ def _build_report(
     )
 
 
-def _default_task_factory(config: InterruptSearchConfig) -> Callable[[int, int, int | None], InterruptSearchTask]:
+def _default_task_factory(
+    config: InterruptSearchConfig,
+    current_rare_target_classes: set[int],
+) -> Callable[[int, int, int | None], InterruptSearchTask]:
     def factory(class_id: int, search_index: int, parent_search_index: int | None) -> InterruptSearchTask:
         scorer, _pattern_signature = build_class_scorer(
             _queue_like_config(config),
             class_id,
-            rare_target_classes=set(int(value) for value in config.rare_target_classes),
+            rare_target_classes=current_rare_target_classes,
         )
         mcts_config = MCTSConfig(
             iterations=int(config.iterations),
@@ -686,8 +769,15 @@ def _default_task_factory(config: InterruptSearchConfig) -> Callable[[int, int, 
             expansion_candidate_pool=int(config.expansion_candidate_pool),
             rollout_candidate_pool=int(config.rollout_candidate_pool),
             seed=int(config.seed) + 1009 * (search_index - 1),
+            selection_survival_weight=1.0,
+            selection_novelty_weight=1.0,
+            compatibility_examples_path=config.examples_path,
         )
-        state = InterruptSearchState(scorer=scorer, config=mcts_config)
+        state = InterruptSearchState(
+            scorer=scorer,
+            config=mcts_config,
+            compatibility_bank=ClassCompatibilityBank.from_scorer(scorer, config.examples_path),
+        )
         root_key = empty_key(len(scorer.blocks))
         state.root = _get_or_create_node(state.nodes, scorer, root_key, path=[])
         threshold = (2.0 / 5.0) * float(config.iterations)
@@ -743,7 +833,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rep-index", type=int, default=1)
     parser.add_argument("--pattern-index", type=int, default=0)
     parser.add_argument("--target-classes", type=int, nargs="*", default=list(range(1, 47)))
-    parser.add_argument("--rare-target-classes", type=int, nargs="*", default=[])
+    parser.add_argument("--rare-target-classes", type=int, nargs="*", default=list(range(1, 47)))
     parser.add_argument("--examples", type=Path, default=DEFAULT_EXAMPLES_PATH)
     parser.add_argument("--iterations", type=int, default=2000)
     parser.add_argument("--max-depth", type=int, default=60)
