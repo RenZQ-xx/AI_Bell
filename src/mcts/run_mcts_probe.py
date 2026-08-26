@@ -32,6 +32,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rollout-temperature", type=float, default=0.85)
     parser.add_argument("--expansion-candidate-pool", type=int, default=16)
     parser.add_argument("--rollout-candidate-pool", type=int, default=4)
+    parser.add_argument("--widening-score-batch", type=int, default=4)
+    parser.add_argument("--widening-score-batch-max", type=int, default=16)
+    parser.add_argument("--widening-score-batch-scale", type=float, default=1.0)
+    parser.add_argument("--widening-score-batch-beta", type=float, default=0.5)
+    parser.add_argument("--rollout-score-batch", type=int, default=8)
+    parser.add_argument("--progressive-k0", type=int, default=1)
+    parser.add_argument("--progressive-alpha", type=float, default=1.0)
+    parser.add_argument("--progressive-beta", type=float, default=0.5)
     parser.add_argument("--rank24-entrance-exists-weight", type=float, default=6.0)
     parser.add_argument("--terminal-scoring-mode", choices=["static", "dynamic"], default="static")
     parser.add_argument("--dynamic-new-class-score", type=float, default=100.0)
@@ -123,6 +131,14 @@ def main() -> None:
                 rollout_temperature=float(args.rollout_temperature),
                 expansion_candidate_pool=int(args.expansion_candidate_pool),
                 rollout_candidate_pool=int(args.rollout_candidate_pool),
+                widening_score_batch=int(args.widening_score_batch),
+                widening_score_batch_max=int(args.widening_score_batch_max),
+                widening_score_batch_scale=float(args.widening_score_batch_scale),
+                widening_score_batch_beta=float(args.widening_score_batch_beta),
+                rollout_score_batch=int(args.rollout_score_batch),
+                progressive_k0=int(args.progressive_k0),
+                progressive_alpha=float(args.progressive_alpha),
+                progressive_beta=float(args.progressive_beta),
                 seed=int(seed) + 1009 * int(restart_index),
             )
             result = run_mcts_search(scorer, config=cfg)
@@ -150,6 +166,14 @@ def main() -> None:
             "rollout_temperature": float(args.rollout_temperature),
             "expansion_candidate_pool": int(args.expansion_candidate_pool),
             "rollout_candidate_pool": int(args.rollout_candidate_pool),
+            "widening_score_batch": int(args.widening_score_batch),
+            "widening_score_batch_max": int(args.widening_score_batch_max),
+            "widening_score_batch_scale": float(args.widening_score_batch_scale),
+            "widening_score_batch_beta": float(args.widening_score_batch_beta),
+            "rollout_score_batch": int(args.rollout_score_batch),
+            "progressive_k0": int(args.progressive_k0),
+            "progressive_alpha": float(args.progressive_alpha),
+            "progressive_beta": float(args.progressive_beta),
             "rank24_entrance_exists_weight": float(args.rank24_entrance_exists_weight),
             "terminal_scoring_mode": str(args.terminal_scoring_mode),
             "dynamic_new_class_score": float(args.dynamic_new_class_score),

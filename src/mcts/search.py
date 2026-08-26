@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 from collections import Counter
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable, Sequence
 
@@ -10,6 +10,10 @@ from baseline.facet_validator import FacetLabel
 from baseline.orbit_blocks import BlockKey, add_block, empty_key, selected_blocks, unselected_blocks
 from baseline.reference_classes import DEFAULT_EXAMPLES_PATH, parse_example_rows, support_mask_from_row
 from baseline.scorer import ExpansionScore, ExpansionScorer, exact_class_id
+
+
+TerminalScoreFn = Callable[[BlockKey, FacetLabel], float]
+ExactHitCallback = Callable[[str, int], None]
 
 
 @dataclass(frozen=True)
@@ -24,6 +28,14 @@ class MCTSConfig:
     rollout_temperature: float = 0.85
     expansion_candidate_pool: int = 16
     rollout_candidate_pool: int = 4
+    widening_score_batch: int = 4
+    widening_score_batch_max: int = 16
+    widening_score_batch_scale: float = 1.0
+    widening_score_batch_beta: float = 0.5
+    rollout_score_batch: int = 8
+    productive_rollout_score_batch: int = 16
+    broad_rollout_score_batch: int = 24
+    broad_rollout_interval: int = 8
     seed: int = 0
     selection_survival_weight: float = 1.0
     selection_novelty_weight: float = 1.0
@@ -32,6 +44,8 @@ class MCTSConfig:
     progressive_k0: int = 1
     progressive_alpha: float = 1.0
     progressive_beta: float = 0.5
+    progressive_bucket_quota: int = 1
+    discovery_epoch_value_decay: float = 0.25
 
 
 @dataclass(frozen=True)
@@ -49,24 +63,30 @@ class MCTSValueComponents:
 class ClassCompatibilityBank:
     """Compatibility counts for exact classes under the current block pattern."""
 
-    def __init__(self, *, blocks: Sequence[Sequence[int]], examples_path: Path) -> None:
+    def __init__(
+        self,
+        *,
+        blocks: Sequence[Sequence[int]],
+        examples_path: Path,
+        max_cache_entries: int = 20000,
+    ) -> None:
         self.blocks = [tuple(int(vertex) for vertex in block) for block in blocks]
         example_rows = parse_example_rows(examples_path)
-        self.masks_by_class: dict[int, list[frozenset[int]]] = {}
+        self.masks_by_class: dict[int, tuple[int, ...]] = {}
         for class_id, rows in example_rows.items():
-            masks: list[frozenset[int]] = []
+            masks: list[int] = []
             for row in rows.values():
                 support = support_mask_from_row(row)
                 support_vertices = {index for index, value in enumerate(support) if int(value) == 1}
-                block_mask = frozenset(
-                    index
+                block_mask = sum(
+                    1 << index
                     for index, block in enumerate(self.blocks)
                     if all(int(vertex) in support_vertices for vertex in block)
                 )
                 masks.append(block_mask)
-            self.masks_by_class[int(class_id)] = masks
-        self._count_cache: dict[tuple[BlockKey, int], int] = {}
-        self._signature_cache: dict[tuple[BlockKey, tuple[int, ...]], tuple[int, ...]] = {}
+            self.masks_by_class[int(class_id)] = tuple(masks)
+        self.max_cache_entries = int(max_cache_entries)
+        self._compatibility_vectors: dict[int, tuple[int, ...]] = {}
 
     @classmethod
     def from_scorer(cls, scorer: ExpansionScorer, examples_path: Path | None) -> ClassCompatibilityBank | None:
@@ -75,25 +95,52 @@ class ClassCompatibilityBank:
         return cls(blocks=scorer.blocks, examples_path=examples_path)
 
     def compat_count(self, key: BlockKey, class_id: int) -> int:
-        cache_key = (key, int(class_id))
-        if cache_key not in self._count_cache:
-            selected = frozenset(selected_blocks(key))
-            masks = self.masks_by_class.get(int(class_id), [])
-            self._count_cache[cache_key] = sum(1 for mask in masks if selected <= mask)
-        return self._count_cache[cache_key]
+        normalized = int(class_id)
+        vector = self._compatibility_vector(key)
+        return vector[normalized] if 0 <= normalized < len(vector) else 0
 
     def total_compat_count(self, key: BlockKey, class_ids: Sequence[int]) -> int:
-        return sum(self.compat_count(key, class_id) for class_id in class_ids)
+        vector = self._compatibility_vector(key)
+        return sum(
+            vector[class_id]
+            for class_id in (int(value) for value in class_ids)
+            if 0 <= class_id < len(vector)
+        )
 
     def active_signature(self, key: BlockKey, class_ids: Sequence[int]) -> tuple[int, ...]:
-        normalized_ids = tuple(sorted(int(class_id) for class_id in class_ids))
-        cache_key = (key, normalized_ids)
-        if cache_key not in self._signature_cache:
-            self._signature_cache[cache_key] = tuple(
-                class_id for class_id in normalized_ids if self.compat_count(key, class_id) > 0
-            )
-        return self._signature_cache[cache_key]
+        vector = self._compatibility_vector(key)
+        return tuple(
+            class_id
+            for class_id in sorted(int(value) for value in class_ids)
+            if 0 <= class_id < len(vector) and vector[class_id] > 0
+        )
 
+    def clear_cache(self) -> None:
+        self._compatibility_vectors.clear()
+
+    def _compatibility_vector(self, key: BlockKey) -> tuple[int, ...]:
+        selected_word = sum(
+            1 << index
+            for index, selected in enumerate(key)
+            if int(selected)
+        )
+        cached = self._compatibility_vectors.get(selected_word)
+        if cached is not None:
+            return cached
+
+        max_class_id = max(self.masks_by_class, default=0)
+        values = [0] * (max_class_id + 1)
+        for class_id, masks in self.masks_by_class.items():
+            values[class_id] = sum(
+                1
+                for mask in masks
+                if selected_word & ~mask == 0
+            )
+        vector = tuple(values)
+        self._compatibility_vectors[selected_word] = vector
+        if self.max_cache_entries > 0 and len(self._compatibility_vectors) > self.max_cache_entries:
+            self._compatibility_vectors.pop(next(iter(self._compatibility_vectors)))
+        return vector
 
 @dataclass
 class TerminalHit:
@@ -203,6 +250,7 @@ class MCTSNode:
     parent: MCTSNode | None
     action_from_parent: int | None
     visits: int = 0
+    value_visits: float = 0.0
     value_sum: float = 0.0
     escape_sum: float = 0.0
     survival_sum: float = 0.0
@@ -210,11 +258,13 @@ class MCTSNode:
     prior: float = 1.0
     terminal: FacetLabel | None = None
     children: dict[int, MCTSNode] = field(default_factory=dict)
+    actions_initialized: bool = False
     unexpanded_actions: list[int] = field(default_factory=list)
     action_priors: dict[int, float] = field(default_factory=dict)
     action_scores: dict[int, ExpansionScore] = field(default_factory=dict)
     # rotation pointer for bucket selection when progressively expanding
     next_bucket: int = 0
+    bucket_expansion_counts: list[int] = field(default_factory=lambda: [0] * 6)
 
     @property
     def is_terminal(self) -> bool:
@@ -222,19 +272,19 @@ class MCTSNode:
 
     @property
     def q_value(self) -> float:
-        return self.value_sum / self.visits if self.visits > 0 else 0.0
+        return self.value_sum / self.value_visits if self.value_visits > 0 else 0.0
 
     @property
     def escape_q_value(self) -> float:
-        return self.escape_sum / self.visits if self.visits > 0 else 0.0
+        return self.escape_sum / self.value_visits if self.value_visits > 0 else 0.0
 
     @property
     def survival_q_value(self) -> float:
-        return self.survival_sum / self.visits if self.visits > 0 else 0.0
+        return self.survival_sum / self.value_visits if self.value_visits > 0 else 0.0
 
     @property
     def novelty_q_value(self) -> float:
-        return self.novelty_sum / self.visits if self.visits > 0 else 0.0
+        return self.novelty_sum / self.value_visits if self.value_visits > 0 else 0.0
 
 
 def run_mcts_search(
@@ -376,97 +426,19 @@ def run_mcts_search(
                 )
                 break
 
-            if not node.unexpanded_actions:
+            if not node.actions_initialized:
                 _prepare_actions(node, scorer, cfg)
 
-            # Progressive widening: compute allowed child count K(s)
-            def _compute_expansion_k(n: MCTSNode, conf: MCTSConfig) -> int:
-                visits = float(max(1, n.visits))
-                return int(max(1, conf.progressive_k0 + conf.progressive_alpha * (visits ** conf.progressive_beta)))
-
-            def _select_action_progressive(
-                n: MCTSNode,
-                conf: MCTSConfig,
-                rng: random.Random,
-                compatibility_bank: ClassCompatibilityBank | None,
-                discovered_exact_classes: set[int] | None,
-                seen_signatures: Counter[tuple[int, ...]] | None,
-            ) -> int:
-                # Round-robin buckets 1..6
-                buckets = list(range(6))
-                start_bucket = n.next_bucket % len(buckets)
-                active_classes = sorted(discovered_exact_classes) if discovered_exact_classes else []
-                current_total = None
-                if compatibility_bank is not None and active_classes:
-                    current_total = compatibility_bank.total_compat_count(n.key, active_classes)
-
-                candidates = list(n.unexpanded_actions)
-                if not candidates:
-                    raise ValueError("cannot choose from an empty action list")
-
-                # precompute metrics for candidates
-                metrics: dict[int, dict[str, float]] = {}
-                for action in candidates:
-                    score_item = n.action_scores.get(action)
-                    base_score = float(score_item.score) if score_item is not None else 0.0
-                    child_key = add_block(n.key, action)
-                    old_compat_removed = 0.0
-                    old_active_removed = 0.0
-                    signature_novelty = 0.0
-                    if compatibility_bank is not None and active_classes:
-                        new_total = compatibility_bank.total_compat_count(child_key, active_classes)
-                        old_compat_removed = float((current_total or 0) - new_total)
-                        # count classes that go to zero
-                        old_active_removed = float(
-                            sum(1 for cid in active_classes if compatibility_bank.compat_count(n.key, cid) > 0 and compatibility_bank.compat_count(child_key, cid) == 0)
-                        )
-                        signature = compatibility_bank.active_signature(child_key, active_classes)
-                        signature_novelty = 1.0 / (1.0 + float(seen_signatures.get(signature, 0) if seen_signatures is not None else 0))
-
-                    low_aggression = base_score / (1.0 + max(0.0, old_compat_removed))
-                    metrics[action] = {
-                        "base": base_score,
-                        "old_compat_removed": old_compat_removed,
-                        "old_active_removed": old_active_removed,
-                        "signature_novelty": signature_novelty,
-                        "low_aggression": low_aggression,
-                    }
-
-                # Try buckets in round-robin order starting from start_bucket
-                for offset in range(len(buckets)):
-                    b = (start_bucket + offset) % len(buckets)
-                    chosen: int | None = None
-                    if b == 0:
-                        # bucket1: baseline scorer high
-                        chosen = max(candidates, key=lambda a: metrics[a]["base"], default=None)
-                    elif b == 1:
-                        # bucket2: old_compat_removed high
-                        chosen = max(candidates, key=lambda a: metrics[a]["old_compat_removed"], default=None)
-                    elif b == 2:
-                        # bucket3: old_active_classes_removed high
-                        chosen = max(candidates, key=lambda a: metrics[a]["old_active_removed"], default=None)
-                    elif b == 3:
-                        # bucket4: signature novelty high
-                        chosen = max(candidates, key=lambda a: metrics[a]["signature_novelty"], default=None)
-                    elif b == 4:
-                        # bucket5: tie/random representative -> random among remaining
-                        chosen = rng.choice(candidates) if candidates else None
-                    elif b == 5:
-                        # bucket6: low-aggression survivor
-                        chosen = max(candidates, key=lambda a: metrics[a]["low_aggression"], default=None)
-
-                    if chosen is not None:
-                        n.next_bucket = (b + 1) % len(buckets)
-                        return chosen
-
-                # fallback
-                return _choose_unexpanded_action(n, rng)
-
-            K = _compute_expansion_k(node, cfg)
-            if len(node.children) < K and node.unexpanded_actions:
-                action = _select_action_progressive(node, cfg, rng, compatibility_bank, discovered_exact_classes, seen_signatures)
-            elif node.unexpanded_actions:
-                action = _choose_unexpanded_action(node, rng)
+            if len(node.children) < _progressive_child_limit(node, cfg) and node.unexpanded_actions:
+                action = _select_progressive_action(
+                    node,
+                    rng,
+                    scorer=scorer,
+                    cfg=cfg,
+                    compatibility_bank=compatibility_bank,
+                    discovered_exact_classes=discovered_exact_classes,
+                    seen_signatures=seen_signatures,
+                )
                 child_key = add_block(node.key, action)
                 child_path = [*node.path, int(action)]
                 child = _get_or_create_node(nodes, scorer, child_key, path=child_path, parent=node, action=action)
@@ -527,9 +499,15 @@ def run_mcts_search(
                         child_components,
                         survival_weight=cfg.selection_survival_weight,
                         novelty_weight=cfg.selection_novelty_weight,
-                    )
+                )
                 break
 
+            _refresh_terminal_action_scores(
+                node,
+                scorer,
+                cfg,
+                terminal_score_fn=None,
+            )
             next_node = _select_child(
                 node,
                 cfg.exploration_constant,
@@ -595,31 +573,319 @@ def _get_or_create_node(
     return node
 
 
-def _prepare_actions(node: MCTSNode, scorer: ExpansionScorer, cfg: MCTSConfig) -> None:
-    actions = unselected_blocks(node.key)
-    if not actions:
-        node.unexpanded_actions = []
-        node.action_priors = {}
-        node.action_scores = {}
+def _prepare_actions(
+    node: MCTSNode,
+    scorer: ExpansionScorer,
+    cfg: MCTSConfig,
+    *,
+    terminal_score_fn: TerminalScoreFn | None = None,
+) -> None:
+    if node.actions_initialized:
         return
-
-    # Score all available actions so progressive widening can consider any of them
-    scored = [scorer.score_action(node.key, action) for action in actions]
-    scored.sort(key=lambda item: item.score, reverse=True)
-    selected = scored
-    priors = _softmax([item.score for item in selected], temperature=cfg.prior_temperature)
-    node.unexpanded_actions = [item.action for item in selected]
-    node.action_priors = {item.action: prior for item, prior in zip(selected, priors)}
-    node.action_scores = {item.action: item for item in selected}
+    actions = unselected_blocks(node.key)
+    node.actions_initialized = True
+    node.unexpanded_actions = list(actions)
+    node.action_priors = {}
+    node.action_scores = {}
 
 
-def _choose_unexpanded_action(node: MCTSNode, rng: random.Random) -> int:
-    actions = list(node.unexpanded_actions)
-    if not actions:
+def _progressive_child_limit(node: MCTSNode, cfg: MCTSConfig) -> int:
+    """Allowed expanded children K(s) for progressive widening."""
+    visits = float(max(1, node.visits))
+    widening_limit = int(
+        max(1, cfg.progressive_k0 + cfg.progressive_alpha * (visits ** cfg.progressive_beta))
+    )
+    bucket_quota = max(0, int(cfg.progressive_bucket_quota))
+    if bucket_quota <= 0:
+        return widening_limit
+
+    action_count = len(node.children) + len(node.unexpanded_actions)
+    quota_target = min(action_count, len(node.bucket_expansion_counts) * bucket_quota)
+    quota_limit = min(quota_target, max(1, node.visits + 1))
+    return max(widening_limit, quota_limit)
+
+
+def _next_progressive_bucket(node: MCTSNode, cfg: MCTSConfig) -> int:
+    bucket_count = len(node.bucket_expansion_counts)
+    if bucket_count <= 0:
+        return 0
+
+    start = node.next_bucket % bucket_count
+    quota = max(0, int(cfg.progressive_bucket_quota))
+    bucket = start
+    if quota > 0:
+        for offset in range(bucket_count):
+            candidate = (start + offset) % bucket_count
+            if node.bucket_expansion_counts[candidate] < quota:
+                bucket = candidate
+                break
+
+    node.bucket_expansion_counts[bucket] += 1
+    node.next_bucket = (bucket + 1) % bucket_count
+    return bucket
+
+
+def _select_progressive_action(
+    node: MCTSNode,
+    rng: random.Random,
+    *,
+    scorer: ExpansionScorer,
+    cfg: MCTSConfig,
+    compatibility_bank: ClassCompatibilityBank | None,
+    discovered_exact_classes: set[int],
+    seen_signatures: Counter[tuple[int, ...]],
+    terminal_score_fn: TerminalScoreFn | None = None,
+    adaptive_score_batch: bool = True,
+) -> int:
+    """Pick the next unexpanded action by round-robin widening buckets."""
+    _refresh_terminal_action_scores(
+        node,
+        scorer,
+        cfg,
+        terminal_score_fn=terminal_score_fn,
+    )
+    candidates = list(node.unexpanded_actions)
+    if not candidates:
         raise ValueError("cannot choose from an empty action list")
-    weights = [node.action_priors.get(action, 1.0) for action in actions]
-    index = _weighted_choice_index(weights, rng)
-    return actions[index]
+
+    bucket = _next_progressive_bucket(node, cfg)
+    active_classes = sorted(discovered_exact_classes)
+    if bucket == 0:
+        scored_candidates = _score_lazy_action_batch(
+            node,
+            candidates,
+            scorer,
+            cfg,
+            rng,
+            terminal_score_fn=terminal_score_fn,
+            adaptive_score_batch=adaptive_score_batch,
+        )
+        action = _best_action_random_tie(
+            scored_candidates,
+            {item: float(node.action_scores[item].score) for item in scored_candidates},
+            rng,
+        )
+    elif bucket == 1 and compatibility_bank is not None and active_classes:
+        current_total = compatibility_bank.total_compat_count(node.key, active_classes)
+        values = {
+            action: float(
+                current_total
+                - compatibility_bank.total_compat_count(add_block(node.key, action), active_classes)
+            )
+            for action in candidates
+        }
+        action = _best_action_random_tie(candidates, values, rng)
+    elif bucket == 2 and compatibility_bank is not None and active_classes:
+        current_active = {
+            class_id
+            for class_id in active_classes
+            if compatibility_bank.compat_count(node.key, class_id) > 0
+        }
+        values = {
+            action: float(
+                sum(
+                    1
+                    for class_id in current_active
+                    if compatibility_bank.compat_count(add_block(node.key, action), class_id) == 0
+                )
+            )
+            for action in candidates
+        }
+        action = _best_action_random_tie(candidates, values, rng)
+    elif bucket == 3 and compatibility_bank is not None and active_classes:
+        values = {}
+        for action in candidates:
+            signature = compatibility_bank.active_signature(add_block(node.key, action), active_classes)
+            values[action] = 1.0 / (1.0 + float(seen_signatures[signature]))
+        action = _best_action_random_tie(candidates, values, rng)
+    elif bucket == 5:
+        scored_candidates = _score_lazy_action_batch(
+            node,
+            candidates,
+            scorer,
+            cfg,
+            rng,
+            terminal_score_fn=terminal_score_fn,
+            adaptive_score_batch=adaptive_score_batch,
+        )
+        current_total = 0
+        if compatibility_bank is not None and active_classes:
+            current_total = compatibility_bank.total_compat_count(node.key, active_classes)
+        values = {}
+        for candidate in scored_candidates:
+            removed = 0.0
+            if compatibility_bank is not None and active_classes:
+                removed = float(
+                    current_total
+                    - compatibility_bank.total_compat_count(add_block(node.key, candidate), active_classes)
+                )
+            values[candidate] = float(node.action_scores[candidate].score) / (1.0 + max(0.0, removed))
+        action = _best_action_random_tie(scored_candidates, values, rng)
+    else:
+        action = rng.choice(candidates)
+
+    _ensure_action_scored(
+        node,
+        action,
+        scorer,
+        cfg,
+        terminal_score_fn=terminal_score_fn,
+    )
+    return action
+
+
+def _score_lazy_action_batch(
+    node: MCTSNode,
+    candidates: Sequence[int],
+    scorer: ExpansionScorer,
+    cfg: MCTSConfig,
+    rng: random.Random,
+    *,
+    terminal_score_fn: TerminalScoreFn | None,
+    adaptive_score_batch: bool,
+) -> list[int]:
+    unscored = [action for action in candidates if action not in node.action_scores]
+    batch_size = _widening_score_batch(
+        node,
+        cfg,
+        adaptive=adaptive_score_batch,
+    )
+    if unscored:
+        sampled = (
+            list(unscored)
+            if len(unscored) <= batch_size
+            else rng.sample(unscored, batch_size)
+        )
+        for action in sampled:
+            node.action_scores[action] = _score_action_with_terminal_reward(
+                scorer,
+                node.key,
+                action,
+                terminal_score_fn=terminal_score_fn,
+            )
+        _refresh_action_priors(node, cfg)
+    scored_candidates = [action for action in candidates if action in node.action_scores]
+    if scored_candidates:
+        return scored_candidates
+    action = rng.choice(list(candidates))
+    _ensure_action_scored(
+        node,
+        action,
+        scorer,
+        cfg,
+        terminal_score_fn=terminal_score_fn,
+    )
+    return [action]
+
+
+def _widening_score_batch(
+    node: MCTSNode,
+    cfg: MCTSConfig,
+    *,
+    adaptive: bool,
+) -> int:
+    base = max(1, int(cfg.widening_score_batch))
+    if not adaptive:
+        return base
+    maximum = max(base, int(cfg.widening_score_batch_max))
+    growth = float(cfg.widening_score_batch_scale) * (
+        float(max(0, node.visits)) ** float(cfg.widening_score_batch_beta)
+    )
+    return min(maximum, base + int(growth))
+
+
+def _ensure_action_scored(
+    node: MCTSNode,
+    action: int,
+    scorer: ExpansionScorer,
+    cfg: MCTSConfig,
+    *,
+    terminal_score_fn: TerminalScoreFn | None,
+) -> ExpansionScore:
+    if action not in node.action_scores:
+        node.action_scores[action] = _score_action_with_terminal_reward(
+            scorer,
+            node.key,
+            action,
+            terminal_score_fn=terminal_score_fn,
+        )
+        _refresh_action_priors(node, cfg)
+    return node.action_scores[action]
+
+
+def _refresh_action_priors(node: MCTSNode, cfg: MCTSConfig) -> None:
+    actions = list(node.action_scores)
+    if not actions:
+        return
+    priors = _softmax(
+        [node.action_scores[action].score for action in actions],
+        temperature=cfg.prior_temperature,
+    )
+    node.action_priors = {action: prior for action, prior in zip(actions, priors)}
+    for action, child in node.children.items():
+        child.prior = node.action_priors.get(action, child.prior)
+
+
+def _refresh_terminal_action_scores(
+    node: MCTSNode,
+    scorer: ExpansionScorer,
+    cfg: MCTSConfig,
+    *,
+    terminal_score_fn: TerminalScoreFn | None,
+) -> None:
+    """Refresh only mutable terminal rewards; geometry remains cached."""
+    changed = False
+    for action, score_item in list(node.action_scores.items()):
+        if score_item.terminal is None:
+            continue
+        current_score = _resolve_terminal_score(
+            scorer,
+            score_item.key,
+            score_item.terminal,
+            terminal_score_fn=terminal_score_fn,
+        )
+        if current_score == float(score_item.score):
+            continue
+        node.action_scores[action] = replace(score_item, score=current_score)
+        changed = True
+    if changed:
+        _refresh_action_priors(node, cfg)
+
+
+def _refresh_discovery_dependent_action_scores(
+    node: MCTSNode,
+    scorer: ExpansionScorer,
+    cfg: MCTSConfig,
+    *,
+    terminal_score_fn: TerminalScoreFn | None,
+) -> None:
+    """Re-score actions whose value depends on the active undiscovered classes."""
+    changed = False
+    for action, score_item in list(node.action_scores.items()):
+        if score_item.terminal is None and score_item.new_rank != 24:
+            continue
+        current = _score_action_with_terminal_reward(
+            scorer,
+            node.key,
+            action,
+            terminal_score_fn=terminal_score_fn,
+        )
+        if current == score_item:
+            continue
+        node.action_scores[action] = current
+        changed = True
+    if changed:
+        _refresh_action_priors(node, cfg)
+
+
+def _best_action_random_tie(
+    candidates: Sequence[int],
+    values: dict[int, float],
+    rng: random.Random,
+) -> int:
+    best_value = max(values[action] for action in candidates)
+    tied = [action for action in candidates if values[action] == best_value]
+    return rng.choice(tied)
 
 
 def _select_child(
@@ -632,12 +898,17 @@ def _select_child(
     if not node.children:
         return None
 
-    parent_visits = max(node.visits, 1)
+    parent_visits = max(node.value_visits, 1.0)
     best_child: MCTSNode | None = None
     best_value = float("-inf")
     for child in node.children.values():
         exploitation = child.escape_q_value + survival_weight * child.survival_q_value + novelty_weight * child.novelty_q_value
-        exploration = exploration_constant * child.prior * (parent_visits ** 0.5) / (1 + child.visits)
+        exploration = (
+            exploration_constant
+            * child.prior
+            * (parent_visits ** 0.5)
+            / (1.0 + child.value_visits)
+        )
         score = exploitation + exploration
         if score > best_value:
             best_value = score
@@ -658,6 +929,11 @@ def _rollout(
     discovered_exact_classes: set[int],
     seen_signatures: Counter[tuple[int, ...]],
     iteration_index: int,
+    *,
+    terminal_score_fn: TerminalScoreFn | None = None,
+    global_discovered_label_counts: Counter[str] | None = None,
+    global_exact_hit_callback: ExactHitCallback | None = None,
+    rollout_score_batch: int | None = None,
 ) -> tuple[float, MCTSValueComponents, TerminalHit | None]:
     current_key = node.key
     current_path = list(node.path)
@@ -678,7 +954,12 @@ def _rollout(
     for _depth in range(max(0, cfg.max_depth - len(current_path))):
         if current_rank >= 25:
             terminal = scorer.terminal_label(current_key)
-            terminal_score = float(scorer.terminal_score(current_key))
+            terminal_score = _resolve_terminal_score(
+                scorer,
+                current_key,
+                terminal,
+                terminal_score_fn=terminal_score_fn,
+            )
             if terminal.is_exact:
                 record_exact_discovery(
                     terminal,
@@ -698,6 +979,8 @@ def _rollout(
                 encountered=encountered,
                 scorer=scorer,
                 best=best,
+                global_discovered_label_counts=global_discovered_label_counts,
+                global_exact_hit_callback=global_exact_hit_callback,
             )
             total = MCTSValueComponents(
                 escape=total.escape + discount * components.escape,
@@ -715,6 +998,7 @@ def _rollout(
                 compatibility_bank=compatibility_bank,
                 discovered_exact_classes=discovered_exact_classes,
                 seen_signatures=seen_signatures,
+                terminal_score_fn=terminal_score_fn,
             )
             total = MCTSValueComponents(
                 escape=total.escape + discount * estimate.escape,
@@ -723,7 +1007,26 @@ def _rollout(
             )
             return total.total(survival_weight=cfg.selection_survival_weight, novelty_weight=cfg.selection_novelty_weight), total, best
 
-        scored = [scorer.score_action(current_key, action) for action in actions]
+        requested_score_batch = (
+            int(cfg.rollout_score_batch)
+            if rollout_score_batch is None
+            else int(rollout_score_batch)
+        )
+        score_batch = max(int(cfg.rollout_candidate_pool), requested_score_batch, 1)
+        candidate_actions = (
+            list(actions)
+            if len(actions) <= score_batch
+            else rng.sample(actions, score_batch)
+        )
+        scored = [
+            _score_action_with_terminal_reward(
+                scorer,
+                current_key,
+                action,
+                terminal_score_fn=terminal_score_fn,
+            )
+            for action in candidate_actions
+        ]
         scored.sort(key=lambda item: item.score, reverse=True)
         limit = max(1, min(cfg.rollout_candidate_pool, len(scored)))
         pool = scored[:limit]
@@ -774,6 +1077,8 @@ def _rollout(
                 best=best,
                 key=current_key,
                 path=current_path,
+                global_discovered_label_counts=global_discovered_label_counts,
+                global_exact_hit_callback=global_exact_hit_callback,
             )
             return total.total(survival_weight=cfg.selection_survival_weight, novelty_weight=cfg.selection_novelty_weight), total, best
 
@@ -784,6 +1089,7 @@ def _rollout(
         compatibility_bank=compatibility_bank,
         discovered_exact_classes=discovered_exact_classes,
         seen_signatures=seen_signatures,
+        terminal_score_fn=terminal_score_fn,
     )
     total = MCTSValueComponents(
         escape=total.escape + discount * estimate.escape,
@@ -801,10 +1107,17 @@ def _estimate_state_value(
     compatibility_bank: ClassCompatibilityBank | None = None,
     discovered_exact_classes: set[int] | None = None,
     seen_signatures: Counter[tuple[int, ...]] | None = None,
+    terminal_score_fn: TerminalScoreFn | None = None,
 ) -> MCTSValueComponents:
     rank = scorer.affine_rank(key)
     if rank >= 25:
-        survival = float(scorer.terminal_score(key))
+        terminal = scorer.terminal_label(key)
+        survival = _resolve_terminal_score(
+            scorer,
+            key,
+            terminal,
+            terminal_score_fn=terminal_score_fn,
+        )
         if compatibility_bank is None or not discovered_exact_classes:
             return MCTSValueComponents(survival=survival)
         active_classes = sorted(discovered_exact_classes)
@@ -817,7 +1130,16 @@ def _estimate_state_value(
     if not actions:
         return MCTSValueComponents(survival=-100.0)
 
-    scored = [scorer.score_action(key, action) for action in actions]
+    score_limit = max(1, min(int(cfg.widening_score_batch), len(actions)))
+    scored = [
+        _score_action_with_terminal_reward(
+            scorer,
+            key,
+            action,
+            terminal_score_fn=terminal_score_fn,
+        )
+        for action in actions[:score_limit]
+    ]
     scored.sort(key=lambda item: item.score, reverse=True)
     limit = max(1, min(cfg.expansion_candidate_pool, len(scored)))
     survival = float(sum(item.score for item in scored[:limit]) / limit)
@@ -840,6 +1162,7 @@ def _backpropagate_components(
     total_value = value.total(survival_weight=survival_weight, novelty_weight=novelty_weight)
     for node in path_nodes:
         node.visits += 1
+        node.value_visits += 1.0
         node.value_sum += float(total_value)
         node.escape_sum += float(value.escape)
         node.survival_sum += float(value.survival)
@@ -866,6 +1189,8 @@ def _register_hit(
     best: TerminalHit | None,
     key: BlockKey | None = None,
     path: Sequence[int] | None = None,
+    global_discovered_label_counts: Counter[str] | None = None,
+    global_exact_hit_callback: ExactHitCallback | None = None,
 ) -> TerminalHit | None:
     terminal = node.terminal if terminal is None else terminal
     if terminal is None:
@@ -883,12 +1208,45 @@ def _register_hit(
     encountered[terminal.label] += 1
     if terminal.is_exact:
         scorer.discovered_label_counts[terminal.label] += 1
+        if global_discovered_label_counts is not None:
+            global_discovered_label_counts[terminal.label] += 1
+            if global_exact_hit_callback is not None:
+                global_exact_hit_callback(
+                    terminal.label,
+                    int(global_discovered_label_counts[terminal.label]),
+                )
     previous = terminal_bests.get(terminal.label)
     if previous is None or hit.score > previous.score:
         terminal_bests[terminal.label] = hit
     if best is None or hit.score > best.score:
         best = hit
     return best
+
+
+def _resolve_terminal_score(
+    scorer: ExpansionScorer,
+    key: BlockKey,
+    terminal: FacetLabel,
+    *,
+    terminal_score_fn: TerminalScoreFn | None,
+) -> float:
+    if terminal_score_fn is None:
+        return float(scorer.terminal_score(key))
+    return float(terminal_score_fn(key, terminal))
+
+
+def _score_action_with_terminal_reward(
+    scorer: ExpansionScorer,
+    key: BlockKey,
+    action: int,
+    *,
+    terminal_score_fn: TerminalScoreFn | None,
+) -> ExpansionScore:
+    return scorer.score_action(
+        key,
+        action,
+        terminal_score_fn=terminal_score_fn,
+    )
 
 
 def _softmax(scores: Sequence[float], *, temperature: float) -> list[float]:

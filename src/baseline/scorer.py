@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import math
+import weakref
 from collections import Counter
-from dataclasses import dataclass
-from typing import Sequence
+from dataclasses import dataclass, field
+from typing import Callable, Mapping, Sequence
 
 import numpy as np
 
@@ -31,7 +32,7 @@ class ScorerConfig:
     nonpositive_rank_gain_penalty: float = 8.0
     rank_gain_weight_scale: float = 1.0
     flat_penalty_weight_scale: float = 1.0
-    flat_capacity_method: str = "child_rank"
+    flat_capacity_method: str = "affine_hull"
     rank24_entrance_weight: float = 1.0
     rank24_entrance_exists_weight: float = 4.0
     rank24_class44_entrance_weight: float = 1.0
@@ -83,6 +84,102 @@ class ExpansionScore:
         }
 
 
+@dataclass(frozen=True)
+class ExpansionStructure:
+    """Reward-independent geometry for one add-block action."""
+
+    action: int
+    key: BlockKey
+    phase: str
+    old_rank: int
+    new_rank: int
+    rank_gain: int
+    flat_capacity: int
+    supportability: SupportabilityMetrics | None
+    terminal: FacetLabel | None
+    base_score: float | None
+
+
+@dataclass
+class SharedTerminalValidationCache:
+    """Facet labels shared across scorers by their 64-bit support mask."""
+
+    labels: dict[int, FacetLabel] = field(default_factory=dict)
+    max_entries: int = 25000
+    hits: int = 0
+    misses: int = 0
+    evictions: int = 0
+
+    def get(self, support_key: int) -> FacetLabel | None:
+        label = self.labels.get(int(support_key))
+        if label is None:
+            self.misses += 1
+        else:
+            self.hits += 1
+        return label
+
+    def put(self, support_key: int, label: FacetLabel) -> None:
+        self.labels[int(support_key)] = label
+        if self.max_entries > 0 and len(self.labels) > self.max_entries:
+            self.labels.pop(next(iter(self.labels)))
+            self.evictions += 1
+
+
+@dataclass
+class ScorerStructureCache:
+    """Reward-independent scorer caches for one ordered block partition."""
+
+    rank: dict[BlockKey, int] = field(default_factory=dict)
+    vertices: dict[BlockKey, list[int]] = field(default_factory=dict)
+    masks: dict[BlockKey, np.ndarray] = field(default_factory=dict)
+    flat: dict[BlockKey, int] = field(default_factory=dict)
+    child_flat_p50: dict[BlockKey, float] = field(default_factory=dict)
+    boundary: dict[BlockKey, dict[str, float]] = field(default_factory=dict)
+    terminal: dict[BlockKey, FacetLabel] = field(default_factory=dict)
+    support_keys: dict[BlockKey, int] = field(default_factory=dict)
+    actions: dict[tuple[BlockKey, int], ExpansionStructure] = field(default_factory=dict)
+    rank24_entrances: dict[BlockKey, tuple[dict[int, int], int]] = field(default_factory=dict)
+
+
+@dataclass
+class SharedScorerStructureCache:
+    """Share geometry for identical partitions without sharing MCTS values."""
+
+    partitions: dict[
+        tuple[tuple[tuple[int, ...], ...], ScorerConfig],
+        ScorerStructureCache,
+    ] = field(default_factory=dict)
+    max_partitions: int = 4
+    hits: int = 0
+    misses: int = 0
+    evictions: int = 0
+    _active_partitions: weakref.WeakValueDictionary = field(
+        default_factory=weakref.WeakValueDictionary,
+        repr=False,
+    )
+
+    def for_partition(
+        self,
+        blocks: Sequence[Sequence[int]],
+        config: ScorerConfig,
+    ) -> ScorerStructureCache:
+        ordered_partition = tuple(tuple(int(vertex) for vertex in block) for block in blocks)
+        key = (ordered_partition, config)
+        shared = self._active_partitions.get(key)
+        if shared is None:
+            self.misses += 1
+            shared = ScorerStructureCache()
+            self._active_partitions[key] = shared
+        else:
+            self.hits += 1
+        self.partitions.pop(key, None)
+        self.partitions[key] = shared
+        if self.max_partitions > 0 and len(self.partitions) > self.max_partitions:
+            self.partitions.pop(next(iter(self.partitions)))
+            self.evictions += 1
+        return shared
+
+
 class ExpansionScorer:
     """Baseline scorer for zero-start add-orbit-block search."""
 
@@ -95,8 +192,14 @@ class ExpansionScorer:
         config: ScorerConfig | None = None,
         target_classes: set[int] | None = None,
         rare_target_classes: set[int] | None = None,
+        terminal_validation_cache: SharedTerminalValidationCache | None = None,
+        structure_cache: SharedScorerStructureCache | None = None,
     ) -> None:
         self.blocks = [tuple(int(vertex) for vertex in block) for block in blocks]
+        self.block_support_words = tuple(
+            self._block_support_word(block)
+            for block in self.blocks
+        )
         self.points = generate_bell322_points() if points is None else np.asarray(points)
         self.config = ScorerConfig() if config is None else config
         self.validator = validator or FacetValidator(
@@ -111,15 +214,35 @@ class ExpansionScorer:
         )
         self.target_classes = set(range(1, 47)) if target_classes is None else set(target_classes)
         self.rare_target_classes = set() if rare_target_classes is None else set(rare_target_classes)
+        self.shared_terminal_validation_cache = (
+            SharedTerminalValidationCache()
+            if terminal_validation_cache is None
+            else terminal_validation_cache
+        )
         self.discovered_label_counts: Counter[str] = Counter()
-        self.rank_cache: dict[BlockKey, int] = {}
-        self.vertices_cache: dict[BlockKey, list[int]] = {}
-        self.mask_cache: dict[BlockKey, np.ndarray] = {}
-        self.flat_cache: dict[BlockKey, int] = {}
-        self.child_flat_p50_cache: dict[BlockKey, float] = {}
-        self.boundary_cache: dict[BlockKey, dict[str, float]] = {}
-        self.terminal_cache: dict[BlockKey, FacetLabel] = {}
-        self.rank24_entrance_cache: dict[BlockKey, dict[str, int]] = {}
+        shared_structure = (
+            ScorerStructureCache()
+            if structure_cache is None
+            else structure_cache.for_partition(self.blocks, self.config)
+        )
+        self._shared_structure = shared_structure
+        self.rank_cache = shared_structure.rank
+        self.vertices_cache = shared_structure.vertices
+        self.mask_cache = shared_structure.masks
+        self.flat_cache = shared_structure.flat
+        self.child_flat_p50_cache = shared_structure.child_flat_p50
+        self.boundary_cache = shared_structure.boundary
+        self.terminal_cache = shared_structure.terminal
+        self.support_key_cache = shared_structure.support_keys
+        self.action_structure_cache = shared_structure.actions
+        self.rank24_entrance_cache = shared_structure.rank24_entrances
+
+    @staticmethod
+    def _block_support_word(block: Sequence[int]) -> int:
+        word = 0
+        for vertex in block:
+            word |= 1 << int(vertex)
+        return word
 
     def _cache_put(self, cache: dict, key: BlockKey, value: object, *, heavy: bool) -> None:
         """Insert into cache with a bounded size to avoid unbounded memory growth."""
@@ -205,10 +328,30 @@ class ExpansionScorer:
     def terminal_label(self, key: BlockKey) -> FacetLabel:
         """Terminal validation for a candidate that already reached rank >= 25."""
         if key not in self.terminal_cache:
-            self._cache_put(self.terminal_cache, key, self.validator.validate_mask(self.vertex_mask(key)), heavy=False)
+            support_key = self.support_key(key)
+            label = self.shared_terminal_validation_cache.get(support_key)
+            if label is None:
+                label = self.validator.validate_mask(self.vertex_mask(key))
+                self.shared_terminal_validation_cache.put(support_key, label)
+            self._cache_put(self.terminal_cache, key, label, heavy=False)
         return self.terminal_cache[key]
 
-    def terminal_score(self, key: BlockKey) -> float:
+    def support_key(self, key: BlockKey) -> int:
+        if key not in self.support_key_cache:
+            support_key = 0
+            for block_index, selected in enumerate(key):
+                if int(selected):
+                    support_key |= self.block_support_words[block_index]
+            self._cache_put(self.support_key_cache, key, support_key, heavy=False)
+        return self.support_key_cache[key]
+
+    def terminal_score(
+        self,
+        key: BlockKey,
+        *,
+        rare_target_classes: set[int] | None = None,
+        discovered_label_counts: Mapping[str, int] | None = None,
+    ) -> float:
         """Reward exact target terminal facets using the restored static rule."""
         config = self.config
         boundary = self.fit_boundary_metrics(key)
@@ -219,13 +362,15 @@ class ExpansionScorer:
             return config.invalid_terminal_score
         class_id = exact_class_id(terminal.label)
         if config.terminal_scoring_mode == "dynamic":
-            count = self.discovered_label_counts[terminal.label]
+            counts = self.discovered_label_counts if discovered_label_counts is None else discovered_label_counts
+            count = int(counts.get(terminal.label, 0))
             if count <= 0:
                 return config.dynamic_new_class_score
             if count >= config.dynamic_frequent_class_threshold:
                 return config.dynamic_frequent_class_score
             return config.dynamic_known_class_score
-        if class_id in self.rare_target_classes:
+        active_rare_targets = self.rare_target_classes if rare_target_classes is None else rare_target_classes
+        if class_id in active_rare_targets:
             return config.rare_terminal_score
         if class_id == 44:
             return config.class44_terminal_score
@@ -306,37 +451,42 @@ class ExpansionScorer:
     def rank24_entrance_metrics(self, key: BlockKey) -> dict[str, int]:
         """Count one-step terminal exits from a rank-24 prefix."""
         if key not in self.rank24_entrance_cache:
-            rare = 0
-            class44 = 0
+            exact_class_counts: Counter[int] = Counter()
             invalid = 0
-            other_valid = 0
             for action in unselected_blocks(key):
                 candidate = add_block(key, action)
-                if self.affine_rank(candidate) < 25:
+                candidate_rank = self.affine_rank(candidate)
+                if candidate_rank < 25:
+                    continue
+                if candidate_rank > 25:
+                    invalid += 1
                     continue
                 label = self.terminal_label(candidate)
                 if not label.is_exact:
                     invalid += 1
                     continue
                 class_id = exact_class_id(label.label)
-                if class_id in self.rare_target_classes:
-                    rare += 1
-                elif class_id == 44:
-                    class44 += 1
-                else:
-                    other_valid += 1
+                if class_id is not None:
+                    exact_class_counts[class_id] += 1
             self._cache_put(
                 self.rank24_entrance_cache,
                 key,
-                {
-                    "rare": rare,
-                    "class44": class44,
-                    "invalid": invalid,
-                    "other_valid": other_valid,
-                },
+                (dict(exact_class_counts), invalid),
                 heavy=False,
             )
-        return self.rank24_entrance_cache[key]
+        exact_class_counts, invalid = self.rank24_entrance_cache[key]
+        rare = sum(
+            count
+            for class_id, count in exact_class_counts.items()
+            if class_id in self.rare_target_classes
+        )
+        class44 = 0 if 44 in self.rare_target_classes else int(exact_class_counts.get(44, 0))
+        return {
+            "rare": int(rare),
+            "class44": class44,
+            "invalid": int(invalid),
+            "other_valid": int(sum(exact_class_counts.values()) - rare - class44),
+        }
 
     def phase_weights(self, rank: int) -> tuple[float, float, float]:
         """Weights for rank gain, supportability, and flatness by search phase."""
@@ -346,8 +496,50 @@ class ExpansionScorer:
             return 1.5, 0.5, 1.0
         return 1.0, 1.5, 1.2
 
-    def score_action(self, key: BlockKey, action: int) -> ExpansionScore:
+    def score_action(
+        self,
+        key: BlockKey,
+        action: int,
+        *,
+        terminal_score_fn: Callable[[BlockKey, FacetLabel], float] | None = None,
+    ) -> ExpansionScore:
         """Score the candidate produced by adding one block."""
+        structure = self.action_structure(key, action)
+        if structure.terminal is not None:
+            score = (
+                self.terminal_score(structure.key)
+                if terminal_score_fn is None
+                else float(terminal_score_fn(structure.key, structure.terminal))
+            )
+        else:
+            score = float(structure.base_score if structure.base_score is not None else 0.0)
+            if structure.new_rank == 24 and self.config.rank24_entrance_weight != 0.0:
+                entrance = self.rank24_entrance_metrics(structure.key)
+                score += self.config.rank24_entrance_weight * (
+                    self.config.rank24_entrance_exists_weight * (1.0 if entrance["rare"] > 0 else 0.0)
+                    + math.log1p(float(entrance["rare"]))
+                    - self.config.rank24_class44_entrance_weight * math.log1p(float(entrance["class44"]))
+                    - self.config.rank24_invalid_entrance_weight * math.log1p(float(entrance["invalid"]))
+                )
+        return ExpansionScore(
+            action=structure.action,
+            key=structure.key,
+            score=float(score),
+            phase=structure.phase,
+            old_rank=structure.old_rank,
+            new_rank=structure.new_rank,
+            rank_gain=structure.rank_gain,
+            flat_capacity=structure.flat_capacity,
+            supportability=structure.supportability,
+            terminal=structure.terminal,
+        )
+
+    def action_structure(self, key: BlockKey, action: int) -> ExpansionStructure:
+        cache_key = (key, int(action))
+        cached = self.action_structure_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
         candidate = add_block(key, action)
         old_rank = self.affine_rank(key)
         new_rank = self.affine_rank(candidate)
@@ -357,39 +549,30 @@ class ExpansionScorer:
         support: SupportabilityMetrics | None = None
         flat = 0 if new_rank >= 25 else self.flat_capacity(candidate)
 
+        base_score: float | None = None
         if new_rank >= 25:
-            score = self.terminal_score(candidate)
             terminal = self.terminal_label(candidate)
             phase = "C"
         else:
             w_rank, _w_support, w_flat = self.phase_weights(new_rank)
-            score = (
+            base_score = (
                 self.config.rank_gain_weight_scale * w_rank * float(rank_gain)
                 - self.config.flat_penalty_weight_scale * w_flat * math.log1p(float(flat))
             )
             if rank_gain <= 0:
-                score -= self.config.nonpositive_rank_gain_penalty
+                base_score -= self.config.nonpositive_rank_gain_penalty
             if new_rank >= self.config.supportability_start_rank:
                 support = self.supportability_metrics(candidate)
                 if support.supporting_shift > self.config.support_tol**2 or support.closer_side > 0.0:
                     gate_penalty = math.log1p(support.supporting_shift) + (
                         self.config.supportability_gate_closer_weight * support.closer_side
                     )
-                    score -= self.config.supportability_gate_weight * gate_penalty
-            if new_rank == 24 and self.config.rank24_entrance_weight != 0.0:
-                entrance = self.rank24_entrance_metrics(candidate)
-                score += self.config.rank24_entrance_weight * (
-                    self.config.rank24_entrance_exists_weight * (1.0 if entrance["rare"] > 0 else 0.0)
-                    + math.log1p(float(entrance["rare"]))
-                    - self.config.rank24_class44_entrance_weight * math.log1p(float(entrance["class44"]))
-                    - self.config.rank24_invalid_entrance_weight * math.log1p(float(entrance["invalid"]))
-                )
+                    base_score -= self.config.supportability_gate_weight * gate_penalty
             phase = "A" if new_rank < self.config.phase_b_start_rank else ("B1" if new_rank <= 23 else "B2")
 
-        return ExpansionScore(
+        structure = ExpansionStructure(
             action=int(action),
             key=candidate,
-            score=float(score),
             phase=phase,
             old_rank=int(old_rank),
             new_rank=int(new_rank),
@@ -397,7 +580,10 @@ class ExpansionScorer:
             flat_capacity=int(flat),
             supportability=support,
             terminal=terminal,
+            base_score=None if base_score is None else float(base_score),
         )
+        self._cache_put(self.action_structure_cache, cache_key, structure, heavy=False)
+        return structure
 
 
 def exact_class_id(label: str) -> int | None:

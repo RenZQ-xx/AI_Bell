@@ -1,0 +1,4000 @@
+[
+{
+  "search_index": 2,
+  "parent_search_index": 1,
+  "start_class_id": 44,
+  "seed": 20261511,
+  "iteration_limit": 200,
+  "stop_reason": "self_or_invalid_sink",
+  "result": {
+    "best": {
+      "label": "exact:class44",
+      "chosen_blocks": [
+        0,
+        1,
+        2
+      ],
+      "path": [
+        0,
+        1,
+        2
+      ],
+      "score": -5.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class44": {
+        "label": "exact:class44",
+        "chosen_blocks": [
+          0,
+          1,
+          2
+        ],
+        "path": [
+          0,
+          1,
+          2
+        ],
+        "score": -5.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "path": [
+          1,
+          2,
+          3,
+          0
+        ],
+        "score": -84.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 44,
+        "label": "exact:class44",
+        "iteration": 14,
+        "depth": 3,
+        "score": -5.0,
+        "rank": 25,
+        "path": [
+          0,
+          1,
+          2
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class44": 6,
+      "invalid:non_coplanar": 44
+    },
+    "exact_labels": [
+      "exact:class44"
+    ],
+    "exact_class_ids": [
+      44
+    ],
+    "iterations_completed": 50,
+    "nodes_created": 14,
+    "root_visits": 50
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 4,
+  "parent_search_index": 3,
+  "start_class_id": 46,
+  "seed": 20263529,
+  "iteration_limit": 200,
+  "stop_reason": "self_or_invalid_sink",
+  "result": {
+    "best": {
+      "label": "exact:class46",
+      "chosen_blocks": [
+        0
+      ],
+      "path": [
+        0
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class46": {
+        "label": "exact:class46",
+        "chosen_blocks": [
+          0
+        ],
+        "path": [
+          0
+        ],
+        "score": 10.0,
+        "rank": 25
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 46,
+        "label": "exact:class46",
+        "iteration": 1,
+        "depth": 1,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          0
+        ],
+        "chosen_blocks": [
+          0
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class46": 50
+    },
+    "exact_labels": [
+      "exact:class46"
+    ],
+    "exact_class_ids": [
+      46
+    ],
+    "iterations_completed": 50,
+    "nodes_created": 3,
+    "root_visits": 50
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 5,
+  "parent_search_index": 3,
+  "start_class_id": 42,
+  "seed": 20264538,
+  "iteration_limit": 300,
+  "stop_reason": "iterations_exhausted",
+  "result": {
+    "best": {
+      "label": "exact:class42",
+      "chosen_blocks": [
+        0,
+        3,
+        5,
+        7
+      ],
+      "path": [
+        0,
+        3,
+        5,
+        7
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class42": {
+        "label": "exact:class42",
+        "chosen_blocks": [
+          0,
+          3,
+          5,
+          7
+        ],
+        "path": [
+          0,
+          3,
+          5,
+          7
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class46": {
+        "label": "exact:class46",
+        "chosen_blocks": [
+          1,
+          2,
+          5,
+          6
+        ],
+        "path": [
+          1,
+          2,
+          6,
+          5
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          5
+        ],
+        "path": [
+          1,
+          2,
+          0,
+          5
+        ],
+        "score": -28.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          1,
+          3,
+          5,
+          6
+        ],
+        "path": [
+          6,
+          0,
+          3,
+          5,
+          1
+        ],
+        "score": -60.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 42,
+        "label": "exact:class42",
+        "iteration": 1,
+        "depth": 4,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          0,
+          3,
+          5,
+          7
+        ],
+        "chosen_blocks": [
+          0,
+          3,
+          5,
+          7
+        ]
+      },
+      {
+        "class_id": 46,
+        "label": "exact:class46",
+        "iteration": 5,
+        "depth": 4,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          1,
+          2,
+          6,
+          5
+        ],
+        "chosen_blocks": [
+          1,
+          2,
+          5,
+          6
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class42": 239,
+      "exact:class46": 51,
+      "invalid:boundary": 8,
+      "invalid:non_coplanar": 2
+    },
+    "exact_labels": [
+      "exact:class42",
+      "exact:class46"
+    ],
+    "exact_class_ids": [
+      42,
+      46
+    ],
+    "iterations_completed": 300,
+    "nodes_created": 55,
+    "root_visits": 300
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 6,
+  "parent_search_index": 3,
+  "start_class_id": 38,
+  "seed": 20265547,
+  "iteration_limit": 400,
+  "stop_reason": "iterations_exhausted",
+  "result": {
+    "best": {
+      "label": "exact:class46",
+      "chosen_blocks": [
+        1,
+        2,
+        3,
+        6,
+        9
+      ],
+      "path": [
+        1,
+        6,
+        3,
+        9,
+        2
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class38": {
+        "label": "exact:class38",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7,
+          8
+        ],
+        "path": [
+          7,
+          0,
+          5,
+          2,
+          8
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class44": {
+        "label": "exact:class44",
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          9
+        ],
+        "path": [
+          9,
+          5,
+          6,
+          4,
+          3,
+          1
+        ],
+        "score": -5.0,
+        "rank": 25
+      },
+      "exact:class46": {
+        "label": "exact:class46",
+        "chosen_blocks": [
+          1,
+          2,
+          3,
+          6,
+          9
+        ],
+        "path": [
+          1,
+          6,
+          3,
+          9,
+          2
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          2,
+          4,
+          5,
+          7
+        ],
+        "path": [
+          4,
+          5,
+          7,
+          2,
+          0
+        ],
+        "score": -24.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          7,
+          8,
+          9
+        ],
+        "path": [
+          9,
+          7,
+          3,
+          0,
+          2,
+          4,
+          8,
+          1
+        ],
+        "score": -64.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 46,
+        "label": "exact:class46",
+        "iteration": 1,
+        "depth": 5,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          1,
+          6,
+          3,
+          9,
+          2
+        ],
+        "chosen_blocks": [
+          1,
+          2,
+          3,
+          6,
+          9
+        ]
+      },
+      {
+        "class_id": 38,
+        "label": "exact:class38",
+        "iteration": 2,
+        "depth": 5,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          7,
+          0,
+          5,
+          2,
+          8
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7,
+          8
+        ]
+      },
+      {
+        "class_id": 44,
+        "label": "exact:class44",
+        "iteration": 12,
+        "depth": 6,
+        "score": -5.0,
+        "rank": 25,
+        "path": [
+          9,
+          5,
+          6,
+          4,
+          3,
+          1
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          9
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class38": 67,
+      "exact:class44": 55,
+      "exact:class46": 126,
+      "invalid:boundary": 4,
+      "invalid:non_coplanar": 148
+    },
+    "exact_labels": [
+      "exact:class38",
+      "exact:class44",
+      "exact:class46"
+    ],
+    "exact_class_ids": [
+      38,
+      44,
+      46
+    ],
+    "iterations_completed": 400,
+    "nodes_created": 88,
+    "root_visits": 400
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 3,
+  "parent_search_index": 1,
+  "start_class_id": 29,
+  "seed": 20262520,
+  "iteration_limit": 900,
+  "stop_reason": "iterations_exhausted",
+  "result": {
+    "best": {
+      "label": "exact:class46",
+      "chosen_blocks": [
+        1,
+        3,
+        5,
+        6,
+        7,
+        12,
+        15,
+        17,
+        19
+      ],
+      "path": [
+        15,
+        1,
+        3,
+        7,
+        6,
+        12,
+        19,
+        17,
+        5
+      ],
+      "score": 100.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class28": {
+        "label": "exact:class28",
+        "chosen_blocks": [
+          0,
+          2,
+          8,
+          9,
+          11,
+          12,
+          13,
+          14,
+          16
+        ],
+        "path": [
+          12,
+          14,
+          2,
+          0,
+          11,
+          9,
+          13,
+          16,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class29": {
+        "label": "exact:class29",
+        "chosen_blocks": [
+          0,
+          2,
+          4,
+          7,
+          9,
+          10,
+          11,
+          14,
+          18
+        ],
+        "path": [
+          14,
+          0,
+          2,
+          9,
+          11,
+          10,
+          18,
+          4,
+          7
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class30": {
+        "label": "exact:class30",
+        "chosen_blocks": [
+          0,
+          2,
+          4,
+          10,
+          13,
+          14,
+          16,
+          18,
+          19
+        ],
+        "path": [
+          14,
+          0,
+          2,
+          10,
+          4,
+          13,
+          16,
+          19,
+          18
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class31": {
+        "label": "exact:class31",
+        "chosen_blocks": [
+          0,
+          4,
+          9,
+          10,
+          11,
+          14,
+          15,
+          16,
+          19
+        ],
+        "path": [
+          4,
+          15,
+          10,
+          0,
+          14,
+          9,
+          11,
+          16,
+          19
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class38": {
+        "label": "exact:class38",
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          8,
+          12,
+          13,
+          17,
+          19
+        ],
+        "path": [
+          12,
+          3,
+          1,
+          5,
+          6,
+          8,
+          17,
+          19,
+          13
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class42": {
+        "label": "exact:class42",
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          7,
+          10,
+          15,
+          18,
+          19
+        ],
+        "path": [
+          15,
+          1,
+          3,
+          5,
+          10,
+          7,
+          6,
+          19,
+          18
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class44": {
+        "label": "exact:class44",
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          7,
+          8,
+          10,
+          12,
+          15
+        ],
+        "path": [
+          15,
+          8,
+          10,
+          3,
+          5,
+          1,
+          12,
+          6,
+          7
+        ],
+        "score": -5.0,
+        "rank": 25
+      },
+      "exact:class46": {
+        "label": "exact:class46",
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          7,
+          12,
+          15,
+          17,
+          19
+        ],
+        "path": [
+          15,
+          1,
+          3,
+          7,
+          6,
+          12,
+          19,
+          17,
+          5
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          2,
+          4,
+          9,
+          10,
+          12,
+          13,
+          15,
+          18
+        ],
+        "path": [
+          12,
+          18,
+          10,
+          13,
+          4,
+          2,
+          15,
+          0,
+          9
+        ],
+        "score": -22.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          4,
+          7,
+          9,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          19
+        ],
+        "path": [
+          14,
+          0,
+          19,
+          9,
+          12,
+          15,
+          11,
+          17,
+          16,
+          4,
+          13,
+          7
+        ],
+        "score": -42.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 46,
+        "label": "exact:class46",
+        "iteration": 1,
+        "depth": 9,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          15,
+          1,
+          3,
+          7,
+          6,
+          12,
+          19,
+          17,
+          5
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          7,
+          12,
+          15,
+          17,
+          19
+        ]
+      },
+      {
+        "class_id": 29,
+        "label": "exact:class29",
+        "iteration": 2,
+        "depth": 9,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          14,
+          0,
+          2,
+          9,
+          11,
+          10,
+          18,
+          4,
+          7
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          4,
+          7,
+          9,
+          10,
+          11,
+          14,
+          18
+        ]
+      },
+      {
+        "class_id": 42,
+        "label": "exact:class42",
+        "iteration": 3,
+        "depth": 9,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          15,
+          1,
+          3,
+          5,
+          10,
+          7,
+          6,
+          19,
+          18
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          7,
+          10,
+          15,
+          18,
+          19
+        ]
+      },
+      {
+        "class_id": 44,
+        "label": "exact:class44",
+        "iteration": 4,
+        "depth": 9,
+        "score": -5.0,
+        "rank": 25,
+        "path": [
+          15,
+          8,
+          10,
+          3,
+          5,
+          1,
+          12,
+          6,
+          7
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          7,
+          8,
+          10,
+          12,
+          15
+        ]
+      },
+      {
+        "class_id": 30,
+        "label": "exact:class30",
+        "iteration": 9,
+        "depth": 9,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          14,
+          0,
+          2,
+          10,
+          4,
+          13,
+          16,
+          19,
+          18
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          4,
+          10,
+          13,
+          14,
+          16,
+          18,
+          19
+        ]
+      },
+      {
+        "class_id": 38,
+        "label": "exact:class38",
+        "iteration": 10,
+        "depth": 9,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          12,
+          3,
+          1,
+          5,
+          6,
+          8,
+          17,
+          19,
+          13
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          8,
+          12,
+          13,
+          17,
+          19
+        ]
+      },
+      {
+        "class_id": 28,
+        "label": "exact:class28",
+        "iteration": 15,
+        "depth": 9,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          12,
+          14,
+          2,
+          0,
+          11,
+          9,
+          13,
+          16,
+          8
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          8,
+          9,
+          11,
+          12,
+          13,
+          14,
+          16
+        ]
+      },
+      {
+        "class_id": 31,
+        "label": "exact:class31",
+        "iteration": 42,
+        "depth": 9,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          4,
+          15,
+          10,
+          0,
+          14,
+          9,
+          11,
+          16,
+          19
+        ],
+        "chosen_blocks": [
+          0,
+          4,
+          9,
+          10,
+          11,
+          14,
+          15,
+          16,
+          19
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class28": 41,
+      "exact:class29": 329,
+      "exact:class30": 9,
+      "exact:class31": 5,
+      "exact:class38": 9,
+      "exact:class42": 112,
+      "exact:class44": 214,
+      "exact:class46": 121,
+      "invalid:boundary": 3,
+      "invalid:non_coplanar": 57
+    },
+    "exact_labels": [
+      "exact:class28",
+      "exact:class29",
+      "exact:class30",
+      "exact:class31",
+      "exact:class38",
+      "exact:class42",
+      "exact:class44",
+      "exact:class46"
+    ],
+    "exact_class_ids": [
+      28,
+      29,
+      30,
+      31,
+      38,
+      42,
+      44,
+      46
+    ],
+    "iterations_completed": 900,
+    "nodes_created": 378,
+    "root_visits": 900
+  },
+  "interrupted_by_class_ids": [
+    46,
+    42,
+    38
+  ],
+  "resumed_after_class_ids": [
+    46,
+    42,
+    38
+  ]
+},
+{
+  "search_index": 7,
+  "parent_search_index": 1,
+  "start_class_id": 35,
+  "seed": 20266556,
+  "iteration_limit": 400,
+  "stop_reason": "iterations_exhausted",
+  "result": {
+    "best": {
+      "label": "exact:class45",
+      "chosen_blocks": [
+        0,
+        1,
+        4,
+        7,
+        8,
+        11
+      ],
+      "path": [
+        11,
+        1,
+        0,
+        8,
+        4,
+        7
+      ],
+      "score": 100.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class35": {
+        "label": "exact:class35",
+        "chosen_blocks": [
+          2,
+          3,
+          5,
+          6,
+          10,
+          11
+        ],
+        "path": [
+          3,
+          2,
+          5,
+          11,
+          10,
+          6
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class45": {
+        "label": "exact:class45",
+        "chosen_blocks": [
+          0,
+          1,
+          4,
+          7,
+          8,
+          11
+        ],
+        "path": [
+          11,
+          1,
+          0,
+          8,
+          4,
+          7
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class46": {
+        "label": "exact:class46",
+        "chosen_blocks": [
+          2,
+          3,
+          5,
+          6,
+          8,
+          11
+        ],
+        "path": [
+          11,
+          5,
+          2,
+          3,
+          8,
+          6
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          6,
+          7,
+          11
+        ],
+        "path": [
+          11,
+          1,
+          2,
+          0,
+          6,
+          7
+        ],
+        "score": -28.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "path": [
+          4,
+          5,
+          9,
+          8,
+          10,
+          0,
+          2,
+          6,
+          7,
+          11,
+          3
+        ],
+        "score": -84.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 45,
+        "label": "exact:class45",
+        "iteration": 1,
+        "depth": 6,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          11,
+          1,
+          0,
+          8,
+          4,
+          7
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          4,
+          7,
+          8,
+          11
+        ]
+      },
+      {
+        "class_id": 35,
+        "label": "exact:class35",
+        "iteration": 2,
+        "depth": 6,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          3,
+          2,
+          5,
+          11,
+          10,
+          6
+        ],
+        "chosen_blocks": [
+          2,
+          3,
+          5,
+          6,
+          10,
+          11
+        ]
+      },
+      {
+        "class_id": 46,
+        "label": "exact:class46",
+        "iteration": 36,
+        "depth": 6,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          11,
+          5,
+          2,
+          3,
+          8,
+          6
+        ],
+        "chosen_blocks": [
+          2,
+          3,
+          5,
+          6,
+          8,
+          11
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class35": 266,
+      "exact:class45": 54,
+      "exact:class46": 47,
+      "invalid:boundary": 14,
+      "invalid:non_coplanar": 19
+    },
+    "exact_labels": [
+      "exact:class35",
+      "exact:class45",
+      "exact:class46"
+    ],
+    "exact_class_ids": [
+      35,
+      45,
+      46
+    ],
+    "iterations_completed": 400,
+    "nodes_created": 124,
+    "root_visits": 400
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 8,
+  "parent_search_index": 1,
+  "start_class_id": 43,
+  "seed": 20267565,
+  "iteration_limit": 200,
+  "stop_reason": "self_or_invalid_sink",
+  "result": {
+    "best": {
+      "label": "exact:class43",
+      "chosen_blocks": [
+        0,
+        1,
+        2
+      ],
+      "path": [
+        0,
+        2,
+        1
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class43": {
+        "label": "exact:class43",
+        "chosen_blocks": [
+          0,
+          1,
+          2
+        ],
+        "path": [
+          0,
+          2,
+          1
+        ],
+        "score": 10.0,
+        "rank": 25
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 43,
+        "label": "exact:class43",
+        "iteration": 1,
+        "depth": 3,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          0,
+          2,
+          1
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class43": 50
+    },
+    "exact_labels": [
+      "exact:class43"
+    ],
+    "exact_class_ids": [
+      43
+    ],
+    "iterations_completed": 50,
+    "nodes_created": 14,
+    "root_visits": 50
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 9,
+  "parent_search_index": 1,
+  "start_class_id": 40,
+  "seed": 20268574,
+  "iteration_limit": 200,
+  "stop_reason": "self_or_invalid_sink",
+  "result": {
+    "best": {
+      "label": "exact:class40",
+      "chosen_blocks": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "path": [
+        2,
+        3,
+        1,
+        0
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class40": {
+        "label": "exact:class40",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "path": [
+          2,
+          3,
+          1,
+          0
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "path": [
+          2,
+          5,
+          3,
+          6,
+          4,
+          0,
+          7
+        ],
+        "score": -52.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 40,
+        "label": "exact:class40",
+        "iteration": 1,
+        "depth": 4,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          2,
+          3,
+          1,
+          0
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class40": 40,
+      "invalid:non_coplanar": 10
+    },
+    "exact_labels": [
+      "exact:class40"
+    ],
+    "exact_class_ids": [
+      40
+    ],
+    "iterations_completed": 50,
+    "nodes_created": 44,
+    "root_visits": 50
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 10,
+  "parent_search_index": 1,
+  "start_class_id": 39,
+  "seed": 20269583,
+  "iteration_limit": 200,
+  "stop_reason": "self_or_invalid_sink",
+  "result": {
+    "best": {
+      "label": "exact:class39",
+      "chosen_blocks": [
+        0,
+        2,
+        4
+      ],
+      "path": [
+        4,
+        2,
+        0
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class39": {
+        "label": "exact:class39",
+        "chosen_blocks": [
+          0,
+          2,
+          4
+        ],
+        "path": [
+          4,
+          2,
+          0
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          3,
+          6
+        ],
+        "path": [
+          6,
+          0,
+          3
+        ],
+        "score": -28.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6
+        ],
+        "path": [
+          6,
+          3,
+          5,
+          1
+        ],
+        "score": -68.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 39,
+        "label": "exact:class39",
+        "iteration": 1,
+        "depth": 3,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          4,
+          2,
+          0
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          4
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class39": 37,
+      "invalid:boundary": 4,
+      "invalid:non_coplanar": 9
+    },
+    "exact_labels": [
+      "exact:class39"
+    ],
+    "exact_class_ids": [
+      39
+    ],
+    "iterations_completed": 50,
+    "nodes_created": 40,
+    "root_visits": 50
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 11,
+  "parent_search_index": 1,
+  "start_class_id": 25,
+  "seed": 20270592,
+  "iteration_limit": 300,
+  "stop_reason": "iterations_exhausted",
+  "result": {
+    "best": {
+      "label": "exact:class25",
+      "chosen_blocks": [
+        1,
+        3,
+        4,
+        8,
+        12,
+        13,
+        15,
+        16,
+        18
+      ],
+      "path": [
+        4,
+        1,
+        13,
+        8,
+        3,
+        16,
+        15,
+        12,
+        18
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class25": {
+        "label": "exact:class25",
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          8,
+          12,
+          13,
+          15,
+          16,
+          18
+        ],
+        "path": [
+          4,
+          1,
+          13,
+          8,
+          3,
+          16,
+          15,
+          12,
+          18
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class40": {
+        "label": "exact:class40",
+        "chosen_blocks": [
+          1,
+          2,
+          5,
+          7,
+          11,
+          14,
+          17,
+          18,
+          20
+        ],
+        "path": [
+          20,
+          2,
+          11,
+          1,
+          18,
+          7,
+          5,
+          14,
+          17
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14,
+          15,
+          18,
+          19,
+          20,
+          21
+        ],
+        "path": [
+          20,
+          1,
+          3,
+          8,
+          5,
+          6,
+          15,
+          10,
+          9,
+          2,
+          4,
+          14,
+          19,
+          11,
+          0,
+          21,
+          18,
+          12
+        ],
+        "score": -28.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          3,
+          4,
+          9,
+          10,
+          15,
+          16,
+          19,
+          20,
+          21
+        ],
+        "path": [
+          16,
+          9,
+          19,
+          4,
+          3,
+          0,
+          15,
+          10,
+          21,
+          20
+        ],
+        "score": -36.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 25,
+        "label": "exact:class25",
+        "iteration": 1,
+        "depth": 9,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          4,
+          1,
+          13,
+          8,
+          3,
+          16,
+          15,
+          12,
+          18
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          8,
+          12,
+          13,
+          15,
+          16,
+          18
+        ]
+      },
+      {
+        "class_id": 40,
+        "label": "exact:class40",
+        "iteration": 22,
+        "depth": 9,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          20,
+          2,
+          11,
+          1,
+          18,
+          7,
+          5,
+          14,
+          17
+        ],
+        "chosen_blocks": [
+          1,
+          2,
+          5,
+          7,
+          11,
+          14,
+          17,
+          18,
+          20
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class25": 107,
+      "exact:class40": 35,
+      "invalid:boundary": 97,
+      "invalid:non_coplanar": 61
+    },
+    "exact_labels": [
+      "exact:class25",
+      "exact:class40"
+    ],
+    "exact_class_ids": [
+      25,
+      40
+    ],
+    "iterations_completed": 300,
+    "nodes_created": 292,
+    "root_visits": 300
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 12,
+  "parent_search_index": 1,
+  "start_class_id": 34,
+  "seed": 20271601,
+  "iteration_limit": 200,
+  "stop_reason": "self_or_invalid_sink",
+  "result": {
+    "best": {
+      "label": "exact:class34",
+      "chosen_blocks": [
+        0,
+        2,
+        5,
+        7,
+        8,
+        11
+      ],
+      "path": [
+        2,
+        5,
+        8,
+        11,
+        0,
+        7
+      ],
+      "score": 10.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class34": {
+        "label": "exact:class34",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7,
+          8,
+          11
+        ],
+        "path": [
+          2,
+          5,
+          8,
+          11,
+          0,
+          7
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "invalid:boundary": {
+        "label": "invalid:boundary",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          6,
+          8,
+          9
+        ],
+        "path": [
+          2,
+          8,
+          1,
+          0,
+          6,
+          9
+        ],
+        "score": -28.0,
+        "rank": 25
+      },
+      "invalid:non_coplanar": {
+        "label": "invalid:non_coplanar",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          9,
+          10,
+          11
+        ],
+        "path": [
+          2,
+          0,
+          10,
+          9,
+          4,
+          5,
+          11,
+          3
+        ],
+        "score": -68.0,
+        "rank": 26
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 34,
+        "label": "exact:class34",
+        "iteration": 1,
+        "depth": 6,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          2,
+          5,
+          8,
+          11,
+          0,
+          7
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          7,
+          8,
+          11
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class34": 27,
+      "invalid:boundary": 21,
+      "invalid:non_coplanar": 2
+    },
+    "exact_labels": [
+      "exact:class34"
+    ],
+    "exact_class_ids": [
+      34
+    ],
+    "iterations_completed": 50,
+    "nodes_created": 46,
+    "root_visits": 50
+  },
+  "interrupted_by_class_ids": [],
+  "resumed_after_class_ids": []
+},
+{
+  "search_index": 1,
+  "parent_search_index": null,
+  "start_class_id": 7,
+  "seed": 20260502,
+  "iteration_limit": 1000,
+  "stop_reason": "iterations_exhausted",
+  "result": {
+    "best": {
+      "label": "exact:class44",
+      "chosen_blocks": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        14,
+        17,
+        22,
+        33,
+        34,
+        37
+      ],
+      "path": [
+        9,
+        3,
+        0,
+        2,
+        12,
+        7,
+        17,
+        8,
+        14,
+        22,
+        33,
+        10,
+        5,
+        37,
+        1,
+        34,
+        6
+      ],
+      "score": 100.0,
+      "rank": 25
+    },
+    "terminal_bests": {
+      "exact:class12": {
+        "label": "exact:class12",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          7,
+          9,
+          10,
+          12,
+          19,
+          22,
+          31,
+          32,
+          33,
+          34,
+          36,
+          37,
+          39
+        ],
+        "path": [
+          9,
+          31,
+          2,
+          10,
+          12,
+          7,
+          0,
+          3,
+          22,
+          5,
+          19,
+          34,
+          32,
+          36,
+          33,
+          39,
+          37
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class15": {
+        "label": "exact:class15",
+        "chosen_blocks": [
+          2,
+          3,
+          4,
+          7,
+          9,
+          10,
+          14,
+          17,
+          19,
+          22,
+          27,
+          28,
+          33,
+          34,
+          36,
+          38,
+          39
+        ],
+        "path": [
+          9,
+          38,
+          17,
+          7,
+          3,
+          4,
+          19,
+          14,
+          2,
+          10,
+          28,
+          33,
+          36,
+          39,
+          34,
+          22,
+          27
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class19": {
+        "label": "exact:class19",
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          6,
+          9,
+          10,
+          13,
+          14,
+          19,
+          21,
+          22,
+          25,
+          26,
+          28,
+          31,
+          34,
+          36
+        ],
+        "path": [
+          9,
+          0,
+          19,
+          2,
+          10,
+          5,
+          22,
+          13,
+          14,
+          25,
+          21,
+          31,
+          36,
+          26,
+          34,
+          28,
+          6
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class20": {
+        "label": "exact:class20",
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          18,
+          20,
+          23,
+          24,
+          27,
+          32,
+          33,
+          38
+        ],
+        "path": [
+          9,
+          38,
+          3,
+          1,
+          23,
+          7,
+          4,
+          8,
+          18,
+          20,
+          10,
+          32,
+          12,
+          33,
+          24,
+          27,
+          11
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class22": {
+        "label": "exact:class22",
+        "chosen_blocks": [
+          0,
+          5,
+          7,
+          9,
+          10,
+          12,
+          14,
+          17,
+          19,
+          20,
+          25,
+          27,
+          28,
+          31,
+          33,
+          34,
+          38
+        ],
+        "path": [
+          9,
+          31,
+          19,
+          17,
+          33,
+          7,
+          14,
+          5,
+          34,
+          12,
+          10,
+          0,
+          20,
+          27,
+          28,
+          25,
+          38
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class25": {
+        "label": "exact:class25",
+        "chosen_blocks": [
+          1,
+          4,
+          7,
+          9,
+          10,
+          14,
+          18,
+          19,
+          21,
+          22,
+          26,
+          27,
+          28,
+          31,
+          33,
+          34,
+          36
+        ],
+        "path": [
+          18,
+          1,
+          19,
+          36,
+          4,
+          7,
+          10,
+          21,
+          14,
+          9,
+          33,
+          31,
+          26,
+          27,
+          28,
+          34,
+          22
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class28": {
+        "label": "exact:class28",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          8,
+          10,
+          11,
+          13,
+          15,
+          16,
+          19,
+          22,
+          29,
+          30,
+          32,
+          35,
+          38
+        ],
+        "path": [
+          19,
+          22,
+          10,
+          5,
+          0,
+          3,
+          13,
+          15,
+          8,
+          2,
+          30,
+          38,
+          35,
+          29,
+          16,
+          32,
+          11
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class29": {
+        "label": "exact:class29",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          6,
+          8,
+          9,
+          10,
+          11,
+          13,
+          14,
+          18,
+          23,
+          34,
+          37,
+          38
+        ],
+        "path": [
+          23,
+          2,
+          4,
+          8,
+          10,
+          14,
+          13,
+          9,
+          3,
+          0,
+          38,
+          6,
+          11,
+          34,
+          37,
+          1,
+          18
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class32": {
+        "label": "exact:class32",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          6,
+          7,
+          8,
+          9,
+          17,
+          19,
+          22,
+          29,
+          34,
+          35,
+          36,
+          38,
+          39
+        ],
+        "path": [
+          9,
+          38,
+          19,
+          39,
+          2,
+          0,
+          6,
+          8,
+          22,
+          17,
+          5,
+          3,
+          35,
+          7,
+          34,
+          29,
+          36
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class34": {
+        "label": "exact:class34",
+        "chosen_blocks": [
+          0,
+          1,
+          6,
+          8,
+          11,
+          13,
+          14,
+          16,
+          20,
+          23,
+          25,
+          26,
+          30,
+          33,
+          34,
+          37,
+          39
+        ],
+        "path": [
+          8,
+          14,
+          13,
+          39,
+          23,
+          20,
+          1,
+          6,
+          16,
+          11,
+          25,
+          30,
+          26,
+          33,
+          0,
+          37,
+          34
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class35": {
+        "label": "exact:class35",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          7,
+          8,
+          9,
+          10,
+          12,
+          14,
+          17,
+          19,
+          22,
+          33,
+          34,
+          37,
+          38
+        ],
+        "path": [
+          9,
+          38,
+          19,
+          7,
+          3,
+          2,
+          0,
+          10,
+          17,
+          12,
+          33,
+          5,
+          14,
+          37,
+          34,
+          22,
+          8
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class39": {
+        "label": "exact:class39",
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          10,
+          13,
+          14,
+          17,
+          18,
+          20,
+          22,
+          24,
+          27,
+          28,
+          31,
+          34,
+          37
+        ],
+        "path": [
+          18,
+          13,
+          6,
+          17,
+          3,
+          37,
+          34,
+          1,
+          14,
+          20,
+          22,
+          27,
+          24,
+          10,
+          31,
+          28,
+          5
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class40": {
+        "label": "exact:class40",
+        "chosen_blocks": [
+          2,
+          3,
+          5,
+          6,
+          8,
+          11,
+          12,
+          15,
+          17,
+          18,
+          29,
+          30,
+          32,
+          35,
+          36,
+          37,
+          38
+        ],
+        "path": [
+          18,
+          12,
+          8,
+          2,
+          15,
+          11,
+          30,
+          3,
+          5,
+          17,
+          32,
+          36,
+          38,
+          35,
+          6,
+          29,
+          37
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class42": {
+        "label": "exact:class42",
+        "chosen_blocks": [
+          0,
+          3,
+          6,
+          8,
+          9,
+          11,
+          13,
+          16,
+          19,
+          20,
+          22,
+          24,
+          27,
+          34,
+          35,
+          37,
+          38
+        ],
+        "path": [
+          9,
+          38,
+          22,
+          3,
+          6,
+          0,
+          20,
+          19,
+          13,
+          11,
+          8,
+          24,
+          16,
+          35,
+          27,
+          34,
+          37
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class43": {
+        "label": "exact:class43",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          5,
+          7,
+          8,
+          10,
+          17,
+          19,
+          22,
+          29,
+          32,
+          34,
+          35,
+          37,
+          38
+        ],
+        "path": [
+          37,
+          0,
+          2,
+          8,
+          5,
+          19,
+          22,
+          7,
+          17,
+          10,
+          29,
+          34,
+          32,
+          35,
+          3,
+          38,
+          1
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class44": {
+        "label": "exact:class44",
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          12,
+          14,
+          17,
+          22,
+          33,
+          34,
+          37
+        ],
+        "path": [
+          9,
+          3,
+          0,
+          2,
+          12,
+          7,
+          17,
+          8,
+          14,
+          22,
+          33,
+          10,
+          5,
+          37,
+          1,
+          34,
+          6
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class45": {
+        "label": "exact:class45",
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          7,
+          8,
+          9,
+          10,
+          12,
+          17,
+          19,
+          22,
+          32,
+          33,
+          37,
+          38,
+          39
+        ],
+        "path": [
+          9,
+          38,
+          19,
+          39,
+          37,
+          10,
+          22,
+          3,
+          0,
+          2,
+          8,
+          12,
+          7,
+          32,
+          17,
+          5,
+          33
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class46": {
+        "label": "exact:class46",
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          6,
+          9,
+          11,
+          13,
+          14,
+          16,
+          18,
+          20,
+          23,
+          24,
+          27,
+          28,
+          31,
+          34
+        ],
+        "path": [
+          9,
+          31,
+          18,
+          6,
+          11,
+          3,
+          14,
+          13,
+          16,
+          23,
+          27,
+          28,
+          20,
+          1,
+          24,
+          4,
+          34
+        ],
+        "score": 10.0,
+        "rank": 25
+      },
+      "exact:class7": {
+        "label": "exact:class7",
+        "chosen_blocks": [
+          0,
+          3,
+          8,
+          9,
+          10,
+          11,
+          13,
+          19,
+          20,
+          22,
+          24,
+          27,
+          32,
+          33,
+          34,
+          37,
+          38
+        ],
+        "path": [
+          9,
+          38,
+          22,
+          3,
+          0,
+          10,
+          8,
+          19,
+          13,
+          20,
+          34,
+          24,
+          32,
+          33,
+          27,
+          37,
+          11
+        ],
+        "score": 100.0,
+        "rank": 25
+      },
+      "exact:class8": {
+        "label": "exact:class8",
+        "chosen_blocks": [
+          0,
+          3,
+          5,
+          8,
+          9,
+          11,
+          12,
+          19,
+          22,
+          27,
+          30,
+          32,
+          33,
+          35,
+          37,
+          38,
+          39
+        ],
+        "path": [
+          9,
+          38,
+          19,
+          39,
+          37,
+          3,
+          5,
+          11,
+          22,
+          8,
+          0,
+          12,
+          32,
+          35,
+          33,
+          30,
+          27
+        ],
+        "score": 100.0,
+        "rank": 25
+      }
+    },
+    "exact_discoveries": [
+      {
+        "class_id": 44,
+        "label": "exact:class44",
+        "iteration": 1,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          3,
+          0,
+          2,
+          12,
+          7,
+          17,
+          8,
+          14,
+          22,
+          33,
+          10,
+          5,
+          37,
+          1,
+          34,
+          6
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          12,
+          14,
+          17,
+          22,
+          33,
+          34,
+          37
+        ]
+      },
+      {
+        "class_id": 29,
+        "label": "exact:class29",
+        "iteration": 2,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          23,
+          2,
+          4,
+          8,
+          10,
+          14,
+          13,
+          9,
+          3,
+          0,
+          38,
+          6,
+          11,
+          34,
+          37,
+          1,
+          18
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          6,
+          8,
+          9,
+          10,
+          11,
+          13,
+          14,
+          18,
+          23,
+          34,
+          37,
+          38
+        ]
+      },
+      {
+        "class_id": 20,
+        "label": "exact:class20",
+        "iteration": 6,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          3,
+          1,
+          23,
+          7,
+          4,
+          8,
+          18,
+          20,
+          10,
+          32,
+          12,
+          33,
+          24,
+          27,
+          11
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          18,
+          20,
+          23,
+          24,
+          27,
+          32,
+          33,
+          38
+        ]
+      },
+      {
+        "class_id": 35,
+        "label": "exact:class35",
+        "iteration": 7,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          19,
+          7,
+          3,
+          2,
+          0,
+          10,
+          17,
+          12,
+          33,
+          5,
+          14,
+          37,
+          34,
+          22,
+          8
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          7,
+          8,
+          9,
+          10,
+          12,
+          14,
+          17,
+          19,
+          22,
+          33,
+          34,
+          37,
+          38
+        ]
+      },
+      {
+        "class_id": 15,
+        "label": "exact:class15",
+        "iteration": 9,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          17,
+          7,
+          3,
+          4,
+          19,
+          14,
+          2,
+          10,
+          28,
+          33,
+          36,
+          39,
+          34,
+          22,
+          27
+        ],
+        "chosen_blocks": [
+          2,
+          3,
+          4,
+          7,
+          9,
+          10,
+          14,
+          17,
+          19,
+          22,
+          27,
+          28,
+          33,
+          34,
+          36,
+          38,
+          39
+        ]
+      },
+      {
+        "class_id": 43,
+        "label": "exact:class43",
+        "iteration": 10,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          37,
+          0,
+          2,
+          8,
+          5,
+          19,
+          22,
+          7,
+          17,
+          10,
+          29,
+          34,
+          32,
+          35,
+          3,
+          38,
+          1
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          2,
+          3,
+          5,
+          7,
+          8,
+          10,
+          17,
+          19,
+          22,
+          29,
+          32,
+          34,
+          35,
+          37,
+          38
+        ]
+      },
+      {
+        "class_id": 7,
+        "label": "exact:class7",
+        "iteration": 12,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          22,
+          3,
+          0,
+          10,
+          8,
+          19,
+          13,
+          20,
+          34,
+          24,
+          32,
+          33,
+          27,
+          37,
+          11
+        ],
+        "chosen_blocks": [
+          0,
+          3,
+          8,
+          9,
+          10,
+          11,
+          13,
+          19,
+          20,
+          22,
+          24,
+          27,
+          32,
+          33,
+          34,
+          37,
+          38
+        ]
+      },
+      {
+        "class_id": 42,
+        "label": "exact:class42",
+        "iteration": 13,
+        "depth": 17,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          22,
+          3,
+          6,
+          0,
+          20,
+          19,
+          13,
+          11,
+          8,
+          24,
+          16,
+          35,
+          27,
+          34,
+          37
+        ],
+        "chosen_blocks": [
+          0,
+          3,
+          6,
+          8,
+          9,
+          11,
+          13,
+          16,
+          19,
+          20,
+          22,
+          24,
+          27,
+          34,
+          35,
+          37,
+          38
+        ]
+      },
+      {
+        "class_id": 32,
+        "label": "exact:class32",
+        "iteration": 16,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          19,
+          39,
+          2,
+          0,
+          6,
+          8,
+          22,
+          17,
+          5,
+          3,
+          35,
+          7,
+          34,
+          29,
+          36
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          6,
+          7,
+          8,
+          9,
+          17,
+          19,
+          22,
+          29,
+          34,
+          35,
+          36,
+          38,
+          39
+        ]
+      },
+      {
+        "class_id": 8,
+        "label": "exact:class8",
+        "iteration": 25,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          19,
+          39,
+          37,
+          3,
+          5,
+          11,
+          22,
+          8,
+          0,
+          12,
+          32,
+          35,
+          33,
+          30,
+          27
+        ],
+        "chosen_blocks": [
+          0,
+          3,
+          5,
+          8,
+          9,
+          11,
+          12,
+          19,
+          22,
+          27,
+          30,
+          32,
+          33,
+          35,
+          37,
+          38,
+          39
+        ]
+      },
+      {
+        "class_id": 45,
+        "label": "exact:class45",
+        "iteration": 30,
+        "depth": 17,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          9,
+          38,
+          19,
+          39,
+          37,
+          10,
+          22,
+          3,
+          0,
+          2,
+          8,
+          12,
+          7,
+          32,
+          17,
+          5,
+          33
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          7,
+          8,
+          9,
+          10,
+          12,
+          17,
+          19,
+          22,
+          32,
+          33,
+          37,
+          38,
+          39
+        ]
+      },
+      {
+        "class_id": 28,
+        "label": "exact:class28",
+        "iteration": 38,
+        "depth": 17,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          19,
+          22,
+          10,
+          5,
+          0,
+          3,
+          13,
+          15,
+          8,
+          2,
+          30,
+          38,
+          35,
+          29,
+          16,
+          32,
+          11
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          8,
+          10,
+          11,
+          13,
+          15,
+          16,
+          19,
+          22,
+          29,
+          30,
+          32,
+          35,
+          38
+        ]
+      },
+      {
+        "class_id": 19,
+        "label": "exact:class19",
+        "iteration": 81,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          0,
+          19,
+          2,
+          10,
+          5,
+          22,
+          13,
+          14,
+          25,
+          21,
+          31,
+          36,
+          26,
+          34,
+          28,
+          6
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          5,
+          6,
+          9,
+          10,
+          13,
+          14,
+          19,
+          21,
+          22,
+          25,
+          26,
+          28,
+          31,
+          34,
+          36
+        ]
+      },
+      {
+        "class_id": 40,
+        "label": "exact:class40",
+        "iteration": 171,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          18,
+          12,
+          8,
+          2,
+          15,
+          11,
+          30,
+          3,
+          5,
+          17,
+          32,
+          36,
+          38,
+          35,
+          6,
+          29,
+          37
+        ],
+        "chosen_blocks": [
+          2,
+          3,
+          5,
+          6,
+          8,
+          11,
+          12,
+          15,
+          17,
+          18,
+          29,
+          30,
+          32,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "class_id": 39,
+        "label": "exact:class39",
+        "iteration": 188,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          18,
+          13,
+          6,
+          17,
+          3,
+          37,
+          34,
+          1,
+          14,
+          20,
+          22,
+          27,
+          24,
+          10,
+          31,
+          28,
+          5
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          5,
+          6,
+          10,
+          13,
+          14,
+          17,
+          18,
+          20,
+          22,
+          24,
+          27,
+          28,
+          31,
+          34,
+          37
+        ]
+      },
+      {
+        "class_id": 25,
+        "label": "exact:class25",
+        "iteration": 201,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          18,
+          1,
+          19,
+          36,
+          4,
+          7,
+          10,
+          21,
+          14,
+          9,
+          33,
+          31,
+          26,
+          27,
+          28,
+          34,
+          22
+        ],
+        "chosen_blocks": [
+          1,
+          4,
+          7,
+          9,
+          10,
+          14,
+          18,
+          19,
+          21,
+          22,
+          26,
+          27,
+          28,
+          31,
+          33,
+          34,
+          36
+        ]
+      },
+      {
+        "class_id": 46,
+        "label": "exact:class46",
+        "iteration": 351,
+        "depth": 17,
+        "score": 10.0,
+        "rank": 25,
+        "path": [
+          9,
+          31,
+          18,
+          6,
+          11,
+          3,
+          14,
+          13,
+          16,
+          23,
+          27,
+          28,
+          20,
+          1,
+          24,
+          4,
+          34
+        ],
+        "chosen_blocks": [
+          1,
+          3,
+          4,
+          6,
+          9,
+          11,
+          13,
+          14,
+          16,
+          18,
+          20,
+          23,
+          24,
+          27,
+          28,
+          31,
+          34
+        ]
+      },
+      {
+        "class_id": 12,
+        "label": "exact:class12",
+        "iteration": 509,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          31,
+          2,
+          10,
+          12,
+          7,
+          0,
+          3,
+          22,
+          5,
+          19,
+          34,
+          32,
+          36,
+          33,
+          39,
+          37
+        ],
+        "chosen_blocks": [
+          0,
+          2,
+          3,
+          5,
+          7,
+          9,
+          10,
+          12,
+          19,
+          22,
+          31,
+          32,
+          33,
+          34,
+          36,
+          37,
+          39
+        ]
+      },
+      {
+        "class_id": 34,
+        "label": "exact:class34",
+        "iteration": 720,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          8,
+          14,
+          13,
+          39,
+          23,
+          20,
+          1,
+          6,
+          16,
+          11,
+          25,
+          30,
+          26,
+          33,
+          0,
+          37,
+          34
+        ],
+        "chosen_blocks": [
+          0,
+          1,
+          6,
+          8,
+          11,
+          13,
+          14,
+          16,
+          20,
+          23,
+          25,
+          26,
+          30,
+          33,
+          34,
+          37,
+          39
+        ]
+      },
+      {
+        "class_id": 22,
+        "label": "exact:class22",
+        "iteration": 731,
+        "depth": 17,
+        "score": 100.0,
+        "rank": 25,
+        "path": [
+          9,
+          31,
+          19,
+          17,
+          33,
+          7,
+          14,
+          5,
+          34,
+          12,
+          10,
+          0,
+          20,
+          27,
+          28,
+          25,
+          38
+        ],
+        "chosen_blocks": [
+          0,
+          5,
+          7,
+          9,
+          10,
+          12,
+          14,
+          17,
+          19,
+          20,
+          25,
+          27,
+          28,
+          31,
+          33,
+          34,
+          38
+        ]
+      }
+    ],
+    "encountered_label_counts": {
+      "exact:class12": 1,
+      "exact:class15": 7,
+      "exact:class19": 4,
+      "exact:class20": 14,
+      "exact:class22": 1,
+      "exact:class25": 2,
+      "exact:class28": 11,
+      "exact:class29": 178,
+      "exact:class32": 11,
+      "exact:class34": 1,
+      "exact:class35": 77,
+      "exact:class39": 8,
+      "exact:class40": 4,
+      "exact:class42": 46,
+      "exact:class43": 221,
+      "exact:class44": 385,
+      "exact:class45": 6,
+      "exact:class46": 13,
+      "exact:class7": 7,
+      "exact:class8": 2
+    },
+    "exact_labels": [
+      "exact:class12",
+      "exact:class15",
+      "exact:class19",
+      "exact:class20",
+      "exact:class22",
+      "exact:class25",
+      "exact:class28",
+      "exact:class29",
+      "exact:class32",
+      "exact:class34",
+      "exact:class35",
+      "exact:class39",
+      "exact:class40",
+      "exact:class42",
+      "exact:class43",
+      "exact:class44",
+      "exact:class45",
+      "exact:class46",
+      "exact:class7",
+      "exact:class8"
+    ],
+    "exact_class_ids": [
+      7,
+      8,
+      12,
+      15,
+      19,
+      20,
+      22,
+      25,
+      28,
+      29,
+      32,
+      34,
+      35,
+      39,
+      40,
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "iterations_completed": 1000,
+    "nodes_created": 969,
+    "root_visits": 1000
+  },
+  "interrupted_by_class_ids": [
+    44,
+    29,
+    35,
+    43,
+    40,
+    39,
+    25,
+    34
+  ],
+  "resumed_after_class_ids": [
+    44,
+    29,
+    35,
+    43,
+    40,
+    39,
+    25,
+    34
+  ]
+}
+]

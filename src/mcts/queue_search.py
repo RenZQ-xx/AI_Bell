@@ -25,7 +25,13 @@ if str(_SRC_DIR) not in sys.path:
 
 from baseline.orbit_blocks import build_orbit_patterns_from_support
 from baseline.reference_classes import DEFAULT_EXAMPLES_PATH, parse_example_rows, support_mask_from_row
-from baseline.scorer import ExpansionScorer, ScorerConfig, exact_class_id
+from baseline.scorer import (
+    ExpansionScorer,
+    ScorerConfig,
+    SharedScorerStructureCache,
+    SharedTerminalValidationCache,
+    exact_class_id,
+)
 
 from mcts.search import ExactClassDiscovery, MCTSConfig, MCTSResult, run_mcts_search
 
@@ -48,6 +54,14 @@ class QueueSearchConfig:
     rollout_temperature: float = 0.85
     expansion_candidate_pool: int = 16
     rollout_candidate_pool: int = 4
+    widening_score_batch: int = 4
+    widening_score_batch_max: int = 16
+    widening_score_batch_scale: float = 1.0
+    widening_score_batch_beta: float = 0.5
+    rollout_score_batch: int = 8
+    progressive_k0: int = 1
+    progressive_alpha: float = 1.0
+    progressive_beta: float = 0.5
     seed: int = 20260502
     rank24_entrance_exists_weight: float = 6.0
     terminal_scoring_mode: str = "static"
@@ -200,6 +214,8 @@ def build_class_scorer(
     class_id: int,
     *,
     rare_target_classes: set[int] | None = None,
+    terminal_validation_cache: SharedTerminalValidationCache | None = None,
+    structure_cache: SharedScorerStructureCache | None = None,
 ) -> tuple[ExpansionScorer, tuple[tuple[int, ...], ...]]:
     """Build the scorer for one exact class root using its representative support."""
     example_rows = parse_example_rows(config.examples_path)
@@ -228,6 +244,8 @@ def build_class_scorer(
         blocks=pattern.orbits,
         rare_target_classes=active_rare_target_classes,
         target_classes=set(int(value) for value in config.target_classes),
+        terminal_validation_cache=terminal_validation_cache,
+        structure_cache=structure_cache,
         config=ScorerConfig(
             rank24_entrance_exists_weight=float(config.rank24_entrance_exists_weight),
             terminal_scoring_mode=str(config.terminal_scoring_mode),
@@ -265,10 +283,15 @@ def run_queue_supervisor(
     results: list[MCTSResult] = []
     label_counts: Counter[str] = Counter()
     exact_class_counts: Counter[int] = Counter()
+    terminal_validation_cache = SharedTerminalValidationCache()
 
     target_classes = set(int(value) for value in config.target_classes)
     enable_pattern_dedup = search_runner is None
-    search_runner = search_runner or _default_search_runner(config, current_rare_target_classes)
+    search_runner = search_runner or _default_search_runner(
+        config,
+        current_rare_target_classes,
+        terminal_validation_cache,
+    )
     search_index = 0
     queued_pattern_shapes: set[tuple[int, ...]] = set()
     started_pattern_shapes: set[tuple[int, ...]] = set()
@@ -282,6 +305,7 @@ def run_queue_supervisor(
             config,
             start_class_id,
             rare_target_classes=current_rare_target_classes,
+            terminal_validation_cache=terminal_validation_cache,
         )
         started_class_ids.add(start_class_id)
         # claim the abstract block shape for the starting pattern so subset
@@ -302,6 +326,7 @@ def run_queue_supervisor(
                 config,
                 class_id,
                 rare_target_classes=current_rare_target_classes,
+                terminal_validation_cache=terminal_validation_cache,
             )
             candidate_shape = _pattern_shape_key(candidate_pattern_signature)
             same_pattern = enable_pattern_dedup and (
@@ -418,6 +443,14 @@ def _build_report(
         "rollout_temperature": float(config.rollout_temperature),
         "expansion_candidate_pool": int(config.expansion_candidate_pool),
         "rollout_candidate_pool": int(config.rollout_candidate_pool),
+        "widening_score_batch": int(config.widening_score_batch),
+        "widening_score_batch_max": int(config.widening_score_batch_max),
+        "widening_score_batch_scale": float(config.widening_score_batch_scale),
+        "widening_score_batch_beta": float(config.widening_score_batch_beta),
+        "rollout_score_batch": int(config.rollout_score_batch),
+        "progressive_k0": int(config.progressive_k0),
+        "progressive_alpha": float(config.progressive_alpha),
+        "progressive_beta": float(config.progressive_beta),
         "seed": int(config.seed),
         "rank24_entrance_exists_weight": float(config.rank24_entrance_exists_weight),
         "terminal_scoring_mode": str(config.terminal_scoring_mode),
@@ -449,12 +482,17 @@ def _write_json_snapshot(path: Path, payload: dict[str, object]) -> None:
     tmp_path.replace(path)
 
 
-def _default_search_runner(config: QueueSearchConfig, current_rare_target_classes: set[int]) -> Callable[[int, int], MCTSResult]:
+def _default_search_runner(
+    config: QueueSearchConfig,
+    current_rare_target_classes: set[int],
+    terminal_validation_cache: SharedTerminalValidationCache,
+) -> Callable[[int, int], MCTSResult]:
     def runner(start_class_id: int, seed: int) -> MCTSResult:
         scorer, _pattern_signature = build_class_scorer(
             config,
             start_class_id,
             rare_target_classes=current_rare_target_classes,
+            terminal_validation_cache=terminal_validation_cache,
         )
         mcts_config = MCTSConfig(
             iterations=int(config.iterations),
@@ -465,6 +503,14 @@ def _default_search_runner(config: QueueSearchConfig, current_rare_target_classe
             rollout_temperature=float(config.rollout_temperature),
             expansion_candidate_pool=int(config.expansion_candidate_pool),
             rollout_candidate_pool=int(config.rollout_candidate_pool),
+            widening_score_batch=int(config.widening_score_batch),
+            widening_score_batch_max=int(config.widening_score_batch_max),
+            widening_score_batch_scale=float(config.widening_score_batch_scale),
+            widening_score_batch_beta=float(config.widening_score_batch_beta),
+            rollout_score_batch=int(config.rollout_score_batch),
+            progressive_k0=int(config.progressive_k0),
+            progressive_alpha=float(config.progressive_alpha),
+            progressive_beta=float(config.progressive_beta),
             seed=int(seed),
         )
         return run_mcts_search(scorer, config=mcts_config)
@@ -488,6 +534,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rollout-temperature", type=float, default=0.85)
     parser.add_argument("--expansion-candidate-pool", type=int, default=16)
     parser.add_argument("--rollout-candidate-pool", type=int, default=4)
+    parser.add_argument("--widening-score-batch", type=int, default=4)
+    parser.add_argument("--widening-score-batch-max", type=int, default=16)
+    parser.add_argument("--widening-score-batch-scale", type=float, default=1.0)
+    parser.add_argument("--widening-score-batch-beta", type=float, default=0.5)
+    parser.add_argument("--rollout-score-batch", type=int, default=8)
+    parser.add_argument("--progressive-k0", type=int, default=1)
+    parser.add_argument("--progressive-alpha", type=float, default=1.0)
+    parser.add_argument("--progressive-beta", type=float, default=0.5)
     parser.add_argument("--seed", type=int, default=20260502)
     parser.add_argument("--rank24-entrance-exists-weight", type=float, default=6.0)
     parser.add_argument("--terminal-scoring-mode", choices=["static", "dynamic"], default="static")
@@ -520,6 +574,14 @@ def main() -> None:
         rollout_temperature=float(args.rollout_temperature),
         expansion_candidate_pool=int(args.expansion_candidate_pool),
         rollout_candidate_pool=int(args.rollout_candidate_pool),
+        widening_score_batch=int(args.widening_score_batch),
+        widening_score_batch_max=int(args.widening_score_batch_max),
+        widening_score_batch_scale=float(args.widening_score_batch_scale),
+        widening_score_batch_beta=float(args.widening_score_batch_beta),
+        rollout_score_batch=int(args.rollout_score_batch),
+        progressive_k0=int(args.progressive_k0),
+        progressive_alpha=float(args.progressive_alpha),
+        progressive_beta=float(args.progressive_beta),
         seed=int(args.seed),
         rank24_entrance_exists_weight=float(args.rank24_entrance_exists_weight),
         terminal_scoring_mode=str(args.terminal_scoring_mode),
