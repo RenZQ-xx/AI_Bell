@@ -64,6 +64,7 @@ from mcts.search import (
     _select_child,
     _select_progressive_action,
 )
+from mcts.decision_trace import emit as _trace_emit, set_trace_iteration
 
 
 @dataclass(frozen=True)
@@ -673,6 +674,7 @@ def _synchronize_discovery_epoch(
 
 
 def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> list[ExactClassDiscovery]:
+    set_trace_iteration(iteration_index)
     rng = getattr(state, "_rng", None)
     if rng is None:
         rng = random.Random(state.config.seed + 1009 * iteration_index)
@@ -685,6 +687,13 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
     path_nodes: list[MCTSNode] = [root]
     node = root
     new_discoveries: list[ExactClassDiscovery] = []
+    _trace_emit(
+        "iteration_start",
+        root_visits=root.visits,
+        node_count=len(state.nodes),
+        discovery_epoch=state.global_discovery.discovery_epoch,
+        discovered_class_ids=sorted(state.global_discovery.discovered_exact_classes),
+    )
 
     def terminal_score(key: BlockKey, terminal: object) -> float:
         terminal_label = str(getattr(terminal, "label", ""))
@@ -768,8 +777,29 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         record_signature(key)
 
     while True:
+        _trace_emit(
+            "node_visit",
+            path=list(node.path),
+            selected_blocks=selected_blocks(node.key),
+            rank=node.rank,
+            visits=node.visits,
+            value_visits=node.value_visits,
+            escape_q=node.escape_q_value,
+            survival_q=node.survival_q_value,
+            novelty_q=node.novelty_q_value,
+            child_count=len(node.children),
+            unexpanded_count=len(node.unexpanded_actions),
+        )
         if node.is_terminal:
             terminal_score_value = terminal_score(node.key, node.terminal)
+            _trace_emit(
+                "terminal_observation",
+                source="tree_node",
+                path=list(node.path),
+                rank=node.rank,
+                label=None if node.terminal is None else node.terminal.label,
+                score=terminal_score_value,
+            )
             if node.terminal is not None and node.terminal.is_exact:
                 record_exact_discovery(
                     node.terminal,
@@ -800,6 +830,14 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         if node.rank >= 25:
             terminal = state.scorer.terminal_label(node.key)
             terminal_score_value = terminal_score(node.key, terminal)
+            _trace_emit(
+                "terminal_observation",
+                source="tree_rank25",
+                path=list(node.path),
+                rank=node.rank,
+                label=terminal.label,
+                score=terminal_score_value,
+            )
             if terminal.is_exact:
                 record_exact_discovery(
                     terminal,
@@ -849,6 +887,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                 adaptive_score_batch=state.productive,
             )
             child_key = add_block(node.key, action)
+            _trace_emit("expand_action", parent_path=list(node.path), action=action)
             child_path = [*node.path, int(action)]
             child = _get_or_create_node(state.nodes, state.scorer, child_key, path=child_path, parent=node, action=action)
             child.prior = node.action_priors.get(action, child.prior)
@@ -860,6 +899,14 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
             if child.is_terminal or child.rank >= 25:
                 terminal = child.terminal if child.terminal is not None else state.scorer.terminal_label(child.key)
                 terminal_score_value = terminal_score(child.key, terminal)
+                _trace_emit(
+                    "terminal_observation",
+                    source="expanded_child",
+                    path=list(child.path),
+                    rank=child.rank,
+                    label=terminal.label,
+                    score=terminal_score_value,
+                )
                 if terminal.is_exact:
                     record_exact_discovery(
                         terminal,

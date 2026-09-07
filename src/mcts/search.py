@@ -10,6 +10,7 @@ from baseline.facet_validator import FacetLabel
 from baseline.orbit_blocks import BlockKey, add_block, empty_key, selected_blocks, unselected_blocks
 from baseline.reference_classes import DEFAULT_EXAMPLES_PATH, parse_example_rows, support_mask_from_row
 from baseline.scorer import ExpansionScore, ExpansionScorer, exact_class_id
+from mcts.decision_trace import emit as _trace_emit
 
 
 TerminalScoreFn = Callable[[BlockKey, FacetLabel], float]
@@ -650,6 +651,8 @@ def _select_progressive_action(
 
     bucket = _next_progressive_bucket(node, cfg)
     active_classes = sorted(discovered_exact_classes)
+    decision_values: dict[int, float] = {}
+    decision_kind = "random"
     if bucket == 0:
         scored_candidates = _score_lazy_action_batch(
             node,
@@ -660,9 +663,11 @@ def _select_progressive_action(
             terminal_score_fn=terminal_score_fn,
             adaptive_score_batch=adaptive_score_batch,
         )
+        decision_values = {item: float(node.action_scores[item].score) for item in scored_candidates}
+        decision_kind = "structural_score"
         action = _best_action_random_tie(
             scored_candidates,
-            {item: float(node.action_scores[item].score) for item in scored_candidates},
+            decision_values,
             rng,
         )
     elif bucket == 1 and compatibility_bank is not None and active_classes:
@@ -674,6 +679,8 @@ def _select_progressive_action(
             )
             for action in candidates
         }
+        decision_values = values
+        decision_kind = "compatibility_escape_count"
         action = _best_action_random_tie(candidates, values, rng)
     elif bucket == 2 and compatibility_bank is not None and active_classes:
         current_active = {
@@ -691,12 +698,16 @@ def _select_progressive_action(
             )
             for action in candidates
         }
+        decision_values = values
+        decision_kind = "classes_eliminated"
         action = _best_action_random_tie(candidates, values, rng)
     elif bucket == 3 and compatibility_bank is not None and active_classes:
         values = {}
         for action in candidates:
             signature = compatibility_bank.active_signature(add_block(node.key, action), active_classes)
             values[action] = 1.0 / (1.0 + float(seen_signatures[signature]))
+        decision_values = values
+        decision_kind = "signature_novelty"
         action = _best_action_random_tie(candidates, values, rng)
     elif bucket == 5:
         scored_candidates = _score_lazy_action_batch(
@@ -720,9 +731,12 @@ def _select_progressive_action(
                     - compatibility_bank.total_compat_count(add_block(node.key, candidate), active_classes)
                 )
             values[candidate] = float(node.action_scores[candidate].score) / (1.0 + max(0.0, removed))
+        decision_values = values
+        decision_kind = "score_over_compatibility_removal"
         action = _best_action_random_tie(scored_candidates, values, rng)
     else:
         action = rng.choice(candidates)
+        decision_kind = "uniform_random"
 
     _ensure_action_scored(
         node,
@@ -730,6 +744,19 @@ def _select_progressive_action(
         scorer,
         cfg,
         terminal_score_fn=terminal_score_fn,
+    )
+    _trace_emit(
+        "progressive_choice",
+        node_path=list(node.path),
+        node_rank=node.rank,
+        node_visits=node.visits,
+        bucket=bucket,
+        decision_kind=decision_kind,
+        candidate_actions=list(candidates),
+        decision_values={str(k): v for k, v in decision_values.items()},
+        chosen_action=action,
+        chosen_score=float(node.action_scores[action].score),
+        chosen_prior=float(node.action_priors.get(action, 0.0)),
     )
     return action
 
@@ -901,6 +928,7 @@ def _select_child(
     parent_visits = max(node.value_visits, 1.0)
     best_child: MCTSNode | None = None
     best_value = float("-inf")
+    diagnostics: list[dict[str, object]] = []
     for child in node.children.values():
         exploitation = child.escape_q_value + survival_weight * child.survival_q_value + novelty_weight * child.novelty_q_value
         exploration = (
@@ -910,9 +938,28 @@ def _select_child(
             / (1.0 + child.value_visits)
         )
         score = exploitation + exploration
+        diagnostics.append({
+            "action": child.action_from_parent,
+            "visits": child.visits,
+            "value_visits": child.value_visits,
+            "prior": child.prior,
+            "escape_q": child.escape_q_value,
+            "survival_q": child.survival_q_value,
+            "novelty_q": child.novelty_q_value,
+            "exploitation": exploitation,
+            "exploration": exploration,
+            "ucb": score,
+        })
         if score > best_value:
             best_value = score
             best_child = child
+    _trace_emit(
+        "ucb_choice",
+        node_path=list(node.path),
+        parent_value_visits=node.value_visits,
+        candidates=diagnostics,
+        chosen_action=None if best_child is None else best_child.action_from_parent,
+    )
     return best_child
 
 
@@ -959,6 +1006,14 @@ def _rollout(
                 current_key,
                 terminal,
                 terminal_score_fn=terminal_score_fn,
+            )
+            _trace_emit(
+                "terminal_observation",
+                source="rollout_rank25",
+                path=list(current_path),
+                rank=current_rank,
+                label=terminal.label,
+                score=terminal_score,
             )
             if terminal.is_exact:
                 record_exact_discovery(
@@ -1031,7 +1086,40 @@ def _rollout(
         limit = max(1, min(cfg.rollout_candidate_pool, len(scored)))
         pool = scored[:limit]
         weights = _softmax([item.score for item in pool], temperature=cfg.rollout_temperature)
-        step = pool[_weighted_choice_index(weights, rng)]
+        chosen_index = _weighted_choice_index(weights, rng)
+        step = pool[chosen_index]
+        _trace_emit(
+            "rollout_choice",
+            rollout_depth=len(current_path),
+            current_path=list(current_path),
+            current_rank=current_rank,
+            candidate_actions=list(candidate_actions),
+            scored_candidates=[
+                {
+                    "action": item.action,
+                    "score": float(item.score),
+                    "new_rank": item.new_rank,
+                    "terminal": None if item.terminal is None else item.terminal.label,
+                }
+                for item in scored
+            ],
+            pool=[item.action for item in pool],
+            weights=list(weights),
+            chosen_index=chosen_index,
+            chosen_action=step.action,
+            chosen_score=float(step.score),
+            chosen_new_rank=step.new_rank,
+            chosen_terminal=None if step.terminal is None else step.terminal.label,
+        )
+        if step.terminal is not None:
+            _trace_emit(
+                "terminal_observation",
+                source="rollout_step",
+                path=[*current_path, int(step.action)],
+                rank=step.new_rank,
+                label=step.terminal.label,
+                score=float(step.score),
+            )
         if step.terminal is not None and step.terminal.is_exact:
             record_exact_discovery(
                 step.terminal,
@@ -1160,6 +1248,17 @@ def _backpropagate_components(
     novelty_weight: float,
 ) -> None:
     total_value = value.total(survival_weight=survival_weight, novelty_weight=novelty_weight)
+    before = [
+        {
+            "path": list(node.path),
+            "visits": node.visits,
+            "value_visits": node.value_visits,
+            "escape_q": node.escape_q_value,
+            "survival_q": node.survival_q_value,
+            "novelty_q": node.novelty_q_value,
+        }
+        for node in path_nodes
+    ]
     for node in path_nodes:
         node.visits += 1
         node.value_visits += 1.0
@@ -1167,6 +1266,22 @@ def _backpropagate_components(
         node.escape_sum += float(value.escape)
         node.survival_sum += float(value.survival)
         node.novelty_sum += float(value.novelty)
+    _trace_emit(
+        "backpropagation",
+        value={"escape": value.escape, "survival": value.survival, "novelty": value.novelty, "total": total_value},
+        before=before,
+        after=[
+            {
+                "path": list(node.path),
+                "visits": node.visits,
+                "value_visits": node.value_visits,
+                "escape_q": node.escape_q_value,
+                "survival_q": node.survival_q_value,
+                "novelty_q": node.novelty_q_value,
+            }
+            for node in path_nodes
+        ],
+    )
 
 
 def _backpropagate(path_nodes: Sequence[MCTSNode], value: float) -> None:
