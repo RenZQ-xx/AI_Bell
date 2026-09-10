@@ -1,3 +1,8 @@
 .venv/
 __pycache__/
-runs/
+
+# Keep important baseline/version results; ignore other experiment runs.
+runs/*
+!runs/class8_v4_4_300_trace/
+!runs/class8_v10/
+!runs/class8_v10_*/

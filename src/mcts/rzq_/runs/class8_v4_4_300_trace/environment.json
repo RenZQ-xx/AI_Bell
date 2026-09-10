@@ -1,0 +1,51 @@
+{
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "executable": "/home/ap809/workspace/AI_Bell/src/mcts/rzq_/.venv/bin/python",
+  "prefix": "/home/ap809/workspace/AI_Bell/src/mcts/rzq_/.venv",
+  "base_prefix": "/usr",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "uv": "uv 0.9.2",
+  "git_head": "43a2acf085cf3dd13361042252f6c95a8d6925b0",
+  "git_status": " M src/mcts/interrupt_search.py\n M src/mcts/rzq_/README.md\n M src/mcts/rzq_/__init__.py\n M src/mcts/rzq_/test_compatibility.py\n M src/mcts/search.py\n?? src/mcts/rzq_/V4_1.md\n?? src/mcts/rzq_/V4_2.md\n?? src/mcts/rzq_/V4_3.md\n?? src/mcts/rzq_/analyze_exact_branches.py\n?? src/mcts/rzq_/analyze_node_compat.py\n?? src/mcts/rzq_/analyze_productive_depth3.py\n?? src/mcts/rzq_/analyze_v4_visit_distribution.py\n?? src/mcts/rzq_/compare_v4_variants.py\n?? src/mcts/rzq_/extract_exact_ucb_stabilizers.py\n?? src/mcts/rzq_/node_manager.py\n?? src/mcts/rzq_/rollout_scorer.py\n?? src/mcts/rzq_/run_class8_round1.py\n?? src/mcts/rzq_/run_class8_v2.py\n?? src/mcts/rzq_/run_class8_v3.py\n?? src/mcts/rzq_/run_class8_v4.py\n?? src/mcts/rzq_/run_class8_v4_1.py\n?? src/mcts/rzq_/run_class8_v4_2.py\n?? src/mcts/rzq_/run_class8_v4_3.py\n?? src/mcts/rzq_/run_class8_v4_4.py\n?? src/mcts/rzq_/run_class8_v5.py\n?? src/mcts/rzq_/run_class8_v6.py\n?? src/mcts/rzq_/run_class8_v7.py\n?? src/mcts/rzq_/symmetry_quotient.py\n?? src/mcts/rzq_/test_v4_1.py\n?? src/mcts/rzq_/ucb-tree-v1-v3.html\n?? src/mcts/rzq_/ucb-v1-folded-v3-comparison.html\n?? src/mcts/rzq_/v3-growth-report/\n",
+  "installed_packages": {
+    "numpy": "2.4.0"
+  },
+  "imported_distributions": {
+    "numpy": [
+      "numpy"
+    ]
+  },
+  "numpy_config": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"14.2.1\",\n      \"commands\": \"cc\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.2.3\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"14.2.1\",\n      \"commands\": \"c++\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"linux\"\n    },\n    \"build\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"linux\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.30\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"/opt/_internal/cpython-3.12.12/lib/python3.12/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"/opt/_internal/cpython-3.12.12/lib/python3.12/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.30  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=64\",\n      \"pc file directory\": \"/project/.openblas\"\n    },\n    \"lapack\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.30\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"/opt/_internal/cpython-3.12.12/lib/python3.12/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"/opt/_internal/cpython-3.12.12/lib/python3.12/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.30  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=64\",\n      \"pc file directory\": \"/project/.openblas\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"/tmp/build-env-2_kfoza7/bin/python\",\n    \"version\": \"3.12\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"X86_V2\"\n    ],\n    \"found\": [\n      \"X86_V3\"\n    ],\n    \"not found\": [\n      \"X86_V4\",\n      \"AVX512_ICL\",\n      \"AVX512_SPR\"\n    ]\n  }\n}\n",
+  "environment": {
+    "OMP_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null,
+    "PYTHONHASHSEED": null,
+    "UV_PROJECT_ENVIRONMENT": null
+  },
+  "sha256": {
+    "data/facet_classes_322_examples.txt": "f4ac50c59dacf81a4118ba148795d555565895cdf088bc1ba7eab12e14ae86ba",
+    "data/facets_322.txt": "babd61eb04f6fb6d97ac7302a75932710362b3c78190fe38e2a6c72774671a62",
+    "src/baseline/__init__.py": "ce5ba5010c88115329490fb2723be03e83748ed8d51f8c5e53a643abcc09bf8f",
+    "src/baseline/bell322.py": "c27c46a07de24f11e4750aa6cb91da97ec73e4005351f3facbf2503f3b446396",
+    "src/baseline/facet_validator.py": "362ad161a4b894da664c3f9fa92bb176a04c08d258f4dfac44a5eba690c0980c",
+    "src/baseline/geometry.py": "57c05b520cbcca38d16b55c2ad96f04ee770c8b5146e6388672a39e36eff1670",
+    "src/baseline/orbit_blocks.py": "2cec9c16c6a27bc140892c71748b213f70e6dd5bbf50cdcc54dae14a351b775d",
+    "src/baseline/reference_classes.py": "8c3e2171b0e34a8a8e2b13b9310ad1ccf9d3807958b1929144e41f9f8198f385",
+    "src/baseline/scorer.py": "a21b6b29ba755857c2bb0281122322f066847995b84edf3c88b3cc23d73a1aef",
+    "src/baseline/support_masks.py": "1b85546caddc8d449324d5c6c6a159acbd4e56712b43f29b736efc427ac62c2a",
+    "src/baseline/supportability.py": "7407b579d5ca022c4e2788119afeed421b416deb83e157889bce50f8b5144e8f",
+    "src/mcts/__init__.py": "70ad7a865cbce7cf7571a7b03b430b27e1c10445bd04fc4537ba598effe5cf1b",
+    "src/mcts/decision_trace.py": "8a66fea8631e824ad373b3eb8d44fb702f19ae57a5e9daf40445d80bda4cde34",
+    "src/mcts/interrupt_search.py": "760ef9fe170f087661cd9913bc0577149b1d92af825c7c3b97c569289f6ec99a",
+    "src/mcts/pair_interrupt_search.py": "df3ad05c6698491e3729979d132718c4bcbe6fb4bacb33b73f3785cc2d89ea42",
+    "src/mcts/pair_involution_search.py": "adaa38a841e18045ca74e9f092a7cd661892292a66f6d33cf90a54c19b689f14",
+    "src/mcts/queue_search.py": "1afbb185a1838171d4123b553c22d87f5af38e25d60fe0377ada1d4346a7e4a3",
+    "src/mcts/replay_class9_iteration66.py": "50f877dfad9d7243b600d6d46626264cd7c64e73b51efc8b0397f5af3156de3c",
+    "src/mcts/replay_hybrid_class9_iteration66.py": "b0bc1f0433140ea97d4669d0febaba4868b326e4ff48d25d378a2fe7bb60a778",
+    "src/mcts/runs/pair_interrupt_search_class1_i300.pair.json": "97a2d5a03c77ceb166796c37d9e5e300d971e35c63ad769993f678025d8e3fb5",
+    "src/mcts/search.py": "c00e71712da59bc92639e12547844e39780d4bf7970debd4c3ac9c51c4a37053",
+    "src/mcts/trace_class8_current_300.py": "cffd48bb963410d4e92d3c640fc9bfcc3dbd8478a7bab1199c14cfe37811646e"
+  }
+}
