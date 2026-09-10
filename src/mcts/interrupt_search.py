@@ -436,6 +436,16 @@ class InterruptSearchState:
             node.unexpanded_actions.clear()
             node.action_priors.clear()
             node.action_scores.clear()
+            node.action_families.clear()
+            node.expansion_scores.clear()
+            node.expansion_score_details.clear()
+            node.child_symmetry_maps.clear()
+            node.child_closure_blocks.clear()
+            node.edge_value_visits.clear()
+            node.edge_value_sums.clear()
+            node.edge_escape_sums.clear()
+            node.edge_survival_sums.clear()
+            node.edge_novelty_sums.clear()
         self.nodes.clear()
         self.root = None
         if self.compatibility_bank is not None:
@@ -443,6 +453,8 @@ class InterruptSearchState:
         self.seen_signatures.clear()
         if hasattr(self, "_rng"):
             delattr(self, "_rng")
+        if hasattr(self, "_rollout_tie_rng"):
+            delattr(self, "_rollout_tie_rng")
 
 
 @dataclass
@@ -662,6 +674,12 @@ def _synchronize_discovery_epoch(
             node.escape_sum *= decay
             node.survival_sum *= decay
             node.novelty_sum *= decay
+            for action in list(node.edge_value_visits):
+                node.edge_value_visits[action] *= decay
+                node.edge_value_sums[action] *= decay
+                node.edge_escape_sums[action] *= decay
+                node.edge_survival_sums[action] *= decay
+                node.edge_novelty_sums[action] *= decay
 
     for node in state.nodes.values():
         _refresh_discovery_dependent_action_scores(
@@ -679,6 +697,10 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
     if rng is None:
         rng = random.Random(state.config.seed + 1009 * iteration_index)
         state._rng = rng  # type: ignore[attr-defined]
+    tie_rng = getattr(state, "_rollout_tie_rng", None)
+    if tie_rng is None:
+        tie_rng = random.Random(state.config.seed + 2_147_483_647)
+        state._rollout_tie_rng = tie_rng  # type: ignore[attr-defined]
 
     root = state.root
     if root is None:
@@ -777,6 +799,11 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         record_signature(key)
 
     while True:
+        node.refresh_compatibility(
+            state.scorer,
+            sorted(state.global_discovery.discovered_exact_classes),
+            state.global_discovery.discovery_epoch,
+        )
         _trace_emit(
             "node_visit",
             path=list(node.path),
@@ -892,6 +919,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
             child = _get_or_create_node(state.nodes, state.scorer, child_key, path=child_path, parent=node, action=action)
             child.prior = node.action_priors.get(action, child.prior)
             node.children[action] = child
+            node.selected_edge_action = int(action)
             node.unexpanded_actions = [item for item in node.unexpanded_actions if item != action]
             path_nodes.append(child)
 
@@ -954,6 +982,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     state.global_discovery.discovered_exact_classes,
                     state.seen_signatures,
                     iteration_index,
+                    tie_rng=tie_rng,
                     terminal_score_fn=terminal_score,
                     global_discovered_label_counts=state.global_discovery.discovered_label_counts,
                     rollout_score_batch=_rollout_score_batch_for_rollout(
@@ -984,8 +1013,13 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         next_node = _select_child(
             node,
             state.config.exploration_constant,
+            rng=state._rng,
             survival_weight=state.config.selection_survival_weight,
             novelty_weight=state.config.selection_novelty_weight,
+            use_real_node_visits=state.config.ucb_use_real_node_visits,
+            min_action_visits=state.config.ucb_min_action_visits,
+            normalize_edge_survival_q=state.config.ucb_normalize_edge_survival_q,
+            normalization_epsilon=state.config.ucb_normalization_epsilon,
         )
         if next_node is None:
             value = _estimate_state_value(

@@ -46,6 +46,30 @@ PYTHONPATH=src uv run --project src/mcts/rzq_ --locked \
   python -m unittest mcts.rzq_.test_compatibility
 ```
 
+## 新 rollout scorer 框架
+
+`rollout_scorer.py` 提供可插拔的 `RZQRolloutScorer`。非终局动作总分明确拆成 `rank_gain_score + flat_score + supportability_score + decline_bonus`，并可通过 `breakdown(key, action)` 查看每项数值。当前公式为：rank 增加取 `+5`，否则取 `-5`；`flat_score = -log(1+flat)`；`supportability_score = -log(1+closer_side)`。初始化时一次性求出“已发现且与 class8 根状态相容”的 classes；随后缓存每个状态的逐 class compat 分布，并为候选动作记录父分布、子分布和减少分布。
+
+普通 decline 使用平均逐-class相对下降率 `D`，奖励为 `(D/0.2) * exp(1-D/0.2)`，在 `D=0.2` 时取得最大值1，过度下降时回落。若父状态所有活跃 compat 数均为1，则进入 bridge 状态，额外奖励 `5 * E`，其中 `E` 是仍活跃 masks 被消灭的比例。无 decline 时两项均为0。
+
+第一轮 class8 实验入口是 `uv run --locked python run_class8_round1.py`，输出到 `runs/class8_v1_300_trace/`。终局沿用原静态 rare/target/valid 档位，但 class44 不再单列为 `-5`，而是和其他 target class 一样计分；所有 invalid（包括切过多胞体）统一为 `-10`。该入口关闭原 MCTS compatibility bank，因此不计算 escape/novelty；通用值结构中的对应字段恒为0，节点选择与回传只使用新的 survival 分数。
+
+树扩展在每个父节点的稳定子群下对 actions 取商：同一 action orbit 只保留编号最小的 `representative_action`，其余成员不会建立独立子节点。空根节点明确使用保持整个 block partition 的完整群。progressive widening 的候选数和已展开数均按代表类计数，trace 的 `representative_families` 保存每个代表及其全部重复 actions。
+
+`node_manager.py` 负责节点状态规范化和汇流。新节点先执行 affine flat closure，自动加入所有不提高 rank 的 blocks，直至 `flat=0`；自动加入项按父边记录在 `child_closure_blocks`。每个节点按 discovery epoch 缓存已发现 classes 的 compatibility，新 class 出现后在下一次创建、复用或访问时增量刷新。
+
+节点需要 expansion 时，对全部 canonical actions 的 closure 子状态计算已知 class compatibility。令 `C` 为正 compat 的 class 数，分数为 `2*log(1+C) + mean_c(log(1+compat_c))`；再按 `prior_temperature` 做 softmax。该 prior 同时用于选择下一个待展开代表和后续 UCB。发现新 class、discovery epoch 改变时，会重算该节点全部 expansion scores/priors。只有最终选中的 action 才调用 rollout scorer，二者互不混用。
+
+每个节点的 expansion bucket 固定为两个并轮换：bucket 0 按尚未展开 canonical actions 的归一化 compatibility-richness prior 抽样；bucket 1 对这些 actions 做均匀随机抽样。每个节点首次 expansion 从 bucket 0 开始。
+
+UCB 的 prior 和收益统计属于父节点的 action edge。选择已展开子边时使用 `parent.action_priors[action]` 和该边自己的 `edge_survival_q`，因此不同父节点不会互相覆盖 prior 或收益均值。节点本身仍累计跨全部到达路径的共享统计。
+
+rollout 的 top-k pool 在截断边界同分时，不再依赖 `unselected_blocks` 的 action 编号顺序。严格高于边界分数的 actions 全部保留，边界同分组使用由实验 seed 派生的独立 RNG 无放回抽取剩余名额，随后仍按原 softmax 温度和权重选择最终 action。独立 RNG 不改变 candidate sampling 和 softmax RNG 的调用序列；相同代码、配置和 seed 可重现相同结果。`rollout_choice` trace 记录原始候选及分数、边界分数、严格高分组、边界同分组、随机入选组、最终 pool、weights 和 chosen action。
+
+rzq 实验的 UCB 探索项使用未衰减的真实节点访问数：`N(s)=parent.visits`、`N(s,a)=child.visits`，不使用会随 discovery epoch 衰减的 `value_visits`。edge survival Q 和父边 prior 仍分别来自当前父 action edge。
+
+flat closure 后的全局 canonical key 只用于 `canonical_index` 查重，主节点仍保留真实轨迹坐标。相同点集的不同动作顺序以及全局对称等价点集共享统计，所有到达轨迹保存在 `arrival_paths`。跨坐标父边保存 `child_symmetry_maps`。如需合并两个已经存在的节点，`merge_nodes` 按“有 children 优先；均无 children 时 visits 多者优先；均有 children 时创建较早者优先”选择主节点，转换次节点 actions/children 后汇入；trace 使用 `symmetric_node_reuse` 和 `symmetric_node_merge` 记录状态、路径、主节点、closure 和对称映射。
+
 ## 推荐方案
 
 将本目录作为独立 uv 项目：自己的 `pyproject.toml`、`uv.lock`、`.python-version` 和 `.venv/`；通过仓库的 `src` 导入已有 `mcts` 和 `baseline` 源码。复现交付单位是整个 AI_Bell 仓库的确定 Git 提交，而不是单独复制本目录。

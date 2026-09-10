@@ -47,6 +47,10 @@ class MCTSConfig:
     progressive_beta: float = 0.5
     progressive_bucket_quota: int = 1
     discovery_epoch_value_decay: float = 0.25
+    ucb_use_real_node_visits: bool = False
+    ucb_min_action_visits: int = 0
+    ucb_normalize_edge_survival_q: bool = False
+    ucb_normalization_epsilon: float = 1e-12
 
 
 @dataclass(frozen=True)
@@ -263,6 +267,25 @@ class MCTSNode:
     unexpanded_actions: list[int] = field(default_factory=list)
     action_priors: dict[int, float] = field(default_factory=dict)
     action_scores: dict[int, ExpansionScore] = field(default_factory=dict)
+    action_families: dict[int, tuple[int, ...]] = field(default_factory=dict)
+    expansion_scores: dict[int, float] = field(default_factory=dict)
+    expansion_score_details: dict[int, dict[str, object]] = field(default_factory=dict)
+    expansion_prior_source: str = ""
+    legacy_prior_override: bool = False
+    expansion_compatibility_epoch: int = -1
+    canonical_key: BlockKey | None = None
+    creation_index: int = 0
+    arrival_paths: list[tuple[int, ...]] = field(default_factory=list)
+    compatibility_counts: dict[int, int] = field(default_factory=dict)
+    compatibility_epoch: int = -1
+    child_symmetry_maps: dict[int, tuple[int, ...]] = field(default_factory=dict)
+    child_closure_blocks: dict[int, tuple[int, ...]] = field(default_factory=dict)
+    edge_value_visits: dict[int, float] = field(default_factory=dict)
+    edge_value_sums: dict[int, float] = field(default_factory=dict)
+    edge_escape_sums: dict[int, float] = field(default_factory=dict)
+    edge_survival_sums: dict[int, float] = field(default_factory=dict)
+    edge_novelty_sums: dict[int, float] = field(default_factory=dict)
+    selected_edge_action: int | None = None
     # rotation pointer for bucket selection when progressively expanding
     next_bucket: int = 0
     bucket_expansion_counts: list[int] = field(default_factory=lambda: [0] * 6)
@@ -287,6 +310,22 @@ class MCTSNode:
     def novelty_q_value(self) -> float:
         return self.novelty_sum / self.value_visits if self.value_visits > 0 else 0.0
 
+    def refresh_compatibility(
+        self,
+        scorer: ExpansionScorer,
+        class_ids: Sequence[int],
+        discovery_epoch: int,
+    ) -> dict[int, int]:
+        """Refresh newly discovered class counts and retain the node-local cache."""
+        requested = {int(class_id) for class_id in class_ids}
+        missing = requested.difference(self.compatibility_counts)
+        if self.compatibility_epoch != int(discovery_epoch) or missing:
+            counter = getattr(scorer, "compatibility_counts", None)
+            if callable(counter):
+                self.compatibility_counts.update(counter(self.key, missing or requested))
+            self.compatibility_epoch = int(discovery_epoch)
+        return {class_id: int(self.compatibility_counts.get(class_id, 0)) for class_id in sorted(requested)}
+
 
 def run_mcts_search(
     scorer: ExpansionScorer,
@@ -302,6 +341,7 @@ def run_mcts_search(
     block_count = len(scorer.blocks)
     root_key = empty_key(block_count) if start_key is None else start_key
     rng = random.Random(cfg.seed)
+    rollout_tie_rng = random.Random(cfg.seed + 2_147_483_647)
     compatibility_bank = ClassCompatibilityBank.from_scorer(scorer, cfg.compatibility_examples_path)
 
     nodes: dict[BlockKey, MCTSNode] = {}
@@ -445,6 +485,7 @@ def run_mcts_search(
                 child = _get_or_create_node(nodes, scorer, child_key, path=child_path, parent=node, action=action)
                 child.prior = node.action_priors.get(action, child.prior)
                 node.children[action] = child
+                node.selected_edge_action = int(action)
                 node.unexpanded_actions = [item for item in node.unexpanded_actions if item != action]
                 path_nodes.append(child)
 
@@ -488,6 +529,7 @@ def run_mcts_search(
                         discovered_exact_classes,
                         seen_signatures,
                         iteration_index,
+                        tie_rng=rollout_tie_rng,
                     )
                     child_components = MCTSValueComponents(
                         escape=rollout_components.escape,
@@ -512,8 +554,13 @@ def run_mcts_search(
             next_node = _select_child(
                 node,
                 cfg.exploration_constant,
+                rng=rng,
                 survival_weight=cfg.selection_survival_weight,
                 novelty_weight=cfg.selection_novelty_weight,
+                use_real_node_visits=cfg.ucb_use_real_node_visits,
+                min_action_visits=cfg.ucb_min_action_visits,
+                normalize_edge_survival_q=cfg.ucb_normalize_edge_survival_q,
+                normalization_epsilon=cfg.ucb_normalization_epsilon,
             )
             if next_node is None:
                 components = _estimate_state_value(
@@ -554,6 +601,15 @@ def _get_or_create_node(
     parent: MCTSNode | None = None,
     action: int | None = None,
 ) -> MCTSNode:
+    manager = getattr(scorer, "node_manager", None)
+    if manager is not None:
+        return manager.get_or_create(
+            nodes,
+            key,
+            path=path,
+            parent=parent,
+            action=action,
+        )
     node = nodes.get(key)
     if node is not None:
         if len(path) < len(node.path):
@@ -584,10 +640,26 @@ def _prepare_actions(
     if node.actions_initialized:
         return
     actions = unselected_blocks(node.key)
+    family_builder = getattr(scorer, "representative_action_families", None)
+    if callable(family_builder):
+        node.action_families = dict(family_builder(node.key, actions))
+        actions = sorted(node.action_families)
+    else:
+        node.action_families = {int(action): (int(action),) for action in actions}
     node.actions_initialized = True
     node.unexpanded_actions = list(actions)
     node.action_priors = {}
     node.action_scores = {}
+    expansion_preparer = getattr(scorer, "prepare_expansion_priors", None)
+    if callable(expansion_preparer):
+        bucket_count = max(1, int(getattr(scorer, "expansion_bucket_count", 2)))
+        node.bucket_expansion_counts = [0] * bucket_count
+        node.next_bucket = 0
+        expansion_preparer(node, cfg.prior_temperature)
+    else:
+        legacy_prior_preparer = getattr(scorer, "prepare_legacy_action_priors", None)
+        if callable(legacy_prior_preparer):
+            legacy_prior_preparer(node, cfg.prior_temperature)
 
 
 def _progressive_child_limit(node: MCTSNode, cfg: MCTSConfig) -> int:
@@ -649,11 +721,76 @@ def _select_progressive_action(
     if not candidates:
         raise ValueError("cannot choose from an empty action list")
 
+    expansion_preparer = getattr(scorer, "prepare_expansion_priors", None)
+    if callable(expansion_preparer):
+        expansion_preparer(node, cfg.prior_temperature)
+    if node.expansion_scores:
+        bucket = _next_progressive_bucket(node, cfg)
+        uniform_only = bool(getattr(scorer, "uniform_expansion_buckets_only", False))
+        prior_buckets = getattr(scorer, "prior_expansion_buckets", (0,))
+        if bucket in prior_buckets and not uniform_only:
+            weights = [max(0.0, float(node.action_priors.get(candidate, 0.0))) for candidate in candidates]
+            total_weight = sum(weights)
+            if total_weight <= 0.0:
+                weights = [1.0 / len(candidates)] * len(candidates)
+            else:
+                weights = [value / total_weight for value in weights]
+            decision_kind = f"{node.expansion_prior_source or 'compatibility_richness'}_prior"
+        else:
+            weights = [1.0 / len(candidates)] * len(candidates)
+            decision_kind = "uniform_random"
+        chosen_index = _weighted_choice_index(weights, rng)
+        action = candidates[chosen_index]
+        _ensure_action_scored(
+            node,
+            action,
+            scorer,
+            cfg,
+            terminal_score_fn=terminal_score_fn,
+        )
+        _trace_emit(
+            "progressive_choice",
+            node_path=list(node.path),
+            node_rank=node.rank,
+            node_visits=node.visits,
+            bucket=bucket,
+            decision_kind=decision_kind,
+            candidate_actions=list(candidates),
+            representative_families={
+                str(candidate): list(node.action_families.get(candidate, (candidate,)))
+                for candidate in candidates
+            },
+            decision_values={str(k): node.expansion_scores[k] for k in candidates},
+            expansion_details={str(k): node.expansion_score_details[k] for k in candidates},
+            candidate_priors={str(k): weights[index] for index, k in enumerate(candidates)},
+            chosen_action=action,
+            chosen_score=float(node.action_scores[action].score),
+            chosen_prior=float(node.action_priors.get(action, 0.0)),
+        )
+        return action
+
+    expansion_preparer = getattr(scorer, "prepare_expansion_priors", None)
+    if not callable(expansion_preparer):
+        legacy_prior_preparer = getattr(scorer, "prepare_legacy_action_priors", None)
+        if callable(legacy_prior_preparer):
+            legacy_prior_preparer(node, cfg.prior_temperature)
+
     bucket = _next_progressive_bucket(node, cfg)
     active_classes = sorted(discovered_exact_classes)
     decision_values: dict[int, float] = {}
     decision_kind = "random"
-    if bucket == 0:
+    if bucket == 0 and node.legacy_prior_override:
+        weights = [max(0.0, float(node.action_priors.get(action, 0.0))) for action in candidates]
+        total_weight = sum(weights)
+        weights = (
+            [value / total_weight for value in weights]
+            if total_weight > 0.0
+            else [1.0 / len(candidates)] * len(candidates)
+        )
+        action = candidates[_weighted_choice_index(weights, rng)]
+        decision_values = {candidate: float(node.action_priors.get(candidate, 0.0)) for candidate in candidates}
+        decision_kind = f"{node.expansion_prior_source}_prior"
+    elif bucket == 0:
         scored_candidates = _score_lazy_action_batch(
             node,
             candidates,
@@ -753,7 +890,19 @@ def _select_progressive_action(
         bucket=bucket,
         decision_kind=decision_kind,
         candidate_actions=list(candidates),
+        representative_families={
+            str(candidate): list(node.action_families.get(candidate, (candidate,)))
+            for candidate in candidates
+        },
         decision_values={str(k): v for k, v in decision_values.items()},
+        candidate_priors={
+            str(candidate): float(node.action_priors.get(candidate, 0.0))
+            for candidate in candidates
+        },
+        expansion_details={
+            str(candidate): node.expansion_score_details.get(candidate, {})
+            for candidate in candidates
+        },
         chosen_action=action,
         chosen_score=float(node.action_scores[action].score),
         chosen_prior=float(node.action_priors.get(action, 0.0)),
@@ -841,6 +990,8 @@ def _ensure_action_scored(
 
 
 def _refresh_action_priors(node: MCTSNode, cfg: MCTSConfig) -> None:
+    if node.expansion_scores or node.legacy_prior_override:
+        return
     actions = list(node.action_scores)
     if not actions:
         return
@@ -877,6 +1028,11 @@ def _refresh_terminal_action_scores(
         changed = True
     if changed:
         _refresh_action_priors(node, cfg)
+    expansion_preparer = getattr(scorer, "prepare_expansion_priors", None)
+    if not callable(expansion_preparer):
+        legacy_prior_preparer = getattr(scorer, "prepare_legacy_action_priors", None)
+        if callable(legacy_prior_preparer):
+            legacy_prior_preparer(node, cfg.prior_temperature)
 
 
 def _refresh_discovery_dependent_action_scores(
@@ -903,6 +1059,11 @@ def _refresh_discovery_dependent_action_scores(
         changed = True
     if changed:
         _refresh_action_priors(node, cfg)
+    expansion_preparer = getattr(scorer, "prepare_expansion_priors", None)
+    if not callable(expansion_preparer):
+        legacy_prior_preparer = getattr(scorer, "prepare_legacy_action_priors", None)
+        if callable(legacy_prior_preparer):
+            legacy_prior_preparer(node, cfg.prior_temperature)
 
 
 def _best_action_random_tie(
@@ -919,46 +1080,122 @@ def _select_child(
     node: MCTSNode,
     exploration_constant: float,
     *,
+    rng: random.Random | None = None,
     survival_weight: float = 1.0,
     novelty_weight: float = 1.0,
+    use_real_node_visits: bool = False,
+    min_action_visits: int = 0,
+    normalize_edge_survival_q: bool = False,
+    normalization_epsilon: float = 1e-12,
 ) -> MCTSNode | None:
     if not node.children:
         return None
 
-    parent_visits = max(node.value_visits, 1.0)
+    parent_visits = max(float(node.visits if use_real_node_visits else node.value_visits), 1.0)
+    raw_survival_q: dict[int, float] = {}
+    for action in node.children:
+        edge_visits = float(node.edge_value_visits.get(int(action), 0.0))
+        raw_survival_q[int(action)] = (
+            float(node.edge_survival_sums.get(int(action), 0.0)) / edge_visits
+            if edge_visits > 0.0
+            else 0.0
+        )
+    q_min = min(raw_survival_q.values())
+    q_max = max(raw_survival_q.values())
+    if q_max == q_min:
+        normalized_survival_q = {action: 0.5 for action in raw_survival_q}
+    else:
+        denominator = q_max - q_min + float(normalization_epsilon)
+        normalized_survival_q = {
+            action: (value - q_min) / denominator
+            for action, value in raw_survival_q.items()
+        }
+
+    under_visited = [
+        int(action)
+        for action, child in node.children.items()
+        if child.visits < int(min_action_visits)
+    ]
+    selection_phase = "minimum_visits" if under_visited else "normalized_ucb" if normalize_edge_survival_q else "ucb"
+    forced_action: int | None = None
+    if under_visited:
+        lowest_visits = min(node.children[action].visits for action in under_visited)
+        tied = [action for action in under_visited if node.children[action].visits == lowest_visits]
+        weights = [max(0.0, float(node.action_priors.get(action, 0.0))) for action in tied]
+        chooser = rng if rng is not None else random.Random(0)
+        forced_action = chooser.choices(tied, weights=weights, k=1)[0] if sum(weights) > 0.0 else chooser.choice(tied)
+
     best_child: MCTSNode | None = None
     best_value = float("-inf")
+    selected_action: int | None = None
     diagnostics: list[dict[str, object]] = []
-    for child in node.children.values():
-        exploitation = child.escape_q_value + survival_weight * child.survival_q_value + novelty_weight * child.novelty_q_value
+    for action, child in node.children.items():
+        edge_visits = float(node.edge_value_visits.get(int(action), 0.0))
+        edge_survival_q = raw_survival_q[int(action)]
+        edge_escape_q = (
+            float(node.edge_escape_sums.get(int(action), 0.0)) / edge_visits
+            if edge_visits > 0.0 else 0.0
+        )
+        edge_novelty_q = (
+            float(node.edge_novelty_sums.get(int(action), 0.0)) / edge_visits
+            if edge_visits > 0.0 else 0.0
+        )
+        prior = float(node.action_priors.get(int(action), 0.0))
+        normalized_q = normalized_survival_q[int(action)]
+        exploitation = (
+            normalized_q
+            if normalize_edge_survival_q
+            else edge_escape_q + survival_weight * edge_survival_q + novelty_weight * edge_novelty_q
+        )
+        exploration_visits = float(child.visits) if use_real_node_visits else edge_visits
         exploration = (
             exploration_constant
-            * child.prior
+            * prior
             * (parent_visits ** 0.5)
-            / (1.0 + child.value_visits)
+            / (1.0 + exploration_visits)
         )
         score = exploitation + exploration
         diagnostics.append({
-            "action": child.action_from_parent,
+            "action": int(action),
             "visits": child.visits,
             "value_visits": child.value_visits,
-            "prior": child.prior,
+            "prior": prior,
+            "edge_value_visits": edge_visits,
+            "ucb_parent_visits": parent_visits,
+            "ucb_child_visits": exploration_visits,
+            "ucb_visit_source": "real_node_visits" if use_real_node_visits else "value_visits",
+            "edge_survival_q": edge_survival_q,
+            "raw_q": edge_survival_q,
+            "normalized_q": normalized_q,
+            "edge_escape_q": edge_escape_q,
+            "edge_novelty_q": edge_novelty_q,
             "escape_q": child.escape_q_value,
             "survival_q": child.survival_q_value,
             "novelty_q": child.novelty_q_value,
             "exploitation": exploitation,
             "exploration": exploration,
             "ucb": score,
+            "selection_phase": selection_phase,
         })
-        if score > best_value:
+        if forced_action is None and score > best_value:
             best_value = score
             best_child = child
+            selected_action = int(action)
+    if forced_action is not None:
+        selected_action = forced_action
+    if selected_action is not None:
+        best_child = node.children[selected_action]
+        node.selected_edge_action = selected_action
     _trace_emit(
         "ucb_choice",
         node_path=list(node.path),
         parent_value_visits=node.value_visits,
+        selection_phase=selection_phase,
+        min_action_visits=int(min_action_visits),
+        q_min=q_min,
+        q_max=q_max,
         candidates=diagnostics,
-        chosen_action=None if best_child is None else best_child.action_from_parent,
+        chosen_action=selected_action,
     )
     return best_child
 
@@ -977,6 +1214,7 @@ def _rollout(
     seen_signatures: Counter[tuple[int, ...]],
     iteration_index: int,
     *,
+    tie_rng: random.Random | None = None,
     terminal_score_fn: TerminalScoreFn | None = None,
     global_discovered_label_counts: Counter[str] | None = None,
     global_exact_hit_callback: ExactHitCallback | None = None,
@@ -1082,9 +1320,12 @@ def _rollout(
             )
             for action in candidate_actions
         ]
-        scored.sort(key=lambda item: item.score, reverse=True)
         limit = max(1, min(cfg.rollout_candidate_pool, len(scored)))
-        pool = scored[:limit]
+        pool, pool_trace = _rollout_top_k_pool(
+            scored,
+            limit,
+            tie_rng=tie_rng if tie_rng is not None else rng,
+        )
         weights = _softmax([item.score for item in pool], temperature=cfg.rollout_temperature)
         chosen_index = _weighted_choice_index(weights, rng)
         step = pool[chosen_index]
@@ -1094,6 +1335,10 @@ def _rollout(
             current_path=list(current_path),
             current_rank=current_rank,
             candidate_actions=list(candidate_actions),
+            candidate_scores=[
+                {"action": item.action, "score": float(item.score)}
+                for item in scored
+            ],
             scored_candidates=[
                 {
                     "action": item.action,
@@ -1101,8 +1346,12 @@ def _rollout(
                     "new_rank": item.new_rank,
                     "terminal": None if item.terminal is None else item.terminal.label,
                 }
-                for item in scored
+                for item in sorted(scored, key=lambda candidate: candidate.score, reverse=True)
             ],
+            boundary_score=pool_trace["boundary_score"],
+            strictly_above_boundary_actions=pool_trace["strictly_above_boundary_actions"],
+            boundary_tied_actions=pool_trace["boundary_tied_actions"],
+            boundary_selected_actions=pool_trace["boundary_selected_actions"],
             pool=[item.action for item in pool],
             weights=list(weights),
             chosen_index=chosen_index,
@@ -1187,6 +1436,33 @@ def _rollout(
     return total.total(survival_weight=cfg.selection_survival_weight, novelty_weight=cfg.selection_novelty_weight), total, best
 
 
+def _rollout_top_k_pool(
+    scored: Sequence[ExpansionScore],
+    limit: int,
+    *,
+    tie_rng: random.Random,
+) -> tuple[list[ExpansionScore], dict[str, object]]:
+    """Select top-k scores with uniform sampling at a tied cutoff."""
+
+    normalized_limit = max(1, min(int(limit), len(scored)))
+    ranked = sorted(scored, key=lambda item: item.score, reverse=True)
+    boundary_score = float(ranked[normalized_limit - 1].score)
+    strictly_above = [item for item in ranked if float(item.score) > boundary_score]
+    boundary_tied = [item for item in scored if float(item.score) == boundary_score]
+    remaining_slots = normalized_limit - len(strictly_above)
+    if remaining_slots >= len(boundary_tied):
+        boundary_selected = list(boundary_tied)
+    else:
+        boundary_selected = tie_rng.sample(boundary_tied, remaining_slots)
+    pool = strictly_above + boundary_selected
+    return pool, {
+        "boundary_score": boundary_score,
+        "strictly_above_boundary_actions": [item.action for item in strictly_above],
+        "boundary_tied_actions": [item.action for item in boundary_tied],
+        "boundary_selected_actions": [item.action for item in boundary_selected],
+    }
+
+
 def _estimate_state_value(
     key: BlockKey,
     scorer: ExpansionScorer,
@@ -1266,9 +1542,29 @@ def _backpropagate_components(
         node.escape_sum += float(value.escape)
         node.survival_sum += float(value.survival)
         node.novelty_sum += float(value.novelty)
+    edge_updates = []
+    for parent, child in zip(path_nodes, path_nodes[1:]):
+        action = parent.selected_edge_action
+        if action is None or parent.children.get(int(action)) is not child:
+            raise RuntimeError("missing or inconsistent traversed edge during backpropagation")
+        normalized = int(action)
+        parent.edge_value_visits[normalized] = parent.edge_value_visits.get(normalized, 0.0) + 1.0
+        parent.edge_value_sums[normalized] = parent.edge_value_sums.get(normalized, 0.0) + float(total_value)
+        parent.edge_escape_sums[normalized] = parent.edge_escape_sums.get(normalized, 0.0) + float(value.escape)
+        parent.edge_survival_sums[normalized] = parent.edge_survival_sums.get(normalized, 0.0) + float(value.survival)
+        parent.edge_novelty_sums[normalized] = parent.edge_novelty_sums.get(normalized, 0.0) + float(value.novelty)
+        edge_updates.append({
+            "parent_path": list(parent.path),
+            "action": normalized,
+            "child_path": list(child.path),
+            "edge_value_visits": parent.edge_value_visits[normalized],
+            "edge_survival_q": parent.edge_survival_sums[normalized] / parent.edge_value_visits[normalized],
+        })
+        parent.selected_edge_action = None
     _trace_emit(
         "backpropagation",
         value={"escape": value.escape, "survival": value.survival, "novelty": value.novelty, "total": total_value},
+        edge_updates=edge_updates,
         before=before,
         after=[
             {
