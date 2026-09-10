@@ -1,0 +1,117 @@
+{
+  "loss_events_with_safe_pool": 273,
+  "mean_safe_probability_at_loss": 0.5176565785717493,
+  "median_safe_probability_at_loss": 0.5122780458614344,
+  "examples": [
+    {
+      "iteration": 1095,
+      "rollout_step": 7,
+      "before_counts": {
+        "9": 1,
+        "11": 0,
+        "25": 1
+      },
+      "chosen_action": 5,
+      "safe_sample": [
+        29,
+        0,
+        35,
+        1,
+        22,
+        3
+      ],
+      "safe_pool": [
+        3,
+        29,
+        35
+      ],
+      "reason": "softmax_chose_incompatible",
+      "pool": [
+        3,
+        29,
+        35,
+        5
+      ],
+      "weights": [
+        0.38503849568782,
+        0.25461735934118956,
+        0.25461735934118956,
+        0.1057267856298008
+      ],
+      "safe_probability": 0.8942732143701991
+    },
+    {
+      "iteration": 1096,
+      "rollout_step": 8,
+      "before_counts": {
+        "9": 1,
+        "11": 0,
+        "25": 0
+      },
+      "chosen_action": 15,
+      "safe_sample": [
+        13,
+        6,
+        34,
+        2,
+        25,
+        26,
+        21
+      ],
+      "safe_pool": [
+        21,
+        13,
+        2
+      ],
+      "reason": "softmax_chose_incompatible",
+      "pool": [
+        15,
+        21,
+        13,
+        2
+      ],
+      "weights": [
+        0.26255345580996403,
+        0.26255345580996403,
+        0.23744654419003597,
+        0.23744654419003597
+      ],
+      "safe_probability": 0.737446544190036
+    },
+    {
+      "iteration": 1097,
+      "rollout_step": 8,
+      "before_counts": {
+        "9": 0,
+        "11": 0,
+        "25": 1
+      },
+      "chosen_action": 33,
+      "safe_sample": [
+        36,
+        32,
+        7,
+        19,
+        1
+      ],
+      "safe_pool": [
+        32
+      ],
+      "reason": "softmax_chose_incompatible",
+      "pool": [
+        32,
+        25,
+        33,
+        9
+      ],
+      "weights": [
+        0.2883609793103358,
+        0.2674050245396765,
+        0.2674050245396765,
+        0.17682897161031114
+      ],
+      "safe_probability": 0.2883609793103358
+    }
+  ],
+  "note": "Conditional on observed elimination events; not an unbiased estimate of overall rollout hazard."
+}

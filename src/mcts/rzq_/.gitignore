@@ -4,5 +4,8 @@ __pycache__/
 # Keep important baseline/version results; ignore other experiment runs.
 runs/*
 !runs/class8_v4_4_300_trace/
-!runs/class8_v10/
-!runs/class8_v10_*/
+!runs/class8_v11/
+# Large originals are preserved locally; lossless gzip copies are tracked.
+runs/class8_v11/final_snapshot.pkl
+runs/class8_v11/checkpoint.pkl
+runs/class8_v11/decisions.jsonl

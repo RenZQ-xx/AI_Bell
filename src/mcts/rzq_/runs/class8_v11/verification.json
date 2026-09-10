@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "iterations": 1394,
+  "last_new": 1094,
+  "stale": 300,
+  "restarts": 16,
+  "new_classes": [
+    [
+      5,
+      29
+    ],
+    [
+      8,
+      15
+    ],
+    [
+      32,
+      8
+    ],
+    [
+      72,
+      12
+    ],
+    [
+      77,
+      20
+    ],
+    [
+      80,
+      42
+    ],
+    [
+      128,
+      28
+    ],
+    [
+      138,
+      7
+    ],
+    [
+      228,
+      34
+    ],
+    [
+      311,
+      30
+    ],
+    [
+      515,
+      40
+    ],
+    [
+      573,
+      19
+    ],
+    [
+      660,
+      22
+    ],
+    [
+      866,
+      32
+    ],
+    [
+      1054,
+      31
+    ],
+    [
+      1094,
+      10
+    ]
+  ],
+  "special_selections": 109,
+  "expansions": 1394,
+  "integer_counts_match_incoming_edges": true,
+  "restart_preserves_total_visits_and_exploration": true,
+  "each_restart_grants_six_slots": true,
+  "global_class_updates_and_event_order_checked": true,
+  "formal_first20_matches_smoke": true
+}
