@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "iterations": 300,
+  "rollout_steps_rank_and_path_verified": 4514,
+  "actual_closed_tree_keys_used": true,
+  "all_final_target_compats_zero": true,
+  "first_loss_categories_reconcile": true
+}

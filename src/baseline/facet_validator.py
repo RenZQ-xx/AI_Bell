@@ -2,13 +2,19 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 import numpy as np
 
 from .bell322 import generate_bell322_points
 from .geometry import FacetValidation, validate_facet_support
-from .reference_classes import build_reference_database, classify_hyperplane, exact_label_from_match
+from .reference_classes import (
+    build_reference_database,
+    build_support_class_index,
+    classify_hyperplane,
+    exact_label_from_match,
+    support_word_from_indices,
+)
 from .support_masks import vertex_mask_to_indices
 
 
@@ -48,12 +54,23 @@ class FacetValidator:
         plane_eps: float = 1e-6,
         support_tol: float = 1e-6,
         facet_rank_eps: float = 1e-5,
+        support_class_index: Mapping[int, int] | None = None,
     ) -> None:
         self.points = generate_bell322_points() if points is None else np.asarray(points)
-        self.reference = (
-            build_reference_database() if reference is None and facets_path is None
-            else build_reference_database(facets_path) if reference is None
-            else reference
+        self.reference = reference
+        self.facets_path = facets_path
+        use_default_support_index = (
+            support_class_index is None
+            and reference is None
+            and facets_path is None
+            and self.points.shape == (64, 26)
+            and np.array_equal(self.points, generate_bell322_points())
+        )
+        self.support_class_index = (
+            build_support_class_index()
+            if use_default_support_index
+            else {} if support_class_index is None
+            else support_class_index
         )
         self.min_cardinality = int(min_cardinality)
         self.plane_eps = float(plane_eps)
@@ -76,11 +93,36 @@ class FacetValidator:
         if validation.normal is None or validation.offset is None:
             return FacetLabel(label="invalid:missing_plane", validation=validation)
 
-        match = classify_hyperplane(validation.normal, validation.offset, self.reference)
+        tight = np.flatnonzero(
+            np.abs(self.points @ validation.normal + validation.offset) <= self.support_tol
+        )
+        class_id = self.support_class_index.get(support_word_from_indices(tight))
+        if class_id is not None:
+            match = {
+                "tier": "exact_match",
+                "matched_classes": [int(class_id)],
+                "num_row_matches": 1,
+                "match_source": "support_index",
+            }
+        else:
+            match = classify_hyperplane(
+                validation.normal,
+                validation.offset,
+                self._reference_database(),
+            )
         label = exact_label_from_match(match)
         if not label.startswith("exact:"):
             label = "unknown_facet"
         return FacetLabel(label=label, validation=validation, match=match)
+
+    def _reference_database(self) -> dict[str, Any]:
+        if self.reference is None:
+            self.reference = (
+                build_reference_database()
+                if self.facets_path is None
+                else build_reference_database(self.facets_path)
+            )
+        return self.reference
 
     def validate_mask(self, mask: Sequence[int]) -> FacetLabel:
         """Validate a 64-bit vertex mask."""

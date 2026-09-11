@@ -53,6 +53,7 @@ def parse_hrep_rows(facets_path: Path = DEFAULT_FACETS_PATH) -> list[IntegerRow]
     return rows
 
 
+@lru_cache(maxsize=8)
 def parse_example_rows(path: Path = DEFAULT_EXAMPLES_PATH) -> dict[int, dict[int, IntegerRow]]:
     """Parse the small representative-row file with three examples per class."""
     lines = path.read_text(encoding="utf-8").splitlines()
@@ -72,6 +73,49 @@ def parse_example_rows(path: Path = DEFAULT_EXAMPLES_PATH) -> dict[int, dict[int
     return class_rows
 
 
+def support_word_from_indices(indices: Sequence[int]) -> int:
+    """Pack vertex indices into one 64-bit support word."""
+    word = 0
+    for index in indices:
+        vertex = int(index)
+        if vertex < 0 or vertex >= 64:
+            raise IndexError(f"vertex index {vertex} out of range for 64 vertices")
+        word |= 1 << vertex
+    return word
+
+
+@lru_cache(maxsize=8)
+def build_support_class_index(
+    examples_path: Path = DEFAULT_EXAMPLES_PATH,
+) -> dict[int, int]:
+    """Map every known facet support in the Bell symmetry group to its class."""
+    from .orbit_blocks import build_state_group_permutations
+
+    examples = parse_example_rows(examples_path)
+    permutations = build_state_group_permutations()
+    support_to_class: dict[int, int] = {}
+
+    for class_id in sorted(examples):
+        representatives = examples[class_id]
+        if not representatives:
+            continue
+        representative = representatives[min(representatives)]
+        support = support_mask_from_row(representative)
+        selected = [index for index, value in enumerate(support) if int(value)]
+        orbit_supports: set[int] = set()
+        for permutation in permutations:
+            orbit_supports.add(
+                support_word_from_indices(permutation[index] for index in selected)
+            )
+        for support_word in orbit_supports:
+            existing = support_to_class.setdefault(support_word, int(class_id))
+            if existing != int(class_id):
+                raise ValueError(
+                    f"facet support belongs to both class {existing} and class {class_id}"
+                )
+    return support_to_class
+
+
 @lru_cache(maxsize=1)
 def point_rows() -> tuple[tuple[int, ...], ...]:
     """Integer Bell 322 deterministic vertices as row tuples."""
@@ -84,8 +128,10 @@ def support_mask_from_row(
     rows: Sequence[Sequence[int]] | None = None,
 ) -> np.ndarray:
     """Return the 64-bit support where an integer inequality is tight."""
-    point_table = point_rows() if rows is None else rows
     normalized = normalize_row(row)
+    if rows is None:
+        return np.asarray(_default_support_mask_from_row(normalized), dtype=np.int64)
+    point_table = rows
     bias = normalized[0]
     coeffs = normalized[1:]
     if len(coeffs) != 26:
@@ -96,6 +142,18 @@ def support_mask_from_row(
         if value == 0:
             mask[index] = 1
     return mask
+
+
+@lru_cache(maxsize=4096)
+def _default_support_mask_from_row(row: IntegerRow) -> tuple[int, ...]:
+    bias = row[0]
+    coeffs = row[1:]
+    if len(coeffs) != 26:
+        raise ValueError(f"expected 26 coefficients after bias, got {len(coeffs)}")
+    return tuple(
+        1 if bias + sum(coeff * coordinate for coeff, coordinate in zip(coeffs, point)) == 0 else 0
+        for point in point_rows()
+    )
 
 
 def basis_322() -> list[tuple[tuple[int, int], ...]]:
