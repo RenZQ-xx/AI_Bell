@@ -13,10 +13,13 @@ import json
 import random
 import sys
 import time
-from collections import Counter
-from dataclasses import dataclass, field
+from collections import Counter, deque
+from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Callable, Sequence
+from threading import RLock
+from typing import Callable, Iterator, Sequence
+
+import numpy as np
 
 _SRC_DIR = Path(__file__).resolve().parents[1]
 if str(_SRC_DIR) not in sys.path:
@@ -26,6 +29,7 @@ from baseline.orbit_blocks import (
     BlockKey,
     PartitionKey,
     add_block,
+    build_orbit_patterns_from_support,
     canonical_partition_key,
     canonical_support_key,
     empty_key,
@@ -36,14 +40,15 @@ from baseline.reference_classes import (
     DEFAULT_EXAMPLES_PATH,
     parse_example_rows,
     support_mask_from_row,
+    support_word_from_indices,
 )
 from baseline.scorer import (
     ExpansionScorer,
+    ScorerConfig,
     SharedScorerStructureCache,
     SharedTerminalValidationCache,
     exact_class_id,
 )
-from mcts.queue_search import build_class_scorer, summarize
 from mcts.search import (
     ClassCompatibilityBank,
     ExactClassDiscovery,
@@ -51,6 +56,7 @@ from mcts.search import (
     MCTSNode,
     MCTSResult,
     MCTSValueComponents,
+    Rank23TailDeferred,
     TerminalHit,
     _backpropagate_components,
     _estimate_state_value,
@@ -114,6 +120,67 @@ class InterruptSearchConfig:
     compatibility_frontier_extension_iterations: int = 50
     compatibility_frontier_min_rank: int = 22
     compatibility_frontier_shadow_ranks: tuple[int, ...] = (20, 21)
+    rank23_tail_enabled: bool = False
+    rank23_tail_max_prefixes: int = 24
+    rank23_tail_candidates_per_step: int = 0
+    rank23_tail_active_service: bool = False
+
+
+def build_class_scorer(
+    config: InterruptSearchConfig,
+    class_id: int,
+    *,
+    rare_target_classes: set[int] | None = None,
+    terminal_validation_cache: SharedTerminalValidationCache | None = None,
+    structure_cache: SharedScorerStructureCache | None = None,
+) -> tuple[ExpansionScorer, tuple[tuple[int, ...], ...]]:
+    """Build a scorer from one exact class representative."""
+    example_rows = parse_example_rows(config.examples_path)
+    class_rows = example_rows.get(int(class_id))
+    if class_rows is None:
+        raise KeyError(f"unknown exact class {class_id}")
+    row = class_rows.get(int(config.rep_index))
+    if row is None:
+        available = ", ".join(str(key) for key in sorted(class_rows))
+        raise KeyError(
+            f"class {class_id} has no rep_index {config.rep_index}; available: {available}"
+        )
+
+    support = support_mask_from_row(row)
+    patterns = build_orbit_patterns_from_support(
+        support,
+        class_id=int(class_id),
+        rep_index=int(config.rep_index),
+        max_patterns=int(config.pattern_index) + 1,
+    )
+    if int(config.pattern_index) >= len(patterns):
+        raise IndexError(
+            f"pattern_index {config.pattern_index} is out of range for class {class_id}; "
+            f"got {len(patterns)} patterns"
+        )
+    pattern = patterns[int(config.pattern_index)]
+    active_rare_target_classes = (
+        set(int(value) for value in config.rare_target_classes)
+        if rare_target_classes is None
+        else set(int(value) for value in rare_target_classes)
+    )
+    scorer = ExpansionScorer(
+        blocks=pattern.orbits,
+        rare_target_classes=active_rare_target_classes,
+        target_classes=set(int(value) for value in config.target_classes),
+        terminal_validation_cache=terminal_validation_cache,
+        structure_cache=structure_cache,
+        config=ScorerConfig(
+            rank24_entrance_exists_weight=float(config.rank24_entrance_exists_weight),
+            terminal_scoring_mode=str(config.terminal_scoring_mode),
+            dynamic_new_class_score=float(config.dynamic_new_class_score),
+            dynamic_known_class_score=float(config.dynamic_known_class_score),
+            dynamic_frequent_class_score=float(config.dynamic_frequent_class_score),
+            dynamic_frequent_class_threshold=int(config.dynamic_frequent_class_threshold),
+        ),
+    )
+    signature = tuple(tuple(int(vertex) for vertex in block) for block in pattern.orbits)
+    return scorer, signature
 
 
 @dataclass(frozen=True)
@@ -368,6 +435,87 @@ def _write_json_snapshot(path: Path, payload: dict[str, object]) -> None:
             time.sleep(0.1)
 
 
+class _ThreadSafeCounter(Counter[str]):
+    """Counter with atomic hit increments and snapshot reads."""
+
+    def __init__(self, *args, **kwargs) -> None:
+        self._lock = RLock()
+        super().__init__(*args, **kwargs)
+
+    def increment(self, key: str, amount: int = 1) -> int:
+        with self._lock:
+            value = int(super().get(key, 0)) + int(amount)
+            super().__setitem__(key, value)
+            return value
+
+    def snapshot(self) -> Counter[str]:
+        with self._lock:
+            return Counter(super().copy())
+
+    def get(self, key: str, default: int = 0) -> int:
+        with self._lock:
+            return int(super().get(key, default))
+
+    def items(self):
+        with self._lock:
+            return tuple(super().items())
+
+
+@dataclass(frozen=True)
+class Rank23TailTerminal:
+    """One class representative reached by exhausting a rank-23 prefix."""
+
+    class_id: int
+    key: BlockKey
+    action_suffix: tuple[int, ...]
+    support_word: int
+
+
+@dataclass(frozen=True)
+class Rank23TailCacheEntry:
+    """Structural rank-23 result; rewards remain discovery-epoch dependent."""
+
+    terminals: tuple[Rank23TailTerminal, ...]
+    logical_candidate_count: int
+    full_rank_terminal_count: int
+    exact_support_count: int
+
+
+@dataclass
+class Rank23TailProgress:
+    """Task-local cursor for a bounded rank-23 completion scan."""
+
+    rank24_actions: tuple[int, ...]
+    pair_candidate_count: int
+    next_pair_index: int = 0
+    full_rank_terminal_count: int = 0
+    exact_support_words: set[int] = field(default_factory=set)
+    first_terminal_by_class: dict[int, Rank23TailTerminal] = field(
+        default_factory=dict
+    )
+
+
+@dataclass(frozen=True)
+class Rank23TailWork:
+    """A resumable rank-23 prefix retained independently of MCTS revisits."""
+
+    prefix_key: BlockKey
+    prefix_path: tuple[int, ...]
+
+
+@dataclass(frozen=True)
+class Rank23PendingIteration:
+    """MCTS backpropagation state retained while a tail is scanned in batches."""
+
+    work: Rank23TailWork
+    path_nodes: tuple[MCTSNode, ...]
+    source: str
+    outer_step_score: float = 0.0
+    rollout_total: MCTSValueComponents = MCTSValueComponents()
+    rollout_discount: float = 1.0
+    child_key: BlockKey | None = None
+
+
 @dataclass
 class InterruptGlobalDiscoveryState:
     """Discovery knowledge shared by every task in one interrupt search."""
@@ -375,7 +523,7 @@ class InterruptGlobalDiscoveryState:
     initial_rare_target_classes: set[int] = field(default_factory=set)
     remaining_rare_target_classes: set[int] = field(default_factory=set)
     discovered_exact_classes: set[int] = field(default_factory=set)
-    discovered_label_counts: Counter[str] = field(default_factory=Counter)
+    discovered_label_counts: Counter[str] = field(default_factory=_ThreadSafeCounter)
     discovery_epoch: int = 0
     terminal_validation_cache: SharedTerminalValidationCache = field(
         default_factory=SharedTerminalValidationCache
@@ -383,6 +531,10 @@ class InterruptGlobalDiscoveryState:
     structure_cache: SharedScorerStructureCache = field(
         default_factory=SharedScorerStructureCache
     )
+    rank23_tail_cache: dict[
+        tuple[tuple[int, ...], int], Rank23TailCacheEntry
+    ] = field(default_factory=dict)
+    _lock: RLock = field(default_factory=RLock, repr=False, compare=False)
 
     @classmethod
     def from_config(cls, config: InterruptSearchConfig) -> InterruptGlobalDiscoveryState:
@@ -394,15 +546,61 @@ class InterruptGlobalDiscoveryState:
 
     def mark_discovered(self, class_id: int) -> bool:
         normalized = int(class_id)
-        if normalized in self.discovered_exact_classes:
-            return False
-        self.discovered_exact_classes.add(normalized)
-        self.remaining_rare_target_classes.discard(normalized)
-        self.discovery_epoch += 1
-        return True
+        with self._lock:
+            if normalized in self.discovered_exact_classes:
+                return False
+            self.discovered_exact_classes.add(normalized)
+            self.remaining_rare_target_classes.discard(normalized)
+            self.discovery_epoch += 1
+            return True
 
     def active_rare_target_classes(self) -> set[int]:
-        return self.remaining_rare_target_classes
+        with self._lock:
+            return set(self.remaining_rare_target_classes)
+
+    def discovered_classes_snapshot(self) -> set[int]:
+        with self._lock:
+            return set(self.discovered_exact_classes)
+
+    def discovered_label_counts_snapshot(self) -> Counter[str]:
+        snapshot = getattr(self.discovered_label_counts, "snapshot", None)
+        if callable(snapshot):
+            return snapshot()
+        with self._lock:
+            return Counter(self.discovered_label_counts)
+
+    def discovery_epoch_snapshot(self) -> int:
+        with self._lock:
+            return int(self.discovery_epoch)
+
+    def search_snapshot(self) -> tuple[set[int], set[int], int]:
+        """Return discovery-dependent search state from one coherent epoch."""
+        with self._lock:
+            return (
+                set(self.discovered_exact_classes),
+                set(self.remaining_rare_target_classes),
+                int(self.discovery_epoch),
+            )
+
+    def rank23_tail_cache_get(
+        self,
+        key: tuple[tuple[int, ...], int],
+    ) -> Rank23TailCacheEntry | None:
+        with self._lock:
+            return self.rank23_tail_cache.get(key)
+
+    def rank23_tail_cache_put(
+        self,
+        key: tuple[tuple[int, ...], int],
+        entry: Rank23TailCacheEntry,
+        *,
+        max_entries: int = 512,
+    ) -> None:
+        with self._lock:
+            self.rank23_tail_cache[key] = entry
+            while max_entries > 0 and len(self.rank23_tail_cache) > max_entries:
+                self.rank23_tail_cache.pop(next(iter(self.rank23_tail_cache)))
+
 
 @dataclass
 class InterruptSearchState:
@@ -426,6 +624,30 @@ class InterruptSearchState:
     exact_hit_serial: int = 0
     last_exact_observation: tuple[int, str, BlockKey] | None = None
     synchronized_discovery_epoch: int = -1
+    rank23_tail_prefixes: set[int] = field(default_factory=set)
+    rank23_tail_cache_hits: int = 0
+    rank23_tail_logical_candidates: int = 0
+    rank23_tail_full_rank_terminals: int = 0
+    rank23_tail_exact_supports: int = 0
+    rank23_tail_progress: dict[int, Rank23TailProgress] = field(default_factory=dict)
+    rank23_tail_exposed_class_ids: dict[int, set[int]] = field(default_factory=dict)
+    rank23_tail_pair_candidates_processed: int = 0
+    rank23_tail_completed_prefixes: int = 0
+    rank23_tail_shared_completed_prefixes: int = 0
+    rank23_tail_pair_candidate_capacity: int = 0
+    rank23_tail_pending: deque[int] = field(default_factory=deque)
+    rank23_tail_pending_set: set[int] = field(default_factory=set)
+    rank23_tail_work: dict[int, Rank23TailWork] = field(default_factory=dict)
+    rank23_tail_pending_peak: int = 0
+    rank23_tail_batches: int = 0
+    rank23_tail_active_service_batches: int = 0
+    rank23_tail_batch_seconds: float = 0.0
+    rank23_tail_active_service_seconds: float = 0.0
+    rank23_tail_max_batch_seconds: float = 0.0
+    rank23_tail_max_batch_candidates: int = 0
+    rank23_tail_discovery_batches: int = 0
+    rank23_tail_deferred_iterations: int = 0
+    rank23_pending_iteration: Rank23PendingIteration | None = None
 
     def release_tree(self) -> None:
         """Release a completed task's cyclic MCTS graph immediately."""
@@ -440,6 +662,13 @@ class InterruptSearchState:
         if self.compatibility_bank is not None:
             self.compatibility_bank.clear_cache()
         self.seen_signatures.clear()
+        self.rank23_tail_prefixes.clear()
+        self.rank23_tail_progress.clear()
+        self.rank23_tail_exposed_class_ids.clear()
+        self.rank23_tail_pending.clear()
+        self.rank23_tail_pending_set.clear()
+        self.rank23_tail_work.clear()
+        self.rank23_pending_iteration = None
         if hasattr(self, "_rng"):
             delattr(self, "_rng")
 
@@ -491,6 +720,7 @@ class InterruptSearchTask:
     last_global_new_iteration: int | None = None
     started_interrupts: list[int] = field(default_factory=list)
     resumed_interrupts: list[int] = field(default_factory=list)
+    minimum_service_iterations: int = 0
 
     @property
     def finished(self) -> bool:
@@ -506,6 +736,8 @@ class InterruptSearchTask:
         iteration_index = self.state.iterations_completed + 1
         previous_local_discoveries = set(self.state.local_discovered_exact_classes)
         discoveries = _run_one_iteration(self.state, iteration_index)
+        if self.state.rank23_pending_iteration is not None:
+            return discoveries
         self.state.iterations_completed = iteration_index
         new_local_discoveries = self.state.local_discovered_exact_classes - previous_local_discoveries
         if new_local_discoveries:
@@ -518,6 +750,12 @@ class InterruptSearchTask:
                 self.iteration_limit,
                 _productive_iteration_limit(self),
             )
+
+        if self.state.iterations_completed < min(
+            int(self.iteration_limit),
+            max(0, int(self.minimum_service_iterations)),
+        ):
+            return discoveries
 
         if self.state.productive:
             if _should_stop_productive_for_no_novelty(self):
@@ -594,6 +832,13 @@ def _build_state(
         progressive_beta=float(config.progressive_beta),
         progressive_bucket_quota=int(config.progressive_bucket_quota),
         discovery_epoch_value_decay=float(config.discovery_epoch_value_decay),
+        rank23_tail_enabled=bool(config.rank23_tail_enabled),
+        rank23_tail_max_prefixes=max(0, int(config.rank23_tail_max_prefixes)),
+        rank23_tail_candidates_per_step=max(
+            0,
+            int(config.rank23_tail_candidates_per_step),
+        ),
+        rank23_tail_active_service=bool(config.rank23_tail_active_service),
         seed=int(config.seed) + 1009 * (search_index - 1),
         selection_survival_weight=1.0,
         selection_novelty_weight=1.0,
@@ -639,17 +884,46 @@ def _known_exact_terminal_score(
     return float(config.valid_terminal_score)
 
 
+def _global_discovered_classes_snapshot(
+    global_discovery: InterruptGlobalDiscoveryState,
+) -> set[int]:
+    snapshot = getattr(global_discovery, "discovered_classes_snapshot", None)
+    if callable(snapshot):
+        return snapshot()
+    return set(global_discovery.discovered_exact_classes)
+
+
+def _global_label_counts_snapshot(
+    global_discovery: InterruptGlobalDiscoveryState,
+) -> Counter[str]:
+    snapshot = getattr(global_discovery, "discovered_label_counts_snapshot", None)
+    if callable(snapshot):
+        return snapshot()
+    return Counter(global_discovery.discovered_label_counts)
+
+
+def _global_discovery_epoch(global_discovery: InterruptGlobalDiscoveryState) -> int:
+    snapshot = getattr(global_discovery, "discovery_epoch_snapshot", None)
+    if callable(snapshot):
+        return int(snapshot())
+    return int(global_discovery.discovery_epoch)
+
+
 def _synchronize_discovery_epoch(
     state: InterruptSearchState,
     *,
     terminal_score_fn: Callable[..., float],
+    current_epoch: int | None = None,
+    active_rare_targets: set[int] | None = None,
 ) -> None:
     """Refresh mutable action values when another task discovers a new class."""
-    active_rare_targets = state.global_discovery.active_rare_target_classes()
+    if active_rare_targets is None:
+        active_rare_targets = state.global_discovery.active_rare_target_classes()
     if state.scorer.rare_target_classes != active_rare_targets:
         state.scorer.rare_target_classes = set(active_rare_targets)
 
-    current_epoch = int(state.global_discovery.discovery_epoch)
+    if current_epoch is None:
+        current_epoch = _global_discovery_epoch(state.global_discovery)
     if state.synchronized_discovery_epoch == current_epoch:
         return
 
@@ -672,6 +946,159 @@ def _synchronize_discovery_epoch(
     state.synchronized_discovery_epoch = current_epoch
 
 
+def _is_identity_singleton_partition(scorer: ExpansionScorer) -> bool:
+    if len(scorer.blocks) != 64 or any(len(block) != 1 for block in scorer.blocks):
+        return False
+    return sorted(block[0] for block in scorer.blocks) == list(range(64))
+
+
+def _rank23_rank24_actions(
+    scorer: ExpansionScorer,
+    prefix_key: BlockKey,
+) -> tuple[int, ...]:
+    """Return singleton actions that raise an identity prefix to rank 24."""
+
+    if not _is_identity_singleton_partition(scorer):
+        return ()
+    if scorer.affine_rank(prefix_key) != 23:
+        return ()
+
+    rank24_actions: list[int] = []
+    for action in unselected_blocks(prefix_key):
+        child = add_block(prefix_key, int(action))
+        if scorer.affine_rank(child) == 24:
+            rank24_actions.append(int(action))
+    return tuple(rank24_actions)
+
+
+def _rank23_terminal_completion_batch(
+    scorer: ExpansionScorer,
+    prefix_key: BlockKey,
+    rank24_actions: Sequence[int],
+    *,
+    start_index: int,
+    candidate_limit: int,
+) -> tuple[tuple[tuple[BlockKey, tuple[int, int]], ...], int]:
+    """Advance a deterministic slice of the rank-23 pair enumeration."""
+
+    pair_count = len(rank24_actions) * max(0, len(rank24_actions) - 1) // 2
+    start = min(max(0, int(start_index)), pair_count)
+    stop = (
+        pair_count
+        if int(candidate_limit) <= 0
+        else min(pair_count, start + int(candidate_limit))
+    )
+    completions: list[tuple[BlockKey, tuple[int, int]]] = []
+    action_count = len(rank24_actions)
+    first_index = 0
+    row_offset = start
+    while first_index < action_count - 1:
+        row_size = action_count - first_index - 1
+        if row_offset < row_size:
+            break
+        row_offset -= row_size
+        first_index += 1
+
+    second_index = first_index + 1 + row_offset
+    pair_index = start
+    while pair_index < stop and first_index < action_count - 1:
+        first = rank24_actions[first_index]
+        second = rank24_actions[second_index]
+        terminal_key = add_block(add_block(prefix_key, int(first)), int(second))
+        if scorer.affine_rank(terminal_key) == 25:
+            completions.append(
+                (terminal_key, (int(first), int(second)))
+            )
+        pair_index += 1
+        second_index += 1
+        if second_index >= action_count:
+            first_index += 1
+            second_index = first_index + 1
+    return tuple(completions), stop
+
+
+def _rank23_terminal_completions(
+    scorer: ExpansionScorer,
+    prefix_key: BlockKey,
+) -> Iterator[tuple[BlockKey, tuple[int, int]]]:
+    """Enumerate every two-singleton completion from affine rank 23 to 25."""
+
+    actions = _rank23_rank24_actions(scorer, prefix_key)
+    completions, _next_index = _rank23_terminal_completion_batch(
+        scorer,
+        prefix_key,
+        actions,
+        start_index=0,
+        candidate_limit=0,
+    )
+    yield from completions
+
+
+def _terminal_tight_support_word(
+    scorer: ExpansionScorer,
+    terminal: object,
+) -> int | None:
+    validation = getattr(terminal, "validation", None)
+    normal = getattr(validation, "normal", None)
+    offset = getattr(validation, "offset", None)
+    if normal is None or offset is None:
+        return None
+    signed = scorer.points @ normal + float(offset)
+    tight = np.flatnonzero(np.abs(signed) <= float(scorer.config.support_tol))
+    return support_word_from_indices(tight.tolist())
+
+
+def _enqueue_rank23_tail_work(
+    state: InterruptSearchState,
+    prefix_word: int,
+    prefix_key: BlockKey,
+    prefix_path: Sequence[int],
+) -> None:
+    """Retain one unfinished prefix for fair service on later iterations."""
+
+    if not state.config.rank23_tail_active_service:
+        return
+    if prefix_word not in state.rank23_tail_progress:
+        return
+    state.rank23_tail_work[prefix_word] = Rank23TailWork(
+        prefix_key=prefix_key,
+        prefix_path=tuple(int(value) for value in prefix_path),
+    )
+    if prefix_word in state.rank23_tail_pending_set:
+        return
+    state.rank23_tail_pending.append(prefix_word)
+    state.rank23_tail_pending_set.add(prefix_word)
+    state.rank23_tail_pending_peak = max(
+        state.rank23_tail_pending_peak,
+        len(state.rank23_tail_pending_set),
+    )
+
+
+def _pop_rank23_tail_work(
+    state: InterruptSearchState,
+) -> tuple[int, Rank23TailWork] | None:
+    """Pop the oldest live prefix, ignoring stale queue entries."""
+
+    while state.rank23_tail_pending:
+        prefix_word = int(state.rank23_tail_pending.popleft())
+        if prefix_word not in state.rank23_tail_pending_set:
+            continue
+        state.rank23_tail_pending_set.remove(prefix_word)
+        work = state.rank23_tail_work.get(prefix_word)
+        if work is not None and prefix_word in state.rank23_tail_progress:
+            return prefix_word, work
+        state.rank23_tail_work.pop(prefix_word, None)
+    return None
+
+
+def _finish_rank23_tail_work(
+    state: InterruptSearchState,
+    prefix_word: int,
+) -> None:
+    state.rank23_tail_pending_set.discard(prefix_word)
+    state.rank23_tail_work.pop(prefix_word, None)
+
+
 def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> list[ExactClassDiscovery]:
     rng = getattr(state, "_rng", None)
     if rng is None:
@@ -685,25 +1112,47 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
     path_nodes: list[MCTSNode] = [root]
     node = root
     new_discoveries: list[ExactClassDiscovery] = []
+    snapshot = getattr(state.global_discovery, "search_snapshot", None)
+    if callable(snapshot):
+        (
+            discovered_exact_classes,
+            active_rare_target_classes,
+            discovery_epoch,
+        ) = snapshot()
+    else:
+        discovered_exact_classes = _global_discovered_classes_snapshot(
+            state.global_discovery
+        )
+        active_rare_target_classes = (
+            state.global_discovery.active_rare_target_classes()
+        )
+        discovery_epoch = _global_discovery_epoch(state.global_discovery)
+    discovered_label_counts = _global_label_counts_snapshot(
+        state.global_discovery
+    )
 
     def terminal_score(key: BlockKey, terminal: object) -> float:
         terminal_label = str(getattr(terminal, "label", ""))
         class_id = exact_class_id(terminal_label)
-        if class_id is not None and class_id in state.global_discovery.discovered_exact_classes:
+        if class_id is not None and class_id in discovered_exact_classes:
             return _known_exact_terminal_score(state, terminal_label)
         return float(
             state.scorer.terminal_score(
                 key,
-                rare_target_classes=state.global_discovery.active_rare_target_classes(),
-                discovered_label_counts=state.global_discovery.discovered_label_counts,
+                rare_target_classes=active_rare_target_classes,
+                discovered_label_counts=discovered_label_counts,
             )
         )
 
-    _synchronize_discovery_epoch(state, terminal_score_fn=terminal_score)
+    _synchronize_discovery_epoch(
+        state,
+        terminal_score_fn=terminal_score,
+        current_epoch=discovery_epoch,
+        active_rare_targets=active_rare_target_classes,
+    )
 
     def node_components(key: BlockKey, *, survival: float = 0.0) -> MCTSValueComponents:
         bank = state.compatibility_bank
-        discovered_exact_classes = state.global_discovery.discovered_exact_classes
         if bank is None or not discovered_exact_classes:
             return MCTSValueComponents(escape=0.0, survival=float(survival), novelty=0.0)
         active_classes = sorted(discovered_exact_classes)
@@ -717,7 +1166,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         bank = state.compatibility_bank
         if bank is None:
             return
-        signature = bank.active_signature(key, state.global_discovery.discovered_exact_classes)
+        signature = bank.active_signature(key, discovered_exact_classes)
         state.seen_signatures[signature] += 1
 
     def record_exact_discovery(
@@ -728,36 +1177,49 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         key: BlockKey,
         path: Sequence[int],
         rank: int,
-    ) -> None:
+    ) -> float:
         terminal_label = getattr(terminal, "label", None)
         if terminal_label is None:
-            return
+            return float(score)
         class_id = exact_class_id(str(terminal_label))
         if class_id is None:
-            return
+            return float(score)
         observation = (int(iteration_index), str(terminal_label), key)
+        if (
+            observation == state.last_exact_observation
+            and state.last_exact_hit is not None
+        ):
+            return float(state.last_exact_hit.score)
+
+        is_global_discovery = state.global_discovery.mark_discovered(class_id)
+        resolved_score = float(score)
+        if state.scorer.config.terminal_scoring_mode == "dynamic":
+            resolved_score = (
+                float(state.scorer.config.dynamic_new_class_score)
+                if is_global_discovery
+                else _known_exact_terminal_score(state, str(terminal_label))
+            )
         if observation != state.last_exact_observation:
             state.last_exact_hit = TerminalHit(
                 label=str(terminal_label),
                 key=key,
                 path=list(path),
-                score=float(score),
+                score=resolved_score,
                 rank=int(rank),
             )
             state.exact_hit_serial += 1
             state.last_exact_observation = observation
         is_local_discovery = class_id not in state.local_discovered_exact_classes
-        is_global_discovery = state.global_discovery.mark_discovered(class_id)
         state.local_discovered_exact_classes.add(class_id)
         state.scorer.rare_target_classes.discard(class_id)
         if not is_local_discovery:
-            return
+            return resolved_score
         discovery = ExactClassDiscovery(
             class_id=class_id,
             label=str(terminal_label),
             iteration=iteration_index,
             depth=depth,
-            score=float(score),
+            score=resolved_score,
             rank=int(rank),
             path=list(path),
             chosen_blocks=selected_blocks(key),
@@ -766,12 +1228,311 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
         if is_global_discovery:
             new_discoveries.append(discovery)
         record_signature(key)
+        return resolved_score
+
+    def scan_rank23_tail(
+        prefix_key: BlockKey,
+        prefix_path: Sequence[int],
+        best: TerminalHit | None,
+        *,
+        hit_node: MCTSNode,
+        active_service: bool,
+    ) -> tuple[MCTSValueComponents, TerminalHit | None] | None:
+        if not state.config.rank23_tail_enabled:
+            return None
+        if not _is_identity_singleton_partition(state.scorer):
+            return None
+
+        max_prefixes = max(0, int(state.config.rank23_tail_max_prefixes))
+        if max_prefixes <= 0:
+            return None
+
+        prefix_word = int(state.scorer.support_key(prefix_key))
+        partition_key = tuple(int(word) for word in state.scorer.block_support_words)
+        cache_key = (partition_key, prefix_word)
+        entry = state.global_discovery.rank23_tail_cache_get(cache_key)
+        batch_started: float | None = None
+        batch_candidates = 0
+        discoveries_before_batch = len(new_discoveries)
+        if entry is None:
+            progress = state.rank23_tail_progress.get(prefix_word)
+            if progress is None:
+                if len(state.rank23_tail_prefixes) >= max_prefixes:
+                    return None
+                state.rank23_tail_prefixes.add(prefix_word)
+                rank24_actions = _rank23_rank24_actions(
+                    state.scorer,
+                    prefix_key,
+                )
+                progress = Rank23TailProgress(
+                    rank24_actions=rank24_actions,
+                    pair_candidate_count=(
+                        len(rank24_actions) * max(0, len(rank24_actions) - 1) // 2
+                    ),
+                )
+                state.rank23_tail_progress[prefix_word] = progress
+                state.rank23_tail_pair_candidate_capacity += int(
+                    progress.pair_candidate_count
+                )
+
+            previous_index = int(progress.next_pair_index)
+            batch_started = time.perf_counter()
+            completions, next_index = _rank23_terminal_completion_batch(
+                state.scorer,
+                prefix_key,
+                progress.rank24_actions,
+                start_index=previous_index,
+                candidate_limit=max(
+                    0,
+                    int(state.config.rank23_tail_candidates_per_step),
+                ),
+            )
+            progress.next_pair_index = int(next_index)
+            batch_candidates = max(0, int(next_index) - previous_index)
+            state.rank23_tail_pair_candidates_processed += batch_candidates
+            state.rank23_tail_logical_candidates += batch_candidates
+            state.rank23_tail_full_rank_terminals += len(completions)
+            progress.full_rank_terminal_count += len(completions)
+            previous_exact_support_count = len(progress.exact_support_words)
+
+            for terminal_key, action_suffix in completions:
+                terminal = state.scorer.terminal_label(terminal_key)
+                if not terminal.is_exact:
+                    continue
+                class_id = exact_class_id(terminal.label)
+                support_word = _terminal_tight_support_word(state.scorer, terminal)
+                if class_id is None or support_word is None:
+                    continue
+                if support_word in progress.exact_support_words:
+                    continue
+                progress.exact_support_words.add(support_word)
+                progress.first_terminal_by_class.setdefault(
+                    int(class_id),
+                    Rank23TailTerminal(
+                        class_id=int(class_id),
+                        key=terminal_key,
+                        action_suffix=tuple(int(value) for value in action_suffix),
+                        support_word=int(support_word),
+                    ),
+                )
+            state.rank23_tail_exact_supports += (
+                len(progress.exact_support_words) - previous_exact_support_count
+            )
+
+            entry = Rank23TailCacheEntry(
+                terminals=tuple(
+                    progress.first_terminal_by_class[class_id]
+                    for class_id in sorted(progress.first_terminal_by_class)
+                ),
+                logical_candidate_count=int(progress.pair_candidate_count),
+                full_rank_terminal_count=int(progress.full_rank_terminal_count),
+                exact_support_count=len(progress.exact_support_words),
+            )
+            if progress.next_pair_index >= progress.pair_candidate_count:
+                state.global_discovery.rank23_tail_cache_put(cache_key, entry)
+                state.rank23_tail_progress.pop(prefix_word, None)
+                state.rank23_tail_completed_prefixes += 1
+                _finish_rank23_tail_work(state, prefix_word)
+            else:
+                _enqueue_rank23_tail_work(
+                    state,
+                    prefix_word,
+                    prefix_key,
+                    prefix_path,
+                )
+        else:
+            state.rank23_tail_cache_hits += 1
+            state.rank23_tail_prefixes.add(prefix_word)
+            if state.rank23_tail_progress.pop(prefix_word, None) is not None:
+                state.rank23_tail_shared_completed_prefixes += 1
+            _finish_rank23_tail_work(state, prefix_word)
+
+        if batch_started is not None:
+            batch_seconds = time.perf_counter() - batch_started
+            state.rank23_tail_batches += 1
+            state.rank23_tail_batch_seconds += batch_seconds
+            state.rank23_tail_max_batch_seconds = max(
+                state.rank23_tail_max_batch_seconds,
+                batch_seconds,
+            )
+            state.rank23_tail_max_batch_candidates = max(
+                state.rank23_tail_max_batch_candidates,
+                batch_candidates,
+            )
+            if active_service:
+                state.rank23_tail_active_service_batches += 1
+                state.rank23_tail_active_service_seconds += batch_seconds
+
+        if (
+            prefix_word in state.rank23_tail_progress
+            and state.config.rank23_tail_active_service
+        ):
+            if not active_service:
+                state.rank23_tail_deferred_iterations += 1
+                raise Rank23TailDeferred(prefix_key, prefix_path)
+            return None
+
+        fallback = MCTSValueComponents(
+            survival=float(state.scorer.config.invalid_terminal_score)
+        )
+        best_components = fallback
+        best_total = fallback.total(
+            survival_weight=state.config.selection_survival_weight,
+            novelty_weight=state.config.selection_novelty_weight,
+        )
+
+        exposed_class_ids = state.rank23_tail_exposed_class_ids.setdefault(
+            prefix_word,
+            set(),
+        )
+        for record in entry.terminals:
+            if int(record.class_id) in exposed_class_ids:
+                label = f"exact:class{int(record.class_id)}"
+                score = _known_exact_terminal_score(state, label)
+                components = node_components(record.key, survival=score)
+                total_value = components.total(
+                    survival_weight=state.config.selection_survival_weight,
+                    novelty_weight=state.config.selection_novelty_weight,
+                )
+                if total_value > best_total:
+                    best_total = total_value
+                    best_components = components
+                continue
+
+            terminal = state.scorer.terminal_label(record.key)
+            current_discovered = state.global_discovery.discovered_classes_snapshot()
+            if int(record.class_id) in current_discovered:
+                score = _known_exact_terminal_score(state, terminal.label)
+            else:
+                score = float(
+                    state.scorer.terminal_score(
+                        record.key,
+                        rare_target_classes=(
+                            state.global_discovery.active_rare_target_classes()
+                        ),
+                        discovered_label_counts=(
+                            state.global_discovery.discovered_label_counts_snapshot()
+                        ),
+                    )
+                )
+            terminal_path = [*prefix_path, *record.action_suffix]
+            score = record_exact_discovery(
+                terminal,
+                score=score,
+                depth=len(terminal_path),
+                key=record.key,
+                path=terminal_path,
+                rank=25,
+            )
+            components = node_components(record.key, survival=score)
+            best = _register_hit(
+                hit_node,
+                score,
+                terminal=terminal,
+                terminal_bests=state.terminal_bests,
+                encountered=state.encountered,
+                scorer=state.scorer,
+                best=best,
+                key=record.key,
+                path=terminal_path,
+                global_discovered_label_counts=(
+                    state.global_discovery.discovered_label_counts
+                ),
+            )
+            record_signature(record.key)
+            total_value = components.total(
+                survival_weight=state.config.selection_survival_weight,
+                novelty_weight=state.config.selection_novelty_weight,
+            )
+            if total_value > best_total:
+                best_total = total_value
+                best_components = components
+            exposed_class_ids.add(int(record.class_id))
+
+        if (
+            batch_started is not None
+            and len(new_discoveries) > discoveries_before_batch
+        ):
+            state.rank23_tail_discovery_batches += 1
+
+        if best is not None and (
+            state.best is None or float(best.score) > float(state.best.score)
+        ):
+            state.best = best
+        return best_components, best
+
+    def rank23_tail(
+        prefix_key: BlockKey,
+        prefix_path: Sequence[int],
+        best: TerminalHit | None,
+    ) -> tuple[MCTSValueComponents, TerminalHit | None] | None:
+        return scan_rank23_tail(
+            prefix_key,
+            prefix_path,
+            best,
+            hit_node=node,
+            active_service=False,
+        )
+
+    pending_iteration = state.rank23_pending_iteration
+    if pending_iteration is not None:
+        _pop_rank23_tail_work(state)
+        active_result = scan_rank23_tail(
+            pending_iteration.work.prefix_key,
+            pending_iteration.work.prefix_path,
+            state.best,
+            hit_node=pending_iteration.path_nodes[-1],
+            active_service=True,
+        )
+        if active_result is None:
+            return new_discoveries
+
+        tail_components, resumed_best = active_result
+        if resumed_best is not None and (
+            state.best is None
+            or float(resumed_best.score) > float(state.best.score)
+        ):
+            state.best = resumed_best
+        if pending_iteration.source == "tree":
+            components = tail_components
+        elif pending_iteration.source == "rollout":
+            rollout_total = pending_iteration.rollout_total
+            discount = float(pending_iteration.rollout_discount)
+            resumed_rollout = MCTSValueComponents(
+                escape=rollout_total.escape + discount * tail_components.escape,
+                survival=(
+                    rollout_total.survival + discount * tail_components.survival
+                ),
+                novelty=rollout_total.novelty + discount * tail_components.novelty,
+            )
+            components = MCTSValueComponents(
+                escape=resumed_rollout.escape,
+                survival=(
+                    float(pending_iteration.outer_step_score)
+                    + resumed_rollout.survival
+                ),
+                novelty=resumed_rollout.novelty,
+            )
+            if pending_iteration.child_key is not None:
+                record_signature(pending_iteration.child_key)
+        else:
+            raise RuntimeError(
+                f"unknown rank-23 continuation source {pending_iteration.source!r}"
+            )
+        _backpropagate_components(
+            pending_iteration.path_nodes,
+            components,
+            survival_weight=state.config.selection_survival_weight,
+            novelty_weight=state.config.selection_novelty_weight,
+        )
+        state.rank23_pending_iteration = None
+        return new_discoveries
 
     while True:
         if node.is_terminal:
             terminal_score_value = terminal_score(node.key, node.terminal)
             if node.terminal is not None and node.terminal.is_exact:
-                record_exact_discovery(
+                terminal_score_value = record_exact_discovery(
                     node.terminal,
                     score=terminal_score_value,
                     depth=len(node.path),
@@ -801,7 +1562,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
             terminal = state.scorer.terminal_label(node.key)
             terminal_score_value = terminal_score(node.key, terminal)
             if terminal.is_exact:
-                record_exact_discovery(
+                terminal_score_value = record_exact_discovery(
                     terminal,
                     score=terminal_score_value,
                     depth=len(node.path),
@@ -828,6 +1589,29 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
             )
             break
 
+        if node.rank == 23:
+            try:
+                tail = rank23_tail(node.key, node.path, state.best)
+            except Rank23TailDeferred as pending:
+                state.rank23_pending_iteration = Rank23PendingIteration(
+                    work=Rank23TailWork(
+                        prefix_key=pending.prefix_key,
+                        prefix_path=pending.prefix_path,
+                    ),
+                    path_nodes=tuple(path_nodes),
+                    source="tree",
+                )
+                return new_discoveries
+            if tail is not None:
+                components, state.best = tail
+                _backpropagate_components(
+                    path_nodes,
+                    components,
+                    survival_weight=state.config.selection_survival_weight,
+                    novelty_weight=state.config.selection_novelty_weight,
+                )
+                break
+
         if not node.actions_initialized:
             _prepare_actions(
                 node,
@@ -843,7 +1627,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                 scorer=state.scorer,
                 cfg=state.config,
                 compatibility_bank=state.compatibility_bank,
-                discovered_exact_classes=state.global_discovery.discovered_exact_classes,
+                discovered_exact_classes=discovered_exact_classes,
                 seen_signatures=state.seen_signatures,
                 terminal_score_fn=terminal_score,
                 adaptive_score_batch=state.productive,
@@ -861,7 +1645,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                 terminal = child.terminal if child.terminal is not None else state.scorer.terminal_label(child.key)
                 terminal_score_value = terminal_score(child.key, terminal)
                 if terminal.is_exact:
-                    record_exact_discovery(
+                    terminal_score_value = record_exact_discovery(
                         terminal,
                         score=terminal_score_value,
                         depth=len(child.path),
@@ -894,26 +1678,53 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                     return record_exact_discovery(*args, **kwargs)
 
                 state.rollouts_started += 1
-                rollout_value, rollout_components, state.best = _rollout(
-                    child,
-                    state.scorer,
-                    state.config,
-                    rng,
-                    state.terminal_bests,
-                    state.encountered,
-                    state.best,
-                    _record_for_rollout,
-                    state.compatibility_bank,
-                    state.global_discovery.discovered_exact_classes,
-                    state.seen_signatures,
-                    iteration_index,
-                    terminal_score_fn=terminal_score,
-                    global_discovered_label_counts=state.global_discovery.discovered_label_counts,
-                    rollout_score_batch=_rollout_score_batch_for_rollout(
-                        state,
-                        state.rollouts_started,
-                    ),
-                )
+                try:
+                    rollout_value, rollout_components, rollout_best = _rollout(
+                        child,
+                        state.scorer,
+                        state.config,
+                        rng,
+                        state.terminal_bests,
+                        state.encountered,
+                        state.best,
+                        _record_for_rollout,
+                        state.compatibility_bank,
+                        discovered_exact_classes,
+                        state.seen_signatures,
+                        iteration_index,
+                        terminal_score_fn=terminal_score,
+                        global_discovered_label_counts=(
+                            state.global_discovery.discovered_label_counts
+                        ),
+                        rollout_score_batch=_rollout_score_batch_for_rollout(
+                            state,
+                            state.rollouts_started,
+                        ),
+                        rank23_tail_fn=rank23_tail,
+                    )
+                except Rank23TailDeferred as pending:
+                    if pending.rollout_total is None:
+                        raise RuntimeError(
+                            "rank-23 rollout continuation is missing accumulated value"
+                        ) from pending
+                    state.rank23_pending_iteration = Rank23PendingIteration(
+                        work=Rank23TailWork(
+                            prefix_key=pending.prefix_key,
+                            prefix_path=pending.prefix_path,
+                        ),
+                        path_nodes=tuple(path_nodes),
+                        source="rollout",
+                        outer_step_score=float(step.score),
+                        rollout_total=pending.rollout_total,
+                        rollout_discount=float(pending.rollout_discount),
+                        child_key=child.key,
+                    )
+                    return new_discoveries
+                if rollout_best is not None and (
+                    state.best is None
+                    or float(rollout_best.score) > float(state.best.score)
+                ):
+                    state.best = rollout_best
                 components = MCTSValueComponents(
                     escape=rollout_components.escape,
                     survival=float(step.score) + rollout_components.survival,
@@ -946,7 +1757,7 @@ def _run_one_iteration(state: InterruptSearchState, iteration_index: int) -> lis
                 state.scorer,
                 state.config,
                 compatibility_bank=state.compatibility_bank,
-                discovered_exact_classes=state.global_discovery.discovered_exact_classes,
+                discovered_exact_classes=discovered_exact_classes,
                 seen_signatures=state.seen_signatures,
                 terminal_score_fn=terminal_score,
             )
@@ -1020,7 +1831,7 @@ def _should_stop_productive_for_no_novelty(task: InterruptSearchTask) -> bool:
     if extension <= 0:
         return True
 
-    discovery_epoch = int(task.state.global_discovery.discovery_epoch)
+    discovery_epoch = _global_discovery_epoch(task.state.global_discovery)
     if int(getattr(task, "compatibility_frontier_discovery_epoch", -1)) != discovery_epoch:
         _reset_compatibility_frontier_epoch(task, discovery_epoch)
 
@@ -1120,7 +1931,7 @@ def _compatibility_frontier_snapshot(
     }
     discovered_classes = {
         int(class_id)
-        for class_id in state.global_discovery.discovered_exact_classes
+        for class_id in _global_discovered_classes_snapshot(state.global_discovery)
     }
     missing_classes = tuple(sorted(target_classes - discovered_classes))
     if bank is None:
@@ -1878,6 +2689,12 @@ def _build_report(
         "compatibility_frontier_shadow_ranks": [
             int(rank) for rank in config.compatibility_frontier_shadow_ranks
         ],
+        "rank23_tail_enabled": bool(config.rank23_tail_enabled),
+        "rank23_tail_max_prefixes": int(config.rank23_tail_max_prefixes),
+        "rank23_tail_candidates_per_step": int(
+            config.rank23_tail_candidates_per_step
+        ),
+        "rank23_tail_active_service": bool(config.rank23_tail_active_service),
         "task_identity": "group_canonical_partition_and_basin",
         "performance": {
             "flat_capacity_method": "affine_hull",
@@ -1897,6 +2714,137 @@ def _build_report(
     )
 
 
+def build_interrupt_task_from_scorer(
+    config: InterruptSearchConfig,
+    global_discovery: InterruptGlobalDiscoveryState,
+    scorer: ExpansionScorer,
+    *,
+    class_id: int,
+    search_index: int,
+    parent_search_index: int | None,
+    seed_override: int | None = None,
+) -> InterruptSearchTask:
+    """Build an interrupt task for either a class or an external partition."""
+    mcts_config = MCTSConfig(
+        iterations=int(config.iterations),
+        max_depth=int(config.max_depth),
+        exploration_constant=float(config.exploration_constant),
+        discount=float(config.discount),
+        prior_temperature=float(config.prior_temperature),
+        rollout_temperature=float(config.rollout_temperature),
+        expansion_candidate_pool=int(config.expansion_candidate_pool),
+        rollout_candidate_pool=int(config.rollout_candidate_pool),
+        widening_score_batch=int(config.widening_score_batch),
+        widening_score_batch_max=int(config.widening_score_batch_max),
+        widening_score_batch_scale=float(config.widening_score_batch_scale),
+        widening_score_batch_beta=float(config.widening_score_batch_beta),
+        rollout_score_batch=int(config.rollout_score_batch),
+        productive_rollout_score_batch=int(config.productive_rollout_score_batch),
+        broad_rollout_score_batch=int(config.broad_rollout_score_batch),
+        broad_rollout_interval=int(config.broad_rollout_interval),
+        progressive_k0=int(config.progressive_k0),
+        progressive_alpha=float(config.progressive_alpha),
+        progressive_beta=float(config.progressive_beta),
+        progressive_bucket_quota=int(config.progressive_bucket_quota),
+        discovery_epoch_value_decay=float(config.discovery_epoch_value_decay),
+        rank23_tail_enabled=bool(config.rank23_tail_enabled),
+        rank23_tail_max_prefixes=max(0, int(config.rank23_tail_max_prefixes)),
+        rank23_tail_candidates_per_step=max(
+            0,
+            int(config.rank23_tail_candidates_per_step),
+        ),
+        rank23_tail_active_service=bool(config.rank23_tail_active_service),
+        seed=(
+            int(config.seed) + 1009 * (search_index - 1)
+            if seed_override is None
+            else int(seed_override)
+        ),
+        selection_survival_weight=1.0,
+        selection_novelty_weight=1.0,
+        compatibility_examples_path=config.examples_path,
+    )
+    state = InterruptSearchState(
+        scorer=scorer,
+        config=mcts_config,
+        global_discovery=global_discovery,
+        compatibility_bank=ClassCompatibilityBank.from_scorer(
+            scorer,
+            config.examples_path,
+        ),
+    )
+    root_key = empty_key(len(scorer.blocks))
+    state.root = _get_or_create_node(state.nodes, scorer, root_key, path=[])
+    base_limit = int(config.iterations)
+    max_limit = max(
+        base_limit,
+        int(round(base_limit * float(config.adaptive_max_multiplier))),
+    )
+    threshold = float(config.exact_stop_ratio) * float(max_limit)
+    compatibility_frontier_min_rank = min(
+        24,
+        max(0, int(config.compatibility_frontier_min_rank)),
+    )
+    return InterruptSearchTask(
+        class_id=int(class_id),
+        search_index=int(search_index),
+        parent_search_index=parent_search_index,
+        state=state,
+        threshold=threshold,
+        base_iteration_limit=base_limit,
+        max_iteration_limit=max_limit,
+        adaptive_min_iterations=min(
+            base_limit,
+            max(1, int(config.adaptive_min_iterations)),
+        ),
+        adaptive_min_terminal_hits=max(1, int(config.adaptive_min_terminal_hits)),
+        adaptive_sink_ratio=float(config.adaptive_sink_ratio),
+        adaptive_extra_iterations=max(1, int(config.adaptive_extra_iterations)),
+        productive_patience_iterations=max(
+            0,
+            int(config.productive_patience_iterations),
+        ),
+        iteration_limit=base_limit,
+        compatibility_frontier_extension_iterations=max(
+            0,
+            int(config.compatibility_frontier_extension_iterations),
+        ),
+        compatibility_frontier_min_rank=compatibility_frontier_min_rank,
+        compatibility_frontier_shadow_ranks=tuple(
+            sorted(
+                {
+                    int(rank)
+                    for rank in config.compatibility_frontier_shadow_ranks
+                    if 0 <= int(rank) < compatibility_frontier_min_rank
+                }
+            )
+        ),
+    )
+
+
+def reset_interrupt_task_tree(
+    task: InterruptSearchTask,
+    *,
+    seed: int | None = None,
+) -> None:
+    """Rebuild one task's tree while preserving its empirical search history."""
+    state = task.state
+    if task.finished:
+        raise ValueError("cannot reset a finished interrupt task")
+    state.release_tree()
+    if seed is not None:
+        state.config = replace(state.config, seed=int(seed))
+    root_key = empty_key(len(state.scorer.blocks))
+    state.root = _get_or_create_node(
+        state.nodes,
+        state.scorer,
+        root_key,
+        path=[],
+    )
+    state.last_exact_hit = None
+    state.last_exact_observation = None
+    state.synchronized_discovery_epoch = -1
+
+
 def _default_task_factory(
     config: InterruptSearchConfig,
     global_discovery: InterruptGlobalDiscoveryState,
@@ -1909,76 +2857,13 @@ def _default_task_factory(
             terminal_validation_cache=global_discovery.terminal_validation_cache,
             structure_cache=global_discovery.structure_cache,
         )
-        mcts_config = MCTSConfig(
-            iterations=int(config.iterations),
-            max_depth=int(config.max_depth),
-            exploration_constant=float(config.exploration_constant),
-            discount=float(config.discount),
-            prior_temperature=float(config.prior_temperature),
-            rollout_temperature=float(config.rollout_temperature),
-            expansion_candidate_pool=int(config.expansion_candidate_pool),
-            rollout_candidate_pool=int(config.rollout_candidate_pool),
-            widening_score_batch=int(config.widening_score_batch),
-            widening_score_batch_max=int(config.widening_score_batch_max),
-            widening_score_batch_scale=float(config.widening_score_batch_scale),
-            widening_score_batch_beta=float(config.widening_score_batch_beta),
-            rollout_score_batch=int(config.rollout_score_batch),
-            productive_rollout_score_batch=int(config.productive_rollout_score_batch),
-            broad_rollout_score_batch=int(config.broad_rollout_score_batch),
-            broad_rollout_interval=int(config.broad_rollout_interval),
-            progressive_k0=int(config.progressive_k0),
-            progressive_alpha=float(config.progressive_alpha),
-            progressive_beta=float(config.progressive_beta),
-            progressive_bucket_quota=int(config.progressive_bucket_quota),
-            discovery_epoch_value_decay=float(config.discovery_epoch_value_decay),
-            seed=int(config.seed) + 1009 * (search_index - 1),
-            selection_survival_weight=1.0,
-            selection_novelty_weight=1.0,
-            compatibility_examples_path=config.examples_path,
-        )
-        state = InterruptSearchState(
-            scorer=scorer,
-            config=mcts_config,
-            global_discovery=global_discovery,
-            compatibility_bank=ClassCompatibilityBank.from_scorer(scorer, config.examples_path),
-        )
-        root_key = empty_key(len(scorer.blocks))
-        state.root = _get_or_create_node(state.nodes, scorer, root_key, path=[])
-        base_limit = int(config.iterations)
-        max_limit = max(base_limit, int(round(base_limit * float(config.adaptive_max_multiplier))))
-        threshold = float(config.exact_stop_ratio) * float(max_limit)
-        compatibility_frontier_min_rank = min(
-            24,
-            max(0, int(config.compatibility_frontier_min_rank)),
-        )
-        return InterruptSearchTask(
+        return build_interrupt_task_from_scorer(
+            config,
+            global_discovery,
+            scorer,
             class_id=class_id,
             search_index=search_index,
             parent_search_index=parent_search_index,
-            state=state,
-            threshold=threshold,
-            base_iteration_limit=base_limit,
-            max_iteration_limit=max_limit,
-            adaptive_min_iterations=min(base_limit, max(1, int(config.adaptive_min_iterations))),
-            adaptive_min_terminal_hits=max(1, int(config.adaptive_min_terminal_hits)),
-            adaptive_sink_ratio=float(config.adaptive_sink_ratio),
-            adaptive_extra_iterations=max(1, int(config.adaptive_extra_iterations)),
-            productive_patience_iterations=max(0, int(config.productive_patience_iterations)),
-            iteration_limit=base_limit,
-            compatibility_frontier_extension_iterations=max(
-                0,
-                int(config.compatibility_frontier_extension_iterations),
-            ),
-            compatibility_frontier_min_rank=compatibility_frontier_min_rank,
-            compatibility_frontier_shadow_ranks=tuple(
-                sorted(
-                    {
-                        int(rank)
-                        for rank in config.compatibility_frontier_shadow_ranks
-                        if 0 <= int(rank) < compatibility_frontier_min_rank
-                    }
-                )
-            ),
         )
 
     return factory
@@ -2082,6 +2967,10 @@ def parse_args() -> argparse.Namespace:
         nargs="*",
         default=[20, 21],
     )
+    parser.add_argument("--rank23-tail", action="store_true")
+    parser.add_argument("--rank23-tail-max-prefixes", type=int, default=24)
+    parser.add_argument("--rank23-tail-candidates-per-step", type=int, default=0)
+    parser.add_argument("--rank23-tail-active-service", action="store_true")
     parser.add_argument("--output", type=Path, default=Path("src/mcts/runs/interrupt_search_probe.json"))
     return parser.parse_args()
 
@@ -2137,6 +3026,13 @@ def main() -> None:
         compatibility_frontier_shadow_ranks=tuple(
             int(rank) for rank in args.compatibility_frontier_shadow_ranks
         ),
+        rank23_tail_enabled=bool(args.rank23_tail),
+        rank23_tail_max_prefixes=max(0, int(args.rank23_tail_max_prefixes)),
+        rank23_tail_candidates_per_step=max(
+            0,
+            int(args.rank23_tail_candidates_per_step),
+        ),
+        rank23_tail_active_service=bool(args.rank23_tail_active_service),
     )
     started = time.perf_counter()
     report = run_interruptible_search(config, output_path=args.output)

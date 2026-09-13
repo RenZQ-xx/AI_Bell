@@ -4,6 +4,7 @@ import math
 import weakref
 from collections import Counter
 from dataclasses import dataclass, field
+from threading import RLock
 from typing import Callable, Mapping, Sequence
 
 import numpy as np
@@ -109,20 +110,23 @@ class SharedTerminalValidationCache:
     hits: int = 0
     misses: int = 0
     evictions: int = 0
+    _lock: RLock = field(default_factory=RLock, repr=False, compare=False)
 
     def get(self, support_key: int) -> FacetLabel | None:
-        label = self.labels.get(int(support_key))
-        if label is None:
-            self.misses += 1
-        else:
-            self.hits += 1
-        return label
+        with self._lock:
+            label = self.labels.get(int(support_key))
+            if label is None:
+                self.misses += 1
+            else:
+                self.hits += 1
+            return label
 
     def put(self, support_key: int, label: FacetLabel) -> None:
-        self.labels[int(support_key)] = label
-        if self.max_entries > 0 and len(self.labels) > self.max_entries:
-            self.labels.pop(next(iter(self.labels)))
-            self.evictions += 1
+        with self._lock:
+            self.labels[int(support_key)] = label
+            if self.max_entries > 0 and len(self.labels) > self.max_entries:
+                self.labels.pop(next(iter(self.labels)))
+                self.evictions += 1
 
 
 @dataclass
@@ -139,6 +143,7 @@ class ScorerStructureCache:
     support_keys: dict[BlockKey, int] = field(default_factory=dict)
     actions: dict[tuple[BlockKey, int], ExpansionStructure] = field(default_factory=dict)
     rank24_entrances: dict[BlockKey, tuple[dict[int, int], int]] = field(default_factory=dict)
+    _lock: RLock = field(default_factory=RLock, repr=False, compare=False)
 
 
 @dataclass
@@ -157,6 +162,7 @@ class SharedScorerStructureCache:
         default_factory=weakref.WeakValueDictionary,
         repr=False,
     )
+    _lock: RLock = field(default_factory=RLock, repr=False, compare=False)
 
     def for_partition(
         self,
@@ -165,19 +171,20 @@ class SharedScorerStructureCache:
     ) -> ScorerStructureCache:
         ordered_partition = tuple(tuple(int(vertex) for vertex in block) for block in blocks)
         key = (ordered_partition, config)
-        shared = self._active_partitions.get(key)
-        if shared is None:
-            self.misses += 1
-            shared = ScorerStructureCache()
-            self._active_partitions[key] = shared
-        else:
-            self.hits += 1
-        self.partitions.pop(key, None)
-        self.partitions[key] = shared
-        if self.max_partitions > 0 and len(self.partitions) > self.max_partitions:
-            self.partitions.pop(next(iter(self.partitions)))
-            self.evictions += 1
-        return shared
+        with self._lock:
+            shared = self._active_partitions.get(key)
+            if shared is None:
+                self.misses += 1
+                shared = ScorerStructureCache()
+                self._active_partitions[key] = shared
+            else:
+                self.hits += 1
+            self.partitions.pop(key, None)
+            self.partitions[key] = shared
+            if self.max_partitions > 0 and len(self.partitions) > self.max_partitions:
+                self.partitions.pop(next(iter(self.partitions)))
+                self.evictions += 1
+            return shared
 
 
 class ExpansionScorer:
@@ -226,6 +233,7 @@ class ExpansionScorer:
             else structure_cache.for_partition(self.blocks, self.config)
         )
         self._shared_structure = shared_structure
+        self._structure_lock = shared_structure._lock
         self.rank_cache = shared_structure.rank
         self.vertices_cache = shared_structure.vertices
         self.mask_cache = shared_structure.masks
@@ -244,63 +252,102 @@ class ExpansionScorer:
             word |= 1 << int(vertex)
         return word
 
-    def _cache_put(self, cache: dict, key: BlockKey, value: object, *, heavy: bool) -> None:
+    _CACHE_MISSING = object()
+
+    def _cache_get(self, cache: dict, key: object) -> object:
+        lock = getattr(self, "_structure_lock", None)
+        if lock is None:
+            return cache.get(key, self._CACHE_MISSING)
+        with lock:
+            return cache.get(key, self._CACHE_MISSING)
+
+    def _cache_put(
+        self,
+        cache: dict,
+        key: object,
+        value: object,
+        *,
+        heavy: bool,
+    ) -> object:
         """Insert into cache with a bounded size to avoid unbounded memory growth."""
-        cache[key] = value
-        max_entries = self.config.cache_heavy_max_entries if heavy else self.config.cache_light_max_entries
-        if max_entries > 0 and len(cache) > max_entries:
-            cache.pop(next(iter(cache)))
+        lock = getattr(self, "_structure_lock", None)
+
+        def put() -> object:
+            cached = cache.get(key, self._CACHE_MISSING)
+            if cached is not self._CACHE_MISSING:
+                return cached
+            cache[key] = value
+            max_entries = (
+                self.config.cache_heavy_max_entries
+                if heavy
+                else self.config.cache_light_max_entries
+            )
+            if max_entries > 0 and len(cache) > max_entries:
+                oldest = next(iter(cache), None)
+                if oldest is not None:
+                    cache.pop(oldest, None)
+            return value
+
+        if lock is None:
+            return put()
+        with lock:
+            return put()
 
     def vertex_indices(self, key: BlockKey) -> list[int]:
         """Expand selected blocks into deterministic vertex ids."""
-        if key not in self.vertices_cache:
-            self._cache_put(
-                self.vertices_cache,
-                key,
-                block_key_to_vertex_indices(key, self.blocks),
-                heavy=True,
-            )
-        return self.vertices_cache[key]
+        cached = self._cache_get(self.vertices_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return cached  # type: ignore[return-value]
+        return self._cache_put(
+            self.vertices_cache,
+            key,
+            block_key_to_vertex_indices(key, self.blocks),
+            heavy=True,
+        )  # type: ignore[return-value]
 
     def vertex_mask(self, key: BlockKey) -> np.ndarray:
         """Return the 64-bit hard support mask for a block key."""
-        if key not in self.mask_cache:
-            self._cache_put(
-                self.mask_cache,
+        cached = self._cache_get(self.mask_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return cached  # type: ignore[return-value]
+        return self._cache_put(
+            self.mask_cache,
+            key,
+            block_key_to_vertex_mask(
                 key,
-                block_key_to_vertex_mask(key, self.blocks, vertex_count=len(self.points)),
-                heavy=True,
-            )
-        return self.mask_cache[key]
+                self.blocks,
+                vertex_count=len(self.points),
+            ),
+            heavy=True,
+        )  # type: ignore[return-value]
 
     def affine_rank(self, key: BlockKey) -> int:
         """Affine rank of the selected support."""
-        if key not in self.rank_cache:
-            indices = self.vertex_indices(key)
-            if len(indices) <= 1:
-                rank = 0
-            else:
-                rank = affine_rank(self.points[indices], rank_eps=self.config.rank_tol)
-            self._cache_put(self.rank_cache, key, rank, heavy=False)
-        return self.rank_cache[key]
+        cached = self._cache_get(self.rank_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return int(cached)
+        indices = self.vertex_indices(key)
+        rank = (
+            0
+            if len(indices) <= 1
+            else affine_rank(self.points[indices], rank_eps=self.config.rank_tol)
+        )
+        return int(self._cache_put(self.rank_cache, key, rank, heavy=False))
 
     def fit_boundary_metrics(self, key: BlockKey) -> dict[str, float]:
         """Fast SVD fitted-boundary metrics used by the legacy terminal score."""
-        if key not in self.boundary_cache:
-            indices = self.vertex_indices(key)
-            if len(indices) <= 1:
-                self._cache_put(
-                    self.boundary_cache,
-                    key,
-                    {
-                        "closer_side": 32.0,
-                        "positive": 32.0,
-                        "negative": 32.0,
-                        "supporting_shift": 1e6,
-                    },
-                    heavy=False,
-                )
-                return self.boundary_cache[key]
+        cached = self._cache_get(self.boundary_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return cached  # type: ignore[return-value]
+        indices = self.vertex_indices(key)
+        if len(indices) <= 1:
+            value = {
+                "closer_side": 32.0,
+                "positive": 32.0,
+                "negative": 32.0,
+                "supporting_shift": 1e6,
+            }
+        else:
             selected = self.points[indices]
             centroid = selected.mean(axis=0)
             centered = selected - centroid
@@ -311,39 +358,56 @@ class ExpansionScorer:
             signed = self.points @ normal + offset
             positive = int(np.sum(signed > self.config.support_tol))
             negative = int(np.sum(signed < -self.config.support_tol))
-            supporting_shift = min(max(float(signed.max()), 0.0) ** 2, max(float(-signed.min()), 0.0) ** 2)
-            self._cache_put(
-                self.boundary_cache,
-                key,
-                {
+            supporting_shift = min(
+                max(float(signed.max()), 0.0) ** 2,
+                max(float(-signed.min()), 0.0) ** 2,
+            )
+            value = {
                 "closer_side": float(min(positive, negative)),
                 "positive": float(positive),
                 "negative": float(negative),
                 "supporting_shift": float(supporting_shift),
-                },
+            }
+        return self._cache_put(
+                self.boundary_cache,
+                key,
+                value,
                 heavy=False,
-            )
-        return self.boundary_cache[key]
+            )  # type: ignore[return-value]
 
     def terminal_label(self, key: BlockKey) -> FacetLabel:
         """Terminal validation for a candidate that already reached rank >= 25."""
-        if key not in self.terminal_cache:
-            support_key = self.support_key(key)
-            label = self.shared_terminal_validation_cache.get(support_key)
-            if label is None:
-                label = self.validator.validate_mask(self.vertex_mask(key))
-                self.shared_terminal_validation_cache.put(support_key, label)
-            self._cache_put(self.terminal_cache, key, label, heavy=False)
-        return self.terminal_cache[key]
+        cached = self._cache_get(self.terminal_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return cached  # type: ignore[return-value]
+        support_key = self.support_key(key)
+        label = self.shared_terminal_validation_cache.get(support_key)
+        if label is None:
+            label = self.validator.validate_mask(self.vertex_mask(key))
+            self.shared_terminal_validation_cache.put(support_key, label)
+        return self._cache_put(
+            self.terminal_cache,
+            key,
+            label,
+            heavy=False,
+        )  # type: ignore[return-value]
 
     def support_key(self, key: BlockKey) -> int:
-        if key not in self.support_key_cache:
-            support_key = 0
-            for block_index, selected in enumerate(key):
-                if int(selected):
-                    support_key |= self.block_support_words[block_index]
-            self._cache_put(self.support_key_cache, key, support_key, heavy=False)
-        return self.support_key_cache[key]
+        cached = self._cache_get(self.support_key_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return int(cached)
+        support_key = 0
+        for block_index, selected in enumerate(key):
+            if int(selected):
+                support_key |= self.block_support_words[block_index]
+        return int(
+            self._cache_put(
+                self.support_key_cache,
+                key,
+                support_key,
+                heavy=False,
+            )
+        )
 
     def terminal_score(
         self,
@@ -390,28 +454,18 @@ class ExpansionScorer:
 
     def flat_capacity(self, key: BlockKey) -> int:
         """Count unselected blocks that do not increase the affine rank."""
-        if key not in self.flat_cache:
-            if self.config.flat_capacity_method == "child_rank":
-                rank = self.affine_rank(key)
-                self._cache_put(
-                    self.flat_cache,
-                    key,
-                    sum(1 for action in unselected_blocks(key) if self.affine_rank(add_block(key, action)) == rank),
-                    heavy=False,
-                )
-                return self.flat_cache[key]
-
-            rank = self.affine_rank(key)
-            indices = self.vertex_indices(key)
-            if len(indices) <= 1:
-                self._cache_put(
-                    self.flat_cache,
-                    key,
-                    sum(1 for action in unselected_blocks(key) if self.affine_rank(add_block(key, action)) == rank),
-                    heavy=False,
-                )
-                return self.flat_cache[key]
-
+        cached = self._cache_get(self.flat_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return int(cached)
+        rank = self.affine_rank(key)
+        indices = self.vertex_indices(key)
+        if self.config.flat_capacity_method == "child_rank" or len(indices) <= 1:
+            count = sum(
+                1
+                for action in unselected_blocks(key)
+                if self.affine_rank(add_block(key, action)) == rank
+            )
+        else:
             selected = self.points[indices]
             anchor = selected[0]
             centered = selected - anchor
@@ -426,31 +480,57 @@ class ExpansionScorer:
                 residual = delta - (delta @ basis) @ basis.T if basis.shape[1] > 0 else delta
                 if float(np.max(np.linalg.norm(residual, axis=1))) <= 2.0 * self.config.rank_tol:
                     count += 1
-            self._cache_put(self.flat_cache, key, count, heavy=False)
-        return self.flat_cache[key]
+        return int(self._cache_put(self.flat_cache, key, count, heavy=False))
 
     def child_flat_p50(self, key: BlockKey) -> float:
         """Median flat capacity among one-step children that increase rank."""
-        if key not in self.child_flat_p50_cache:
-            rank = self.affine_rank(key)
-            values: list[float] = []
-            for action in unselected_blocks(key):
-                child = add_block(key, action)
-                child_rank = self.affine_rank(child)
-                if child_rank <= rank:
-                    continue
-                values.append(0.0 if child_rank >= 25 else float(self.flat_capacity(child)))
+        cached = self._cache_get(self.child_flat_p50_cache, key)
+        if cached is not self._CACHE_MISSING:
+            return float(cached)
+        rank = self.affine_rank(key)
+        values: list[float] = []
+        for action in unselected_blocks(key):
+            child = add_block(key, action)
+            child_rank = self.affine_rank(child)
+            if child_rank <= rank:
+                continue
+            values.append(
+                0.0 if child_rank >= 25 else float(self.flat_capacity(child))
+            )
+        value = 0.0 if not values else float(np.percentile(np.asarray(values), 50))
+        return float(
             self._cache_put(
                 self.child_flat_p50_cache,
                 key,
-                0.0 if not values else float(np.percentile(np.asarray(values), 50)),
+                value,
                 heavy=False,
             )
-        return self.child_flat_p50_cache[key]
+        )
 
     def rank24_entrance_metrics(self, key: BlockKey) -> dict[str, int]:
         """Count one-step terminal exits from a rank-24 prefix."""
-        if key not in self.rank24_entrance_cache:
+        exact_class_counts, invalid = self.rank24_entrance_class_counts(key)
+        rare = sum(
+            count
+            for class_id, count in exact_class_counts.items()
+            if class_id in self.rare_target_classes
+        )
+        class44 = 0 if 44 in self.rare_target_classes else int(exact_class_counts.get(44, 0))
+        return {
+            "rare": int(rare),
+            "class44": class44,
+            "invalid": int(invalid),
+            "other_valid": int(sum(exact_class_counts.values()) - rare - class44),
+        }
+
+    def rank24_entrance_class_counts(
+        self,
+        key: BlockKey,
+    ) -> tuple[dict[int, int], int]:
+        """Return validated class counts for every one-step rank-24 exit."""
+
+        cached = self._cache_get(self.rank24_entrance_cache, key)
+        if cached is self._CACHE_MISSING:
             exact_class_counts: Counter[int] = Counter()
             invalid = 0
             for action in unselected_blocks(key):
@@ -468,25 +548,14 @@ class ExpansionScorer:
                 class_id = exact_class_id(label.label)
                 if class_id is not None:
                     exact_class_counts[class_id] += 1
-            self._cache_put(
+            cached = self._cache_put(
                 self.rank24_entrance_cache,
                 key,
                 (dict(exact_class_counts), invalid),
                 heavy=False,
             )
-        exact_class_counts, invalid = self.rank24_entrance_cache[key]
-        rare = sum(
-            count
-            for class_id, count in exact_class_counts.items()
-            if class_id in self.rare_target_classes
-        )
-        class44 = 0 if 44 in self.rare_target_classes else int(exact_class_counts.get(44, 0))
-        return {
-            "rare": int(rare),
-            "class44": class44,
-            "invalid": int(invalid),
-            "other_valid": int(sum(exact_class_counts.values()) - rare - class44),
-        }
+        exact_class_counts, invalid = cached  # type: ignore[misc]
+        return dict(exact_class_counts), int(invalid)
 
     def phase_weights(self, rank: int) -> tuple[float, float, float]:
         """Weights for rank gain, supportability, and flatness by search phase."""
@@ -536,9 +605,9 @@ class ExpansionScorer:
 
     def action_structure(self, key: BlockKey, action: int) -> ExpansionStructure:
         cache_key = (key, int(action))
-        cached = self.action_structure_cache.get(cache_key)
-        if cached is not None:
-            return cached
+        cached = self._cache_get(self.action_structure_cache, cache_key)
+        if cached is not self._CACHE_MISSING:
+            return cached  # type: ignore[return-value]
 
         candidate = add_block(key, action)
         old_rank = self.affine_rank(key)
@@ -582,8 +651,12 @@ class ExpansionScorer:
             terminal=terminal,
             base_score=None if base_score is None else float(base_score),
         )
-        self._cache_put(self.action_structure_cache, cache_key, structure, heavy=False)
-        return structure
+        return self._cache_put(
+            self.action_structure_cache,
+            cache_key,
+            structure,
+            heavy=False,
+        )  # type: ignore[return-value]
 
 
 def exact_class_id(label: str) -> int | None:

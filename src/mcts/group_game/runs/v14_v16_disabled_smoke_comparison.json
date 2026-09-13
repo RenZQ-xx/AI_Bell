@@ -1,0 +1,912 @@
+{
+  "baseline": "src\\mcts\\group_game\\runs\\single_tree_group_game_i200_v14_disabled.json",
+  "candidate": "src\\mcts\\group_game\\runs\\single_tree_group_game_i200_v16_disabled.json",
+  "algorithm_revisions": [
+    "sparse_geometric_yield_frontier_v14",
+    "lazy_lane_context_bridge_gate_v16"
+  ],
+  "changed_common_config": {},
+  "added_config": {
+    "endpoint_saturation_gate": false,
+    "saturated_facet_repair_probability": 0.12
+  },
+  "audits": [
+    {
+      "budget": 200,
+      "iterations_completed": 200,
+      "elapsed_seconds": 17.045156599997426,
+      "observed_classes": [
+        43,
+        44
+      ],
+      "coverage": 2,
+      "missing_classes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        45,
+        46
+      ],
+      "last_discovery_iteration": 66,
+      "last_discovery_seconds": 7.948222399994847,
+      "tail_iterations": 134,
+      "tail_seconds": 9.096934200002579,
+      "discovery_sources": {
+        "atlas": 1,
+        "facet_external_exit": 1
+      },
+      "retained_ranks_on_discovery_paths": {
+        "24": 2
+      },
+      "verified_external_steps": 2,
+      "facet_replay": {
+        "witness_updates": 5,
+        "episodes": 50,
+        "persistent_witness_edges": 8,
+        "extended_corrections": 7,
+        "frontier_episodes": 25,
+        "frontier_no_exit": 25
+      },
+      "geometry_statistics": {
+        "anchors": 73,
+        "embedded_partitions": 876,
+        "orbit_face_batches": 64,
+        "completion_lp_attempts": 129,
+        "completion_source_or_lost_face": 51,
+        "refinement_attempts": 26,
+        "endpoint_canonicalizations": 33,
+        "lower_face_plans": 41,
+        "refinement_successes": 11,
+        "verified_plans": 97,
+        "identity_plans": 73,
+        "verified_exits": 448,
+        "orbit_face_publications": 13,
+        "executed_facet_repartition": 216,
+        "executed_facet_external_exit": 216,
+        "completion_nonfacet": 27,
+        "subgroup_plans": 24,
+        "exit_geometry_checks": 623,
+        "completion_continuation_batches": 47,
+        "completion_continuation_lp_attempts": 87,
+        "frontier_no_distinct_endpoint": 25,
+        "transported_plans": 93,
+        "transported_exits": 170,
+        "duplicate_plan": 27,
+        "merged_local_plans": 11,
+        "merged_local_exits": 14,
+        "completion_continuation_publications": 13,
+        "lp_attempts": 104,
+        "retained_rank_24": 76,
+        "duplicate_plan_unchanged": 16,
+        "merged_cached_exits": 9,
+        "retained_rank_19": 9,
+        "completion_budget_exhausted": 28,
+        "no_external_exit": 15,
+        "retained_rank_22": 5,
+        "retained_rank_23": 7,
+        "retained_rank_21": 2,
+        "duplicate_face": 5
+      },
+      "timeline": [
+        {
+          "class_id": 44,
+          "iteration": 1,
+          "elapsed_seconds": 0.13326649999362417,
+          "corrections_used": 1
+        },
+        {
+          "class_id": 43,
+          "iteration": 66,
+          "elapsed_seconds": 7.948222399994847,
+          "corrections_used": 3
+        }
+      ]
+    },
+    {
+      "budget": 200,
+      "iterations_completed": 200,
+      "elapsed_seconds": 13.204977599991253,
+      "observed_classes": [
+        43,
+        44
+      ],
+      "coverage": 2,
+      "missing_classes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        45,
+        46
+      ],
+      "last_discovery_iteration": 66,
+      "last_discovery_seconds": 6.543869999994058,
+      "tail_iterations": 134,
+      "tail_seconds": 6.6611075999971945,
+      "discovery_sources": {
+        "atlas": 1,
+        "facet_external_exit": 1
+      },
+      "retained_ranks_on_discovery_paths": {
+        "24": 2
+      },
+      "verified_external_steps": 2,
+      "facet_replay": {
+        "witness_updates": 5,
+        "open_facet_repair_offers": 214,
+        "episodes": 50,
+        "persistent_witness_edges": 8,
+        "extended_corrections": 7,
+        "frontier_episodes": 25,
+        "frontier_no_exit": 25
+      },
+      "geometry_statistics": {
+        "anchors": 73,
+        "embedded_partitions": 876,
+        "orbit_face_batches": 64,
+        "completion_lp_attempts": 129,
+        "completion_source_or_lost_face": 51,
+        "refinement_attempts": 26,
+        "endpoint_canonicalizations": 33,
+        "lower_face_plans": 41,
+        "refinement_successes": 11,
+        "verified_plans": 97,
+        "identity_plans": 73,
+        "verified_exits": 448,
+        "orbit_face_publications": 13,
+        "executed_facet_repartition": 216,
+        "executed_facet_external_exit": 216,
+        "completion_nonfacet": 27,
+        "subgroup_plans": 24,
+        "exit_geometry_checks": 623,
+        "completion_continuation_batches": 47,
+        "completion_continuation_lp_attempts": 87,
+        "frontier_no_distinct_endpoint": 25,
+        "transported_plans": 93,
+        "transported_exits": 170,
+        "duplicate_plan": 27,
+        "merged_local_plans": 11,
+        "merged_local_exits": 14,
+        "completion_continuation_publications": 13,
+        "lp_attempts": 104,
+        "retained_rank_24": 76,
+        "duplicate_plan_unchanged": 16,
+        "merged_cached_exits": 9,
+        "retained_rank_19": 9,
+        "completion_budget_exhausted": 28,
+        "no_external_exit": 15,
+        "retained_rank_22": 5,
+        "retained_rank_23": 7,
+        "retained_rank_21": 2,
+        "duplicate_face": 5
+      },
+      "timeline": [
+        {
+          "class_id": 44,
+          "iteration": 1,
+          "elapsed_seconds": 0.09537619999900926,
+          "corrections_used": 1
+        },
+        {
+          "class_id": 43,
+          "iteration": 66,
+          "elapsed_seconds": 6.543869999994058,
+          "corrections_used": 3
+        }
+      ]
+    }
+  ],
+  "gained_classes": [],
+  "gained_class_repair_paths": [],
+  "local_merge_endpoint_analysis": [
+    {
+      "merge_iteration": 9,
+      "source_word_hex": "0xffffffffffccffcc",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 27,
+      "source_word_hex": "0xffffffffffccffcc",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 27,
+      "source_word_hex": "0xffffffffffccffcc",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 29,
+      "source_word_hex": "0xffffffff3f3f3f3f",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 29,
+      "source_word_hex": "0xffffffff3f3f3f3f",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 30,
+      "source_word_hex": "0xffffffffffccffcc",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 32,
+      "source_word_hex": "0xffffffff3f3f3f3f",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 32,
+      "source_word_hex": "0xffffffff3f3f3f3f",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 100,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "target_canonical_word_hex": "0x33ff3f3ff3f3ff33",
+      "target_class_posthoc": 43,
+      "target_first_discovery_iteration": 66,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 107,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "target_canonical_word_hex": "0x33ff3f3ff3f3ff33",
+      "target_class_posthoc": 43,
+      "target_first_discovery_iteration": 66,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 120,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 160,
+      "source_word_hex": "0x33ff33ffffffffff",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 164,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    },
+    {
+      "merge_iteration": 179,
+      "source_word_hex": "0xffffffffffccffcc",
+      "target_canonical_word_hex": "0x33ff33ffffffffff",
+      "target_class_posthoc": 44,
+      "target_first_discovery_iteration": 1,
+      "target_observed_at_merge": true
+    }
+  ],
+  "publication_audit": {
+    "enabled": true,
+    "verified_candidate_action_keys": 324,
+    "published_action_keys": 324,
+    "unpublished_candidate_action_keys": 0,
+    "unpublished_candidate_targets_hex": []
+  },
+  "frontier_scheduling": {
+    "enabled": false,
+    "class_labels_used": false,
+    "high_water_lp_attempts": 24,
+    "base_cycle": [
+      "ridge",
+      "completion",
+      "orbit",
+      "completion",
+      "delivery",
+      "ridge",
+      "completion",
+      "orbit"
+    ],
+    "pressure_cycle": [
+      "ridge",
+      "completion",
+      "completion",
+      "completion",
+      "delivery",
+      "ridge",
+      "completion",
+      "orbit"
+    ],
+    "max_observed_source_backlog": 0,
+    "selections": {},
+    "pressure_selections": {},
+    "source_selections": []
+  },
+  "yield_scheduling": {
+    "enabled": false,
+    "class_labels_used": false,
+    "measured_time_affects_choices": true,
+    "replay_stride": 4,
+    "probe_stride": 4,
+    "cost_floor_seconds": 0.0005,
+    "choices": 0,
+    "decisions": [],
+    "work": []
+  },
+  "orbit_publication_endpoint_analysis": [
+    {
+      "publication_iteration": 1,
+      "source_word_hex": "0xffffffffffccffcc",
+      "retained_word_hex": "0xcc33cc3333cc33cc",
+      "rank": 22,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 4,
+      "source_word_hex": "0x33ff33ffffffffff",
+      "retained_word_hex": "0x33cc33cccc00cc00",
+      "rank": 18,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 5,
+      "source_word_hex": "0xffffffccffffffcc",
+      "retained_word_hex": "0xffffffccffccffcc",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 13,
+      "source_word_hex": "0xf3f3fffff3f3ffff",
+      "retained_word_hex": "0xf3f3cfcff3f3cfcf",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 24,
+      "source_word_hex": "0xffffffffffccffcc",
+      "retained_word_hex": "0xffccffcccc00cc00",
+      "rank": 19,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 26,
+      "source_word_hex": "0xffffffff3f3f3f3f",
+      "retained_word_hex": "0x3c3c3c3c03030303",
+      "rank": 18,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 39,
+      "source_word_hex": "0x55ff55ffffffffff",
+      "retained_word_hex": "0x55ff55ffaaffaaff",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 68,
+      "source_word_hex": "0xaaffafaffafaffaa",
+      "retained_word_hex": "0xaa55a5a55a5a55aa",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff3f3ff3f3ff33",
+          "class_id_posthoc": 43,
+          "first_discovery_iteration": 66
+        }
+      ]
+    },
+    {
+      "publication_iteration": 96,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "retained_word_hex": "0xff00f0f00f0f00ff",
+      "rank": 23,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff3f3ff3f3ff33",
+          "class_id_posthoc": 43,
+          "first_discovery_iteration": 66
+        }
+      ]
+    },
+    {
+      "publication_iteration": 104,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "retained_word_hex": "0xff44f4f44f4f44ff",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff3f3ff3f3ff33",
+          "class_id_posthoc": 43,
+          "first_discovery_iteration": 66
+        }
+      ]
+    },
+    {
+      "publication_iteration": 112,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "retained_word_hex": "0x5555555555555555",
+      "rank": 17,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff3f3ff3f3ff33",
+          "class_id_posthoc": 43,
+          "first_discovery_iteration": 66
+        }
+      ]
+    },
+    {
+      "publication_iteration": 112,
+      "source_word_hex": "0x5f5fff5555fff5f5",
+      "retained_word_hex": "0x5f5ff55555fff5f5",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    },
+    {
+      "publication_iteration": 128,
+      "source_word_hex": "0xff55f5f55f5f55ff",
+      "retained_word_hex": "0xff55f5f5555f55ff",
+      "rank": 24,
+      "targets": [
+        {
+          "canonical_word_hex": "0x33ff33ffffffffff",
+          "class_id_posthoc": 44,
+          "first_discovery_iteration": 1
+        }
+      ]
+    }
+  ],
+  "orbit_face_summary": {
+    "sources": 2,
+    "finished": 1,
+    "exhaustive": 0,
+    "examined": 444,
+    "statistics": {
+      "accepted": 13,
+      "rank_low": 6,
+      "rank_high": 399,
+      "not_supporting": 26,
+      "support_lp_attempts": 3
+    },
+    "publications": 13,
+    "interpretation": "Orbit-union candidates from observed facets only; bounded streams are not exhaustive facet search."
+  },
+  "completion_frontier_summary": {
+    "jobs": 27,
+    "finished": 19,
+    "pending_jobs": 8,
+    "remaining_lp_attempts": 33,
+    "lp_attempts": 129,
+    "continuation_batches": 47,
+    "without_valid_exit": 11,
+    "with_multiple_exit_keys": 8,
+    "interpretation": "Geometric completion work, not novel class count; exhausted budgets are not exhaustive proofs."
+  },
+  "lost_classes": [],
+  "seconds_difference": -3.8401790000061737,
+  "time_change_percent": -22.529443936037254,
+  "class_comparison": [
+    {
+      "class_id": 1,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 2,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 3,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 4,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 5,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 6,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 7,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 8,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 9,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 10,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 11,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 12,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 13,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 14,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 15,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 16,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 17,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 18,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 19,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 20,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 21,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 22,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 23,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 24,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 25,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 26,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 27,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 28,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 29,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 30,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 31,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 32,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 33,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 34,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 35,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 36,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 37,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 38,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 39,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 40,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 41,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 42,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 43,
+      "baseline": {
+        "class_id": 43,
+        "iteration": 66,
+        "elapsed_seconds": 7.948222399994847,
+        "corrections_used": 3
+      },
+      "candidate": {
+        "class_id": 43,
+        "iteration": 66,
+        "elapsed_seconds": 6.543869999994058,
+        "corrections_used": 3
+      }
+    },
+    {
+      "class_id": 44,
+      "baseline": {
+        "class_id": 44,
+        "iteration": 1,
+        "elapsed_seconds": 0.13326649999362417,
+        "corrections_used": 1
+      },
+      "candidate": {
+        "class_id": 44,
+        "iteration": 1,
+        "elapsed_seconds": 0.09537619999900926,
+        "corrections_used": 1
+      }
+    },
+    {
+      "class_id": 45,
+      "baseline": null,
+      "candidate": null
+    },
+    {
+      "class_id": 46,
+      "baseline": null,
+      "candidate": null
+    }
+  ],
+  "coverage_checkpoints": [],
+  "frontier_work_comparison": [
+    {
+      "ridge_candidates": 0,
+      "ridge_finished": 0,
+      "orbit_candidates": 444,
+      "completion_pending": 8,
+      "completion_remaining_lp": 33,
+      "completion_lp_attempts": 129
+    },
+    {
+      "ridge_candidates": 0,
+      "ridge_finished": 0,
+      "orbit_candidates": 444,
+      "completion_pending": 8,
+      "completion_remaining_lp": 33,
+      "completion_lp_attempts": 129
+    }
+  ],
+  "eligible_systematic_frontiers": [],
+  "interpretation": "Same seed and budget, different trajectories; not a multi-seed causal estimate."
+}

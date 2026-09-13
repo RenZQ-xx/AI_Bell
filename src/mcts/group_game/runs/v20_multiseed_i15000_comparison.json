@@ -1,0 +1,92 @@
+{
+  "algorithm_revision": "deterministic_fair_growth_bridge_v20",
+  "experiment": "three_additional_random_seeds",
+  "fixed_environment": {
+    "PYTHONHASHSEED": 0,
+    "OMP_NUM_THREADS": 1,
+    "OPENBLAS_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1,
+    "iterations": 15000,
+    "snapshot_interval": 0,
+    "known_classes_at_start": []
+  },
+  "baseline": {
+    "seed": 3222026,
+    "iterations_completed": 6712,
+    "elapsed_seconds": 323.752,
+    "discovered_class_count": 46,
+    "missing_target_class_ids": []
+  },
+  "additional_runs": [
+    {
+      "seed": 673963275,
+      "iterations_completed": 6824,
+      "elapsed_seconds": 341.3600786999996,
+      "discovered_class_count": 46,
+      "missing_target_class_ids": [],
+      "last_discovery": {
+        "class_id": 34,
+        "iteration": 6824,
+        "elapsed_seconds": 341.0194983000001,
+        "corrections_used": 2
+      },
+      "node_count": 6644,
+      "edge_count": 6493
+    },
+    {
+      "seed": 1706386020,
+      "iterations_completed": 15000,
+      "elapsed_seconds": 1114.1360710999998,
+      "discovered_class_count": 45,
+      "missing_target_class_ids": [3],
+      "last_discovery": {
+        "class_id": 36,
+        "iteration": 6296,
+        "elapsed_seconds": 341.3674803999984,
+        "corrections_used": 4
+      },
+      "iterations_without_new_class_after_last_discovery": 8704,
+      "node_count": 14549,
+      "edge_count": 14370
+    },
+    {
+      "seed": 210656494,
+      "iterations_completed": 15000,
+      "elapsed_seconds": 1005.6554839,
+      "discovered_class_count": 44,
+      "missing_target_class_ids": [3, 34],
+      "last_discovery": {
+        "class_id": 24,
+        "iteration": 6616,
+        "elapsed_seconds": 324.71951850000005,
+        "corrections_used": 8
+      },
+      "iterations_without_new_class_after_last_discovery": 8384,
+      "node_count": 14544,
+      "edge_count": 14336
+    }
+  ],
+  "aggregate_additional_seeds": {
+    "run_count": 3,
+    "full_coverage_runs": 1,
+    "full_coverage_rate": 0.3333333333333333,
+    "coverage_counts": [46, 45, 44],
+    "mean_coverage": 45.0,
+    "mean_iterations_completed": 12274.666666666666,
+    "total_elapsed_seconds": 2461.151633699999,
+    "mean_elapsed_seconds": 820.3838778999997,
+    "median_elapsed_seconds": 1005.6554839,
+    "missing_class_frequency": {
+      "3": 2,
+      "34": 1
+    }
+  },
+  "aggregate_with_original_baseline": {
+    "run_count": 4,
+    "full_coverage_runs": 2,
+    "full_coverage_rate": 0.5,
+    "coverage_counts": [46, 46, 45, 44],
+    "mean_coverage": 45.25
+  },
+  "conclusion": "v20 reaches all 46 classes for two of four tested seeds, but i15000 is not a seed-robust full-coverage guarantee. Class 3 is the dominant remaining tail, followed by class 34."
+}

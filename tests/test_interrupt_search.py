@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 import random
+import threading
 from types import SimpleNamespace
+
+import numpy as np
 
 from baseline.facet_validator import FacetValidator
 from baseline.reference_classes import parse_example_rows, support_mask_from_row
@@ -20,9 +24,13 @@ from mcts.interrupt_search import (
     InterruptSearchConfig,
     InterruptSearchState,
     InterruptSearchTask,
+    Rank23TailProgress,
     _canonical_pattern_signature,
     _compatibility_frontier_class_ids,
     _compatibility_frontier_snapshot,
+    _enqueue_rank23_tail_work,
+    _finish_rank23_tail_work,
+    _pop_rank23_tail_work,
     _productive_iteration_limit,
     _rollout_score_batch_for_rollout,
     _run_one_iteration,
@@ -39,9 +47,85 @@ from mcts.search import (
     MCTSNode,
     _prepare_actions,
     _progressive_child_limit,
+    _refresh_discovery_dependent_action_scores,
     _select_progressive_action,
     _widening_score_batch,
 )
+
+
+def test_epoch_refresh_does_not_compare_numpy_payloads() -> None:
+    key = (0, 0)
+    candidate = (1, 0)
+    payload = np.asarray([1.0, 2.0])
+    original = ExpansionScore(
+        action=0,
+        key=candidate,
+        score=3.0,
+        phase="B2",
+        old_rank=23,
+        new_rank=24,
+        rank_gain=1,
+        flat_capacity=0,
+        supportability=payload,  # type: ignore[arg-type]
+        terminal=None,
+    )
+    node = MCTSNode(
+        key=key,
+        path=[],
+        rank=23,
+        parent=None,
+        action_from_parent=None,
+        action_scores={0: original},
+    )
+
+    class ArrayPayloadScorer:
+        def score_action(self, _key, action, *, terminal_score_fn=None):
+            del terminal_score_fn
+            return ExpansionScore(
+                action=int(action),
+                key=candidate,
+                score=3.0,
+                phase="B2",
+                old_rank=23,
+                new_rank=24,
+                rank_gain=1,
+                flat_capacity=0,
+                supportability=payload.copy(),  # type: ignore[arg-type]
+                terminal=None,
+            )
+
+    _refresh_discovery_dependent_action_scores(
+        node,
+        ArrayPayloadScorer(),  # type: ignore[arg-type]
+        MCTSConfig(),
+        terminal_score_fn=None,
+    )
+
+    assert node.action_scores[0] is original
+
+
+def test_global_discovery_state_is_atomic_across_queue_workers() -> None:
+    state = InterruptGlobalDiscoveryState(
+        initial_rare_target_classes=set(range(1, 65)),
+        remaining_rare_target_classes=set(range(1, 65)),
+    )
+
+    def worker() -> None:
+        for class_id in range(1, 65):
+            state.mark_discovered(class_id)
+            increment = getattr(state.discovered_label_counts, "increment")
+            increment("exact:shared")
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [executor.submit(worker) for _ in range(4)]
+        for future in futures:
+            future.result()
+
+    discovered, remaining_rare, epoch = state.search_snapshot()
+    assert discovered == set(range(1, 65))
+    assert remaining_rare == set()
+    assert epoch == 64
+    assert state.discovered_label_counts_snapshot()["exact:shared"] == 256
 
 
 @dataclass
@@ -191,6 +275,7 @@ class FakeTerminalScorer:
         self.terminal_score_calls = 0
         self.config = SimpleNamespace(
             terminal_scoring_mode="static",
+            dynamic_new_class_score=100.0,
             dynamic_known_class_score=10.0,
             dynamic_frequent_class_score=-5.0,
             dynamic_frequent_class_threshold=16,
@@ -718,6 +803,60 @@ def test_global_discovery_reward_overrides_stale_terminal_action_score() -> None
     assert shared.discovered_label_counts["exact:class9"] == 2
 
 
+def test_parallel_terminal_hits_award_global_novelty_once() -> None:
+    barrier = threading.Barrier(2)
+    shared = InterruptGlobalDiscoveryState(
+        initial_rare_target_classes={9},
+        remaining_rare_target_classes={9},
+    )
+
+    class ConcurrentTerminalScorer(FakeTerminalScorer):
+        def __init__(self) -> None:
+            super().__init__()
+            self.config.terminal_scoring_mode = "dynamic"
+
+        def terminal_score(self, *args, **kwargs) -> float:
+            del args, kwargs
+            barrier.wait(timeout=5.0)
+            return 100.0
+
+    def terminal_state() -> InterruptSearchState:
+        scorer = ConcurrentTerminalScorer()
+        root = MCTSNode(
+            key=(1,),
+            path=[0],
+            rank=25,
+            parent=None,
+            action_from_parent=0,
+            terminal=scorer.terminal,  # type: ignore[arg-type]
+        )
+        return InterruptSearchState(
+            scorer=scorer,  # type: ignore[arg-type]
+            config=MCTSConfig(iterations=1, max_depth=1),
+            global_discovery=shared,
+            nodes={(1,): root},
+            root=root,
+        )
+
+    states = [terminal_state(), terminal_state()]
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        discoveries = list(
+            executor.map(
+                lambda state: _run_one_iteration(state, iteration_index=1),
+                states,
+            )
+        )
+
+    rewards = sorted(
+        float(state.root.survival_sum)
+        for state in states
+        if state.root is not None
+    )
+    assert rewards == [10.0, 100.0]
+    assert sum(len(items) for items in discoveries) == 1
+    assert shared.discovered_label_counts_snapshot()["exact:class9"] == 2
+
+
 class EpochSensitiveScorer:
     def __init__(self) -> None:
         self.blocks = [(0,)]
@@ -1103,9 +1242,44 @@ def test_structure_cache_shares_geometry_without_sharing_reward_counts() -> None
     first.discovered_label_counts["exact:class1"] = 3
 
     assert second.rank_cache is first.rank_cache
+    assert second._structure_lock is first._structure_lock
     assert second.rank_cache[(0, 0)] == 0
     assert second.discovered_label_counts is not first.discovered_label_counts
     assert second.discovered_label_counts["exact:class1"] == 0
+
+
+def test_shared_structure_cache_eviction_is_thread_safe() -> None:
+    shared = SharedScorerStructureCache()
+    config = ScorerConfig(
+        cache_heavy_max_entries=4,
+        cache_light_max_entries=4,
+    )
+    scorers = [
+        ExpansionScorer(
+            blocks=[(0,), (1,)],
+            config=config,
+            structure_cache=shared,
+        )
+        for _ in range(4)
+    ]
+
+    def churn(worker_index: int) -> None:
+        scorer = scorers[worker_index]
+        for value in range(2000):
+            key = (worker_index, value)
+            scorer._cache_put(
+                scorer.terminal_cache,
+                key,  # type: ignore[arg-type]
+                value,
+                heavy=False,
+            )
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [executor.submit(churn, index) for index in range(4)]
+        for future in futures:
+            future.result()
+
+    assert len(scorers[0].terminal_cache) <= 4
 
 
 def test_affine_hull_flat_capacity_matches_child_rank() -> None:
@@ -1185,11 +1359,16 @@ def test_interrupt_state_release_tree_breaks_references() -> None:
     bank.clear_cache = lambda: setattr(bank, "cleared", True)
     state = InterruptSearchState(
         scorer=SimpleNamespace(),  # type: ignore[arg-type]
-        config=MCTSConfig(),
+        config=MCTSConfig(rank23_tail_active_service=True),
         compatibility_bank=bank,  # type: ignore[arg-type]
         nodes={(0,): root, (1,): child},
         root=root,
     )
+    state.rank23_tail_progress[7] = Rank23TailProgress(
+        rank24_actions=(1, 2),
+        pair_candidate_count=1,
+    )
+    _enqueue_rank23_tail_work(state, 7, (0,), [3])
 
     state.release_tree()
 
@@ -1198,6 +1377,38 @@ def test_interrupt_state_release_tree_breaks_references() -> None:
     assert root.children == {}
     assert child.parent is None
     assert bank.cleared
+    assert not state.rank23_tail_pending
+    assert not state.rank23_tail_pending_set
+    assert not state.rank23_tail_work
+
+
+def test_rank23_active_service_queue_is_unique_and_round_robin() -> None:
+    state = InterruptSearchState(
+        scorer=SimpleNamespace(),  # type: ignore[arg-type]
+        config=MCTSConfig(rank23_tail_active_service=True),
+    )
+    for prefix_word in (11, 22):
+        state.rank23_tail_progress[prefix_word] = Rank23TailProgress(
+            rank24_actions=(1, 2),
+            pair_candidate_count=1,
+        )
+
+    _enqueue_rank23_tail_work(state, 11, (1,), [1])
+    _enqueue_rank23_tail_work(state, 11, (1,), [1])
+    _enqueue_rank23_tail_work(state, 22, (2,), [2])
+
+    assert list(state.rank23_tail_pending) == [11, 22]
+    assert state.rank23_tail_pending_peak == 2
+    first = _pop_rank23_tail_work(state)
+    assert first is not None and first[0] == 11
+    _enqueue_rank23_tail_work(state, 11, (1,), [1])
+    second = _pop_rank23_tail_work(state)
+    third = _pop_rank23_tail_work(state)
+    assert second is not None and second[0] == 22
+    assert third is not None and third[0] == 11
+
+    _finish_rank23_tail_work(state, 11)
+    assert _pop_rank23_tail_work(state) is None
 
 
 def test_shared_structure_cache_evicts_cold_partitions() -> None:

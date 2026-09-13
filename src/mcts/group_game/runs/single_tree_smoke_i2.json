@@ -1,0 +1,10011 @@
+{
+  "metadata": {
+    "algorithm": "single_tree_symmetry_filler_corrector_mcts",
+    "one_mcts_tree": true,
+    "group_theory_location": "state_action_generator_and_online_knowledge",
+    "facet_examples_used_for_action_generation": false,
+    "terminal_classification_only_after_rank25": true,
+    "atlas_path": "E:\\pycode\\AI_Bell\\data\\subgroup_search_atlas_322.json"
+  },
+  "config": {
+    "iterations": 2,
+    "seed": 3222026,
+    "known_classes": [
+      1
+    ],
+    "target_classes": [
+      1,
+      46
+    ],
+    "max_depth": 48,
+    "max_corrections": 1,
+    "min_corrector_rank": 20,
+    "exploration": 1.35,
+    "discount": 0.985,
+    "pattern_widening_k0": 3,
+    "pattern_widening_alpha": 1.15,
+    "pattern_widening_beta": 0.45,
+    "block_widening_k0": 1,
+    "block_widening_alpha": 1.25,
+    "block_widening_beta": 0.5,
+    "max_children_per_node": 48,
+    "rank_checks_per_widen": 6,
+    "filler_max_orbits_per_action": 2,
+    "corrector_max_orbits_per_action": 3,
+    "filler_union_candidates_per_pattern": 20,
+    "corrector_union_candidates_per_pattern": 28,
+    "new_class_reward": 10.0,
+    "known_class_reward": 0.15,
+    "unknown_facet_reward": 0.1,
+    "invalid_terminal_reward": -1.5,
+    "novel_terminal_support_bonus": 0.35,
+    "repeated_terminal_penalty": 0.04,
+    "rank_gain_reward": 0.055,
+    "flat_add_penalty": 0.025,
+    "correction_size_cost": 0.012,
+    "correction_rank_loss_cost": 0.035,
+    "dead_end_reward": -0.75,
+    "supportability_start_rank": 18,
+    "supportability_direction_samples": 64,
+    "supportability_prior_weight": 0.11,
+    "include_level2_analysis": false,
+    "max_level2_pair_checks": 1024,
+    "max_level2_matches": 64,
+    "max_pattern_analyses_per_class": 2,
+    "growth_children_per_root": 12,
+    "snapshot_interval": 0,
+    "cache_heavy_max_entries": 6000,
+    "cache_light_max_entries": 30000
+  },
+  "summary": {
+    "iterations_completed": 2,
+    "elapsed_seconds": 0.07809809999889694,
+    "known_classes_at_start": [
+      1
+    ],
+    "discovered_class_ids": [
+      1
+    ],
+    "new_class_ids": [],
+    "missing_target_class_ids": [
+      46
+    ],
+    "new_class_count": 0,
+    "terminal_label_counts": {
+      "invalid:boundary": 4
+    },
+    "unique_terminal_supports": 4
+  },
+  "discoveries": [],
+  "growth_activations": [],
+  "tree": {
+    "node_count": 48,
+    "edge_count": 47,
+    "role_counts": {
+      "corrector": 4,
+      "done": 4,
+      "filler": 40
+    },
+    "rank_counts": {
+      "0": 1,
+      "1": 1,
+      "3": 2,
+      "5": 1,
+      "7": 2,
+      "9": 1,
+      "11": 2,
+      "12": 1,
+      "13": 1,
+      "14": 1,
+      "15": 2,
+      "16": 1,
+      "17": 4,
+      "18": 3,
+      "19": 1,
+      "20": 7,
+      "21": 2,
+      "22": 2,
+      "23": 3,
+      "24": 2,
+      "25": 8
+    },
+    "root_visits": 2,
+    "root_value": -0.5926324556624069,
+    "root_edges": [
+      {
+        "action": {
+          "action_id": "add:BFS322-C1-00:7,8:0000000000000180",
+          "kind": "add",
+          "pattern_id": "BFS322-C1-00",
+          "orbit_indices": [
+            7,
+            8
+          ],
+          "block_word_hex": "0x0000000000000180",
+          "effective_word_hex": "0x0000000000000180",
+          "source": "atlas",
+          "structure": "C1",
+          "block_size": 2,
+          "size_bucket": "pair",
+          "arity": 2
+        },
+        "child_key": [
+          384,
+          "filler",
+          0
+        ],
+        "prior": 1.3893325545092061,
+        "rank_before": 0,
+        "rank_after": 1,
+        "visits": 1,
+        "mean_value": -0.5036532698592194,
+        "epoch_mean": -0.5036532698592194
+      },
+      {
+        "action": {
+          "action_id": "add:BFS322-C2-22:4,5:00000c0000000030",
+          "kind": "add",
+          "pattern_id": "BFS322-C2-22",
+          "orbit_indices": [
+            4,
+            5
+          ],
+          "block_word_hex": "0x00000c0000000030",
+          "effective_word_hex": "0x00000c0000000030",
+          "source": "atlas",
+          "structure": "C2",
+          "block_size": 4,
+          "size_bucket": "small",
+          "arity": 2
+        },
+        "child_key": [
+          13194139533360,
+          "filler",
+          0
+        ],
+        "prior": 1.6293481104978251,
+        "rank_before": 0,
+        "rank_after": 3,
+        "visits": 1,
+        "mean_value": -0.6816116414655943,
+        "epoch_mean": -0.6816116414655943
+      }
+    ],
+    "dead_ends": 0,
+    "depth_limit_hits": 0
+  },
+  "knowledge_base": {
+    "epoch": 0,
+    "active_pattern_ids": [
+      "BFS322-C1-00",
+      "BFS322-C2-00",
+      "BFS322-C2-01",
+      "BFS322-C2-02",
+      "BFS322-C2-03",
+      "BFS322-C2-04",
+      "BFS322-C2-05",
+      "BFS322-C2-06",
+      "BFS322-C2-07",
+      "BFS322-C2-08",
+      "BFS322-C2-09",
+      "BFS322-C2-10",
+      "BFS322-C2-11",
+      "BFS322-C2-12",
+      "BFS322-C2-13",
+      "BFS322-C2-14",
+      "BFS322-C2-15",
+      "BFS322-C2-16",
+      "BFS322-C2-17",
+      "BFS322-C2-18",
+      "BFS322-C2-19",
+      "BFS322-C2-20",
+      "BFS322-C2-21",
+      "BFS322-C2-22",
+      "BFS322-C3-00"
+    ],
+    "patterns": {
+      "BFS322-C1-00": {
+        "pattern_id": "BFS322-C1-00",
+        "level": 0,
+        "structure": "C1",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [],
+        "block_count": 64,
+        "block_sizes": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-C2-00": {
+        "pattern_id": "BFS322-C2-00",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_A * i_B"
+        ],
+        "block_count": 40,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-C2-01": {
+        "pattern_id": "BFS322-C2-01",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-02": {
+        "pattern_id": "BFS322-C2-02",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-03": {
+        "pattern_id": "BFS322-C2-03",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-04": {
+        "pattern_id": "BFS322-C2-04",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-05": {
+        "pattern_id": "BFS322-C2-05",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A1 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-06": {
+        "pattern_id": "BFS322-C2-06",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-07": {
+        "pattern_id": "BFS322-C2-07",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1"
+        ],
+        "block_count": 40,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-C2-08": {
+        "pattern_id": "BFS322-C2-08",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-09": {
+        "pattern_id": "BFS322-C2-09",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_A"
+        ],
+        "block_count": 48,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-C2-10": {
+        "pattern_id": "BFS322-C2-10",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_A * i_B * i_C"
+        ],
+        "block_count": 36,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-C2-11": {
+        "pattern_id": "BFS322-C2-11",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-12": {
+        "pattern_id": "BFS322-C2-12",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-13": {
+        "pattern_id": "BFS322-C2-13",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-14": {
+        "pattern_id": "BFS322-C2-14",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "s_BC * i_A * f_B1 * f_C1"
+        ],
+        "block_count": 36,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-C2-15": {
+        "pattern_id": "BFS322-C2-15",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A0"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-16": {
+        "pattern_id": "BFS322-C2-16",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_B * i_C * f_A0"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-17": {
+        "pattern_id": "BFS322-C2-17",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A0 * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-18": {
+        "pattern_id": "BFS322-C2-18",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A0 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-19": {
+        "pattern_id": "BFS322-C2-19",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "f_A0 * f_B1 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-20": {
+        "pattern_id": "BFS322-C2-20",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "s_BC * f_A0 * f_B1 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-21": {
+        "pattern_id": "BFS322-C2-21",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_B * f_A0"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C2-22": {
+        "pattern_id": "BFS322-C2-22",
+        "level": 1,
+        "structure": "C2",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "i_B * f_A0 * f_C0 * f_C1"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-C3-00": {
+        "pattern_id": "BFS322-C3-00",
+        "level": 1,
+        "structure": "C3",
+        "source": "atlas",
+        "parent_root_ids": [],
+        "generator_labels": [
+          "s_AB * s_BC * f_A1 * f_B1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0000": {
+        "pattern_id": "BFS322-H-0000",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_A * i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0001": {
+        "pattern_id": "BFS322-H-0001",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-15",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0002": {
+        "pattern_id": "BFS322-H-0002",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-07"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB"
+        ],
+        "block_count": 28,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0003": {
+        "pattern_id": "BFS322-H-0003",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_B"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0004": {
+        "pattern_id": "BFS322-H-0004",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-09",
+          "BFS322-C2-10"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_C"
+        ],
+        "block_count": 30,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0005": {
+        "pattern_id": "BFS322-H-0005",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_C"
+        ],
+        "block_count": 28,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0006": {
+        "pattern_id": "BFS322-H-0006",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_A * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0007": {
+        "pattern_id": "BFS322-H-0007",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-09"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A"
+        ],
+        "block_count": 36,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0008": {
+        "pattern_id": "BFS322-H-0008",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0009": {
+        "pattern_id": "BFS322-H-0009",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-16",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0010": {
+        "pattern_id": "BFS322-H-0010",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0011": {
+        "pattern_id": "BFS322-H-0011",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-16",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0012": {
+        "pattern_id": "BFS322-H-0012",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-02",
+          "BFS322-C2-04"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0013": {
+        "pattern_id": "BFS322-H-0013",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0014": {
+        "pattern_id": "BFS322-H-0014",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-02"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * i_C * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0015": {
+        "pattern_id": "BFS322-H-0015",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-10",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * i_C * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 22,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0016": {
+        "pattern_id": "BFS322-H-0016",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0017": {
+        "pattern_id": "BFS322-H-0017",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0018": {
+        "pattern_id": "BFS322-H-0018",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-02",
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0019": {
+        "pattern_id": "BFS322-H-0019",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-11",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0020": {
+        "pattern_id": "BFS322-H-0020",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_A * i_B * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0021": {
+        "pattern_id": "BFS322-H-0021",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_A * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0022": {
+        "pattern_id": "BFS322-H-0022",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-10",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * i_C * f_B0 * f_B1"
+        ],
+        "block_count": 22,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0023": {
+        "pattern_id": "BFS322-H-0023",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-01",
+          "BFS322-C2-02"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0024": {
+        "pattern_id": "BFS322-H-0024",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0025": {
+        "pattern_id": "BFS322-H-0025",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_C"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0026": {
+        "pattern_id": "BFS322-H-0026",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "s_AB * i_B * i_C"
+        ],
+        "block_count": 22,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0027": {
+        "pattern_id": "BFS322-H-0027",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * i_B * f_B0 * f_B1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0028": {
+        "pattern_id": "BFS322-H-0028",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-02"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * i_C * f_B0 * f_B1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0029": {
+        "pattern_id": "BFS322-H-0029",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_A * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0030": {
+        "pattern_id": "BFS322-H-0030",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-00",
+          "BFS322-C2-09",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B",
+          "i_B * f_B0 * f_B1"
+        ],
+        "block_count": 28,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0031": {
+        "pattern_id": "BFS322-H-0031",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "s_AB * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0032": {
+        "pattern_id": "BFS322-H-0032",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A1 * f_B0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0033": {
+        "pattern_id": "BFS322-H-0033",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0034": {
+        "pattern_id": "BFS322-H-0034",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-07",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "s_AB"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0035": {
+        "pattern_id": "BFS322-H-0035",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-09"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C"
+        ],
+        "block_count": 32,
+        "block_sizes": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0036": {
+        "pattern_id": "BFS322-H-0036",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-15"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0037": {
+        "pattern_id": "BFS322-H-0037",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "s_AB * i_C * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0038": {
+        "pattern_id": "BFS322-H-0038",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0039": {
+        "pattern_id": "BFS322-H-0039",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-09",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0040": {
+        "pattern_id": "BFS322-H-0040",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-10"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * i_B * i_C"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0041": {
+        "pattern_id": "BFS322-H-0041",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0042": {
+        "pattern_id": "BFS322-H-0042",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "s_AB * i_C"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0043": {
+        "pattern_id": "BFS322-H-0043",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * i_B * i_C * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0044": {
+        "pattern_id": "BFS322-H-0044",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_B * i_C * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0045": {
+        "pattern_id": "BFS322-H-0045",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * i_C * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0046": {
+        "pattern_id": "BFS322-H-0046",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0047": {
+        "pattern_id": "BFS322-H-0047",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0048": {
+        "pattern_id": "BFS322-H-0048",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * i_B * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0049": {
+        "pattern_id": "BFS322-H-0049",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_B * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0050": {
+        "pattern_id": "BFS322-H-0050",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0051": {
+        "pattern_id": "BFS322-H-0051",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0052": {
+        "pattern_id": "BFS322-H-0052",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0053": {
+        "pattern_id": "BFS322-H-0053",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-17",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0054": {
+        "pattern_id": "BFS322-H-0054",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_B * i_C * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0055": {
+        "pattern_id": "BFS322-H-0055",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0056": {
+        "pattern_id": "BFS322-H-0056",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-11",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0057": {
+        "pattern_id": "BFS322-H-0057",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_B * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0058": {
+        "pattern_id": "BFS322-H-0058",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0059": {
+        "pattern_id": "BFS322-H-0059",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-02"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_A * i_C * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0060": {
+        "pattern_id": "BFS322-H-0060",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-03",
+          "BFS322-C2-04"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0061": {
+        "pattern_id": "BFS322-H-0061",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A0 * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0062": {
+        "pattern_id": "BFS322-H-0062",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-05",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A0 * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0063": {
+        "pattern_id": "BFS322-H-0063",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A0 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0064": {
+        "pattern_id": "BFS322-H-0064",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A0 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0065": {
+        "pattern_id": "BFS322-H-0065",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_B * i_C * f_A0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0066": {
+        "pattern_id": "BFS322-H-0066",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0067": {
+        "pattern_id": "BFS322-H-0067",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_B * f_A0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0068": {
+        "pattern_id": "BFS322-H-0068",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0069": {
+        "pattern_id": "BFS322-H-0069",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0070": {
+        "pattern_id": "BFS322-H-0070",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01",
+          "BFS322-C2-15",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0071": {
+        "pattern_id": "BFS322-H-0071",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-01"
+        ],
+        "generator_labels": [
+          "f_C0 * f_C1",
+          "i_C * f_A1 * f_B0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0072": {
+        "pattern_id": "BFS322-H-0072",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0073": {
+        "pattern_id": "BFS322-H-0073",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0074": {
+        "pattern_id": "BFS322-H-0074",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "s_AB * i_B * i_C * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0075": {
+        "pattern_id": "BFS322-H-0075",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "s_AB * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0076": {
+        "pattern_id": "BFS322-H-0076",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-16",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A * i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0077": {
+        "pattern_id": "BFS322-H-0077",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-09",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0078": {
+        "pattern_id": "BFS322-H-0078",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0079": {
+        "pattern_id": "BFS322-H-0079",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-16",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0080": {
+        "pattern_id": "BFS322-H-0080",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_B * i_C * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0081": {
+        "pattern_id": "BFS322-H-0081",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-10",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A * i_B * i_C * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 18,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0082": {
+        "pattern_id": "BFS322-H-0082",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0083": {
+        "pattern_id": "BFS322-H-0083",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-11",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_B * f_A0 * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0084": {
+        "pattern_id": "BFS322-H-0084",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-10",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A * i_B * i_C * f_B0 * f_B1"
+        ],
+        "block_count": 18,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0085": {
+        "pattern_id": "BFS322-H-0085",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_A * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0086": {
+        "pattern_id": "BFS322-H-0086",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-09",
+          "BFS322-C2-10"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_C"
+        ],
+        "block_count": 26,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0087": {
+        "pattern_id": "BFS322-H-0087",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-09",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "i_B * f_B0 * f_B1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0088": {
+        "pattern_id": "BFS322-H-0088",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "s_AB * i_C"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0089": {
+        "pattern_id": "BFS322-H-0089",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-15",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0090": {
+        "pattern_id": "BFS322-H-0090",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-02",
+          "BFS322-C2-07",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "i_A * i_B * f_C0 * f_C1",
+          "s_AB"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0091": {
+        "pattern_id": "BFS322-H-0091",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0092": {
+        "pattern_id": "BFS322-H-0092",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-09",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_C"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0093": {
+        "pattern_id": "BFS322-H-0093",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A1 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0094": {
+        "pattern_id": "BFS322-H-0094",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-15",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0095": {
+        "pattern_id": "BFS322-H-0095",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0096": {
+        "pattern_id": "BFS322-H-0096",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * i_B * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0097": {
+        "pattern_id": "BFS322-H-0097",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0098": {
+        "pattern_id": "BFS322-H-0098",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-09",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0099": {
+        "pattern_id": "BFS322-H-0099",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-17",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0100": {
+        "pattern_id": "BFS322-H-0100",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-10"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * i_B * i_C * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0101": {
+        "pattern_id": "BFS322-H-0101",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_B * i_C * f_A0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0102": {
+        "pattern_id": "BFS322-H-0102",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0103": {
+        "pattern_id": "BFS322-H-0103",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0104": {
+        "pattern_id": "BFS322-H-0104",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-07"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * f_B1 * f_C1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0105": {
+        "pattern_id": "BFS322-H-0105",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_A * f_B1 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0106": {
+        "pattern_id": "BFS322-H-0106",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * i_C * f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0107": {
+        "pattern_id": "BFS322-H-0107",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_C * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0108": {
+        "pattern_id": "BFS322-H-0108",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-11",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * f_A0 * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0109": {
+        "pattern_id": "BFS322-H-0109",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * f_A0 * f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0110": {
+        "pattern_id": "BFS322-H-0110",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0111": {
+        "pattern_id": "BFS322-H-0111",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-15",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0112": {
+        "pattern_id": "BFS322-H-0112",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0113": {
+        "pattern_id": "BFS322-H-0113",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * i_C * f_A0 * f_A1 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0114": {
+        "pattern_id": "BFS322-H-0114",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * i_B * i_C * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0115": {
+        "pattern_id": "BFS322-H-0115",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * i_C * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0116": {
+        "pattern_id": "BFS322-H-0116",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_B * i_C * f_A0 * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0117": {
+        "pattern_id": "BFS322-H-0117",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0118": {
+        "pattern_id": "BFS322-H-0118",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * f_A0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0119": {
+        "pattern_id": "BFS322-H-0119",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-05",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0120": {
+        "pattern_id": "BFS322-H-0120",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_B * i_C * f_A0 * f_A1 * f_B0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0121": {
+        "pattern_id": "BFS322-H-0121",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * f_B0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0122": {
+        "pattern_id": "BFS322-H-0122",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * i_C * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0123": {
+        "pattern_id": "BFS322-H-0123",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0124": {
+        "pattern_id": "BFS322-H-0124",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-03"
+        ],
+        "generator_labels": [
+          "f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_A * i_B * i_C * f_A0 * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0125": {
+        "pattern_id": "BFS322-H-0125",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-09",
+          "BFS322-C2-12"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0126": {
+        "pattern_id": "BFS322-H-0126",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A1 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0127": {
+        "pattern_id": "BFS322-H-0127",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "s_AC * i_B"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0128": {
+        "pattern_id": "BFS322-H-0128",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-07",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_B * i_C * f_B0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0129": {
+        "pattern_id": "BFS322-H-0129",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0130": {
+        "pattern_id": "BFS322-H-0130",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_A * i_B * i_C * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0131": {
+        "pattern_id": "BFS322-H-0131",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-16"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * i_C * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0132": {
+        "pattern_id": "BFS322-H-0132",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "s_BC * i_B * i_C * f_A1 * f_B0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0133": {
+        "pattern_id": "BFS322-H-0133",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-10"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * i_B * i_C * f_B0 * f_B1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0134": {
+        "pattern_id": "BFS322-H-0134",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_C * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0135": {
+        "pattern_id": "BFS322-H-0135",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-15",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0136": {
+        "pattern_id": "BFS322-H-0136",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-11"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0137": {
+        "pattern_id": "BFS322-H-0137",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * f_A0 * f_B0 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0138": {
+        "pattern_id": "BFS322-H-0138",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04",
+          "BFS322-C2-05",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0139": {
+        "pattern_id": "BFS322-H-0139",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * i_B * i_C * f_A1 * f_B0 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0140": {
+        "pattern_id": "BFS322-H-0140",
+        "level": 2,
+        "structure": "C6",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-04"
+        ],
+        "generator_labels": [
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1",
+          "s_AB * s_AC * f_B0 * f_C1"
+        ],
+        "block_count": 12,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0141": {
+        "pattern_id": "BFS322-H-0141",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0142": {
+        "pattern_id": "BFS322-H-0142",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-09",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "i_B"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0143": {
+        "pattern_id": "BFS322-H-0143",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-18",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A0 * f_A1 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0144": {
+        "pattern_id": "BFS322-H-0144",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "i_B * f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0145": {
+        "pattern_id": "BFS322-H-0145",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0146": {
+        "pattern_id": "BFS322-H-0146",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-17",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0147": {
+        "pattern_id": "BFS322-H-0147",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0148": {
+        "pattern_id": "BFS322-H-0148",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-15"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0149": {
+        "pattern_id": "BFS322-H-0149",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-17",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A1 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0150": {
+        "pattern_id": "BFS322-H-0150",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0151": {
+        "pattern_id": "BFS322-H-0151",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-15",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0152": {
+        "pattern_id": "BFS322-H-0152",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0153": {
+        "pattern_id": "BFS322-H-0153",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "i_B * f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0154": {
+        "pattern_id": "BFS322-H-0154",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-15",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0155": {
+        "pattern_id": "BFS322-H-0155",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * i_B * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0156": {
+        "pattern_id": "BFS322-H-0156",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0157": {
+        "pattern_id": "BFS322-H-0157",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0158": {
+        "pattern_id": "BFS322-H-0158",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "i_B * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0159": {
+        "pattern_id": "BFS322-H-0159",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0160": {
+        "pattern_id": "BFS322-H-0160",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0161": {
+        "pattern_id": "BFS322-H-0161",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_A0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0162": {
+        "pattern_id": "BFS322-H-0162",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-12",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "i_B * f_A0 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0163": {
+        "pattern_id": "BFS322-H-0163",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-11",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "i_B * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0164": {
+        "pattern_id": "BFS322-H-0164",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-07"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0165": {
+        "pattern_id": "BFS322-H-0165",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "s_AC * i_B"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0166": {
+        "pattern_id": "BFS322-H-0166",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-05"
+        ],
+        "generator_labels": [
+          "f_A1 * f_C1",
+          "f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0167": {
+        "pattern_id": "BFS322-H-0167",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "s_AC * f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0168": {
+        "pattern_id": "BFS322-H-0168",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-09",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "i_B"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0169": {
+        "pattern_id": "BFS322-H-0169",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "i_B * f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0170": {
+        "pattern_id": "BFS322-H-0170",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-17",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0171": {
+        "pattern_id": "BFS322-H-0171",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-15",
+          "BFS322-C2-18"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0172": {
+        "pattern_id": "BFS322-H-0172",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-17",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A1 * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0173": {
+        "pattern_id": "BFS322-H-0173",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-15",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A1 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0174": {
+        "pattern_id": "BFS322-H-0174",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-21",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "i_B * f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0175": {
+        "pattern_id": "BFS322-H-0175",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0176": {
+        "pattern_id": "BFS322-H-0176",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "i_B * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0177": {
+        "pattern_id": "BFS322-H-0177",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-15",
+          "BFS322-C2-17"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0178": {
+        "pattern_id": "BFS322-H-0178",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0179": {
+        "pattern_id": "BFS322-H-0179",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-12",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "i_B * f_A0 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0180": {
+        "pattern_id": "BFS322-H-0180",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "s_AC * i_B"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0181": {
+        "pattern_id": "BFS322-H-0181",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-18",
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "f_A0 * f_A1 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0182": {
+        "pattern_id": "BFS322-H-0182",
+        "level": 2,
+        "structure": "C4",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "s_AC * i_B * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0183": {
+        "pattern_id": "BFS322-H-0183",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-11",
+          "BFS322-C2-13"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "i_B * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0184": {
+        "pattern_id": "BFS322-H-0184",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-06",
+          "BFS322-C2-07",
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "f_A1 * f_B0 * f_B1 * f_C1",
+          "s_AC"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0185": {
+        "pattern_id": "BFS322-H-0185",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-19",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "f_A0 * f_B0 * f_C0"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0186": {
+        "pattern_id": "BFS322-H-0186",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-18",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "f_A0 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0187": {
+        "pattern_id": "BFS322-H-0187",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-10",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "i_A * i_B * i_C * f_A0 * f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0188": {
+        "pattern_id": "BFS322-H-0188",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-16",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "i_B * i_C * f_A0 * f_C0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0189": {
+        "pattern_id": "BFS322-H-0189",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-15",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "f_A0"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0190": {
+        "pattern_id": "BFS322-H-0190",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-09",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "i_A * f_A0 * f_A1"
+        ],
+        "block_count": 30,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0191": {
+        "pattern_id": "BFS322-H-0191",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-12",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "i_A * f_A0 * f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 22,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0192": {
+        "pattern_id": "BFS322-H-0192",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07",
+          "BFS322-C2-13",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "i_A * f_A0 * f_A1 * f_B0 * f_C0"
+        ],
+        "block_count": 22,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0193": {
+        "pattern_id": "BFS322-H-0193",
+        "level": 2,
+        "structure": "S3",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-07"
+        ],
+        "generator_labels": [
+          "s_BC * f_B1 * f_C1",
+          "s_AC * i_A * i_C"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0194": {
+        "pattern_id": "BFS322-H-0194",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-09",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "i_A"
+        ],
+        "block_count": 26,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0195": {
+        "pattern_id": "BFS322-H-0195",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-18",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_BC * f_A1 * f_B0 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0196": {
+        "pattern_id": "BFS322-H-0196",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-16",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_BC * i_B * i_C * f_A1 * f_B0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0197": {
+        "pattern_id": "BFS322-H-0197",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-15",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0198": {
+        "pattern_id": "BFS322-H-0198",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-13",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_BC * i_A"
+        ],
+        "block_count": 18,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0199": {
+        "pattern_id": "BFS322-H-0199",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-19",
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_BC * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0200": {
+        "pattern_id": "BFS322-H-0200",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-12",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_BC * i_A * f_B0 * f_C0"
+        ],
+        "block_count": 18,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0201": {
+        "pattern_id": "BFS322-H-0201",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08",
+          "BFS322-C2-10",
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_BC * i_A * i_B * i_C * f_B0 * f_C1"
+        ],
+        "block_count": 20,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0202": {
+        "pattern_id": "BFS322-H-0202",
+        "level": 2,
+        "structure": "S3",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-08"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_A1 * f_B1 * f_C1",
+          "s_AC * f_B0 * f_B1"
+        ],
+        "block_count": 12,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0203": {
+        "pattern_id": "BFS322-H-0203",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-09",
+          "BFS322-C2-17",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A",
+          "i_A * f_B0 * f_B1 * f_C0"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0204": {
+        "pattern_id": "BFS322-H-0204",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-09",
+          "BFS322-C2-16",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A",
+          "i_A * i_B * f_C0"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0205": {
+        "pattern_id": "BFS322-H-0205",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-09",
+          "BFS322-C2-18",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A",
+          "i_A * f_A0 * f_A1 * f_B0 * f_B1 * f_C0"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0206": {
+        "pattern_id": "BFS322-H-0206",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-09",
+          "BFS322-C2-16",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A",
+          "i_B * f_A0 * f_A1 * f_B0 * f_B1 * f_C0"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0207": {
+        "pattern_id": "BFS322-H-0207",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-09",
+          "BFS322-C2-17",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A",
+          "f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0208": {
+        "pattern_id": "BFS322-H-0208",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-09",
+          "BFS322-C2-15",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A",
+          "f_C0"
+        ],
+        "block_count": 24,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0209": {
+        "pattern_id": "BFS322-H-0209",
+        "level": 2,
+        "structure": "C6",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-10"
+        ],
+        "generator_labels": [
+          "i_A * i_B * i_C",
+          "s_AB * s_BC"
+        ],
+        "block_count": 14,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          3,
+          3,
+          2,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0210": {
+        "pattern_id": "BFS322-H-0210",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-16",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_A * i_B * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0211": {
+        "pattern_id": "BFS322-H-0211",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-15",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0212": {
+        "pattern_id": "BFS322-H-0212",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-17",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_A * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0213": {
+        "pattern_id": "BFS322-H-0213",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-16",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_C * f_A0 * f_A1 * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0214": {
+        "pattern_id": "BFS322-H-0214",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-18",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_A * f_A0 * f_A1 * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0215": {
+        "pattern_id": "BFS322-H-0215",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-17",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0216": {
+        "pattern_id": "BFS322-H-0216",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-17",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_A * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0217": {
+        "pattern_id": "BFS322-H-0217",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-15",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_A * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0218": {
+        "pattern_id": "BFS322-H-0218",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-18",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0219": {
+        "pattern_id": "BFS322-H-0219",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-16",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_B * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0220": {
+        "pattern_id": "BFS322-H-0220",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-17",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0221": {
+        "pattern_id": "BFS322-H-0221",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-11",
+          "BFS322-C2-16",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_C0 * f_C1",
+          "i_A * i_C * f_B0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0222": {
+        "pattern_id": "BFS322-H-0222",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-12",
+          "BFS322-C2-17",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0223": {
+        "pattern_id": "BFS322-H-0223",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-12",
+          "BFS322-C2-16",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * i_B * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0224": {
+        "pattern_id": "BFS322-H-0224",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-12",
+          "BFS322-C2-16",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_B * f_A0 * f_A1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0225": {
+        "pattern_id": "BFS322-H-0225",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-12",
+          "BFS322-C2-18",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1",
+          "i_A * f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0226": {
+        "pattern_id": "BFS322-H-0226",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-12",
+          "BFS322-C2-17",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1",
+          "f_A0 * f_A1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0227": {
+        "pattern_id": "BFS322-H-0227",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-12",
+          "BFS322-C2-15",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_A * f_B0 * f_B1 * f_C0 * f_C1",
+          "f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0228": {
+        "pattern_id": "BFS322-H-0228",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-17",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "i_B * f_B0 * f_B1 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0229": {
+        "pattern_id": "BFS322-H-0229",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-15",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0230": {
+        "pattern_id": "BFS322-H-0230",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-18",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "i_B * f_A1 * f_B0 * f_B1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0231": {
+        "pattern_id": "BFS322-H-0231",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-17",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0232": {
+        "pattern_id": "BFS322-H-0232",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-18",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "i_B * f_A1 * f_B0 * f_B1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0233": {
+        "pattern_id": "BFS322-H-0233",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-17",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "f_A1 * f_C0 * f_C1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0234": {
+        "pattern_id": "BFS322-H-0234",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-17",
+          "BFS322-C2-21"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "i_B * f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0235": {
+        "pattern_id": "BFS322-H-0235",
+        "level": 2,
+        "structure": "C2 x C2",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-13",
+          "BFS322-C2-15",
+          "BFS322-C2-22"
+        ],
+        "generator_labels": [
+          "i_B * f_A0 * f_C1",
+          "f_A1"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "BFS322-H-0236": {
+        "pattern_id": "BFS322-H-0236",
+        "level": 2,
+        "structure": "S3",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-14"
+        ],
+        "generator_labels": [
+          "s_BC * i_A * f_B1 * f_C1",
+          "s_AB * s_AC * i_B * i_C * f_B1 * f_C0"
+        ],
+        "block_count": 16,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          1,
+          1
+        ]
+      },
+      "BFS322-H-0237": {
+        "pattern_id": "BFS322-H-0237",
+        "level": 2,
+        "structure": "C6",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-19"
+        ],
+        "generator_labels": [
+          "f_A0 * f_B1 * f_C1",
+          "s_AB * s_BC * i_A * i_C * f_C1"
+        ],
+        "block_count": 12,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          2,
+          2
+        ]
+      },
+      "BFS322-H-0238": {
+        "pattern_id": "BFS322-H-0238",
+        "level": 2,
+        "structure": "S3",
+        "source": "atlas",
+        "parent_root_ids": [
+          "BFS322-C2-20"
+        ],
+        "generator_labels": [
+          "s_BC * f_A0 * f_B1 * f_C1",
+          "s_AB * s_BC * i_A * i_C"
+        ],
+        "block_count": 12,
+        "block_sizes": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          2,
+          2
+        ]
+      }
+    },
+    "pattern_stats": {
+      "corrector:BFS322-C1-00": {
+        "visits": 1,
+        "reward_sum": -1.174,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.174,
+        "mean_rank_delta": 0.0
+      },
+      "corrector:BFS322-C2-09": {
+        "visits": 1,
+        "reward_sum": -1.198,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.198,
+        "mean_rank_delta": 0.0
+      },
+      "filler:BFS322-C1-00": {
+        "visits": 26,
+        "reward_sum": -39.01943527924452,
+        "rank_delta_sum": 25.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.5007475107401738,
+        "mean_rank_delta": 0.9615384615384616
+      },
+      "filler:BFS322-C2-09": {
+        "visits": 14,
+        "reward_sum": -24.894557235626984,
+        "rank_delta_sum": 22.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.7781826596876418,
+        "mean_rank_delta": 1.5714285714285714
+      },
+      "filler:BFS322-C2-22": {
+        "visits": 1,
+        "reward_sum": -0.6816116414655943,
+        "rank_delta_sum": 3.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -0.6816116414655943,
+        "mean_rank_delta": 3.0
+      }
+    },
+    "context_stats": {
+      "corrector:C1:r25:pair:2": {
+        "visits": 1,
+        "reward_sum": -1.174,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.174,
+        "mean_rank_delta": 0.0
+      },
+      "corrector:C2:r25:small:2": {
+        "visits": 1,
+        "reward_sum": -1.198,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.198,
+        "mean_rank_delta": 0.0
+      },
+      "filler:C1:r00_07:pair:2": {
+        "visits": 5,
+        "reward_sum": -3.5015250958432054,
+        "rank_delta_sum": 9.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -0.7003050191686411,
+        "mean_rank_delta": 1.8
+      },
+      "filler:C1:r08_15:pair:2": {
+        "visits": 2,
+        "reward_sum": -2.246837974994691,
+        "rank_delta_sum": 3.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.1234189874973455,
+        "mean_rank_delta": 1.5
+      },
+      "filler:C1:r08_15:singleton:1": {
+        "visits": 4,
+        "reward_sum": -5.499824667751957,
+        "rank_delta_sum": 4.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.3749561669379893,
+        "mean_rank_delta": 1.0
+      },
+      "filler:C1:r16_21:pair:2": {
+        "visits": 2,
+        "reward_sum": -3.295280971685902,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.647640485842951,
+        "mean_rank_delta": 0.0
+      },
+      "filler:C1:r16_21:singleton:1": {
+        "visits": 10,
+        "reward_sum": -17.986777556218755,
+        "rank_delta_sum": 6.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.7986777556218754,
+        "mean_rank_delta": 0.6
+      },
+      "filler:C1:r22_24:singleton:1": {
+        "visits": 3,
+        "reward_sum": -6.489189012749998,
+        "rank_delta_sum": 3.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -2.163063004249999,
+        "mean_rank_delta": 1.0
+      },
+      "filler:C2:r00_07:small:2": {
+        "visits": 3,
+        "reward_sum": -2.6370592008556377,
+        "rank_delta_sum": 11.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -0.8790197336185459,
+        "mean_rank_delta": 3.6666666666666665
+      },
+      "filler:C2:r08_15:small:2": {
+        "visits": 2,
+        "reward_sum": -2.9156613768868493,
+        "rank_delta_sum": 7.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.4578306884434247,
+        "mean_rank_delta": 3.5
+      },
+      "filler:C2:r16_21:pair:1": {
+        "visits": 2,
+        "reward_sum": -3.8267531284322587,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.9133765642161293,
+        "mean_rank_delta": 0.0
+      },
+      "filler:C2:r16_21:pair:2": {
+        "visits": 1,
+        "reward_sum": -1.7728395738202458,
+        "rank_delta_sum": 2.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.7728395738202458,
+        "mean_rank_delta": 2.0
+      },
+      "filler:C2:r16_21:singleton:1": {
+        "visits": 2,
+        "reward_sum": -3.923113843110886,
+        "rank_delta_sum": 2.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.961556921555443,
+        "mean_rank_delta": 1.0
+      },
+      "filler:C2:r16_21:small:2": {
+        "visits": 1,
+        "reward_sum": -1.771246980212942,
+        "rank_delta_sum": 0.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -1.771246980212942,
+        "mean_rank_delta": 0.0
+      },
+      "filler:C2:r22_24:pair:2": {
+        "visits": 1,
+        "reward_sum": -2.27503,
+        "rank_delta_sum": 1.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -2.27503,
+        "mean_rank_delta": 1.0
+      },
+      "filler:C2:r22_24:singleton:1": {
+        "visits": 3,
+        "reward_sum": -6.454464773773751,
+        "rank_delta_sum": 2.0,
+        "exact_hits": 0,
+        "new_classes": 0,
+        "mean_reward": -2.1514882579245835,
+        "mean_rank_delta": 0.6666666666666666
+      }
+    },
+    "observed_supports": {}
+  }
+}

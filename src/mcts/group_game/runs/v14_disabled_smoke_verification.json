@@ -1,0 +1,8 @@
+{
+  "discovery_paths": true,
+  "tree": true,
+  "geometry_statistics": true,
+  "completion_frontier": true,
+  "orbit_frontier": true,
+  "yield_disabled": true
+}

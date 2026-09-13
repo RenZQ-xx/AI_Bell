@@ -14,6 +14,22 @@ from baseline.scorer import ExpansionScore, ExpansionScorer, exact_class_id
 
 TerminalScoreFn = Callable[[BlockKey, FacetLabel], float]
 ExactHitCallback = Callable[[str, int], None]
+Rank23TailFn = Callable[
+    [BlockKey, Sequence[int], "TerminalHit | None"],
+    tuple["MCTSValueComponents", "TerminalHit | None"] | None,
+]
+
+
+class Rank23TailDeferred(RuntimeError):
+    """Suspend one MCTS iteration until its bounded tail scan is complete."""
+
+    def __init__(self, prefix_key: BlockKey, prefix_path: Sequence[int]) -> None:
+        super().__init__("rank-23 tail scan is incomplete")
+        self.prefix_key = prefix_key
+        self.prefix_path = tuple(int(value) for value in prefix_path)
+        self.rollout_total: MCTSValueComponents | None = None
+        self.rollout_discount: float = 1.0
+        self.rollout_best: TerminalHit | None = None
 
 
 @dataclass(frozen=True)
@@ -46,6 +62,10 @@ class MCTSConfig:
     progressive_beta: float = 0.5
     progressive_bucket_quota: int = 1
     discovery_epoch_value_decay: float = 0.25
+    rank23_tail_enabled: bool = False
+    rank23_tail_max_prefixes: int = 24
+    rank23_tail_candidates_per_step: int = 0
+    rank23_tail_active_service: bool = False
 
 
 @dataclass(frozen=True)
@@ -287,33 +307,45 @@ class MCTSNode:
         return self.novelty_sum / self.value_visits if self.value_visits > 0 else 0.0
 
 
-def run_mcts_search(
-    scorer: ExpansionScorer,
-    *,
-    config: MCTSConfig | None = None,
-    start_key: BlockKey | None = None,
-) -> MCTSResult:
-    """Run add-only Monte Carlo tree search from the empty block state."""
-    cfg = MCTSConfig() if config is None else config
-    if cfg.iterations <= 0:
-        raise ValueError(f"iterations must be positive, got {cfg.iterations}")
+class MCTSSearchSession:
+    """A resumable add-only MCTS search advanced one iteration at a time."""
 
-    block_count = len(scorer.blocks)
-    root_key = empty_key(block_count) if start_key is None else start_key
-    rng = random.Random(cfg.seed)
-    compatibility_bank = ClassCompatibilityBank.from_scorer(scorer, cfg.compatibility_examples_path)
+    def __init__(
+        self,
+        scorer: ExpansionScorer,
+        *,
+        config: MCTSConfig | None = None,
+        start_key: BlockKey | None = None,
+    ) -> None:
+        self.scorer = scorer
+        self.config = MCTSConfig() if config is None else config
+        if self.config.iterations <= 0:
+            raise ValueError(f"iterations must be positive, got {self.config.iterations}")
 
-    nodes: dict[BlockKey, MCTSNode] = {}
-    root = _get_or_create_node(nodes, scorer, root_key, path=[])
-    terminal_bests: dict[str, TerminalHit] = {}
-    exact_discoveries: list[ExactClassDiscovery] = []
-    discovered_exact_classes: set[int] = set()
-    seen_signatures: Counter[tuple[int, ...]] = Counter()
-    encountered = Counter()
-    best: TerminalHit | None = None
-    iterations_completed = 0
+        block_count = len(scorer.blocks)
+        root_key = empty_key(block_count) if start_key is None else start_key
+        self.rng = random.Random(self.config.seed)
+        self.compatibility_bank = ClassCompatibilityBank.from_scorer(
+            scorer,
+            self.config.compatibility_examples_path,
+        )
+        self.nodes: dict[BlockKey, MCTSNode] = {}
+        self.root = _get_or_create_node(self.nodes, scorer, root_key, path=[])
+        self.terminal_bests: dict[str, TerminalHit] = {}
+        self.exact_discoveries: list[ExactClassDiscovery] = []
+        self.discovered_exact_classes: set[int] = set()
+        self.seen_signatures: Counter[tuple[int, ...]] = Counter()
+        self.encountered: Counter[str] = Counter()
+        self.best: TerminalHit | None = None
+        self.iterations_completed = 0
+        self._record_signature(self.root.key)
 
-    def record_exact_discovery(
+    @property
+    def finished(self) -> bool:
+        return self.iterations_completed >= self.config.iterations
+
+    def _record_exact_discovery(
+        self,
         terminal: FacetLabel,
         *,
         score: float,
@@ -324,11 +356,11 @@ def run_mcts_search(
         rank: int,
     ) -> None:
         class_id = exact_class_id(terminal.label)
-        if class_id is None or class_id in discovered_exact_classes:
+        if class_id is None or class_id in self.discovered_exact_classes:
             return
-        discovered_exact_classes.add(class_id)
-        scorer.rare_target_classes.discard(class_id)
-        exact_discoveries.append(
+        self.discovered_exact_classes.add(class_id)
+        self.scorer.rare_target_classes.discard(class_id)
+        self.exact_discoveries.append(
             ExactClassDiscovery(
                 class_id=class_id,
                 label=terminal.label,
@@ -341,35 +373,56 @@ def run_mcts_search(
             )
         )
 
-    def record_signature(key: BlockKey) -> None:
-        if compatibility_bank is None:
+    def _record_signature(self, key: BlockKey) -> None:
+        if self.compatibility_bank is None:
             return
-        signature = compatibility_bank.active_signature(key, discovered_exact_classes)
-        seen_signatures[signature] += 1
+        signature = self.compatibility_bank.active_signature(
+            key,
+            self.discovered_exact_classes,
+        )
+        self.seen_signatures[signature] += 1
 
-    def node_components(key: BlockKey, *, survival: float = 0.0) -> MCTSValueComponents:
-        if compatibility_bank is None or not discovered_exact_classes:
-            return MCTSValueComponents(escape=0.0, survival=float(survival), novelty=0.0)
-        active_classes = sorted(discovered_exact_classes)
-        current_total = compatibility_bank.total_compat_count(key, active_classes)
+    def _node_components(
+        self,
+        key: BlockKey,
+        *,
+        survival: float = 0.0,
+    ) -> MCTSValueComponents:
+        if self.compatibility_bank is None or not self.discovered_exact_classes:
+            return MCTSValueComponents(
+                escape=0.0,
+                survival=float(survival),
+                novelty=0.0,
+            )
+        active_classes = sorted(self.discovered_exact_classes)
+        current_total = self.compatibility_bank.total_compat_count(key, active_classes)
         escape = 0.0 if current_total <= 0 else 1.0 / (1.0 + float(current_total))
-        signature = compatibility_bank.active_signature(key, active_classes)
-        novelty = 1.0 / (1.0 + float(seen_signatures[signature]))
-        return MCTSValueComponents(escape=float(escape), survival=float(survival), novelty=float(novelty))
+        signature = self.compatibility_bank.active_signature(key, active_classes)
+        novelty = 1.0 / (1.0 + float(self.seen_signatures[signature]))
+        return MCTSValueComponents(
+            escape=float(escape),
+            survival=float(survival),
+            novelty=float(novelty),
+        )
 
-    record_signature(root.key)
+    def step(self) -> list[ExactClassDiscovery]:
+        """Advance one complete MCTS iteration and return its new exact classes."""
+        if self.finished:
+            return []
 
-    for _iteration in range(cfg.iterations):
-        iterations_completed += 1
-        iteration_index = iterations_completed
-        path_nodes: list[MCTSNode] = [root]
-        node = root
+        cfg = self.config
+        scorer = self.scorer
+        discovery_start = len(self.exact_discoveries)
+        self.iterations_completed += 1
+        iteration_index = self.iterations_completed
+        path_nodes: list[MCTSNode] = [self.root]
+        node = self.root
 
         while True:
             if node.is_terminal:
                 terminal_score = float(scorer.terminal_score(node.key))
                 if node.terminal is not None and node.terminal.is_exact:
-                    record_exact_discovery(
+                    self._record_exact_discovery(
                         node.terminal,
                         score=terminal_score,
                         iteration_index=iteration_index,
@@ -378,14 +431,14 @@ def run_mcts_search(
                         path=node.path,
                         rank=node.rank,
                     )
-                node_value = node_components(node.key, survival=terminal_score)
-                best = _register_hit(
+                node_value = self._node_components(node.key, survival=terminal_score)
+                self.best = _register_hit(
                     node,
                     terminal_score,
-                    terminal_bests=terminal_bests,
-                    encountered=encountered,
+                    terminal_bests=self.terminal_bests,
+                    encountered=self.encountered,
                     scorer=scorer,
-                    best=best,
+                    best=self.best,
                 )
                 _backpropagate_components(
                     path_nodes,
@@ -399,7 +452,7 @@ def run_mcts_search(
                 terminal = scorer.terminal_label(node.key)
                 terminal_score = float(scorer.terminal_score(node.key))
                 if terminal.is_exact:
-                    record_exact_discovery(
+                    self._record_exact_discovery(
                         terminal,
                         score=terminal_score,
                         iteration_index=iteration_index,
@@ -408,15 +461,15 @@ def run_mcts_search(
                         path=node.path,
                         rank=node.rank,
                     )
-                node_value = node_components(node.key, survival=terminal_score)
-                best = _register_hit(
+                node_value = self._node_components(node.key, survival=terminal_score)
+                self.best = _register_hit(
                     node,
                     terminal_score,
                     terminal=terminal,
-                    terminal_bests=terminal_bests,
-                    encountered=encountered,
+                    terminal_bests=self.terminal_bests,
+                    encountered=self.encountered,
                     scorer=scorer,
-                    best=best,
+                    best=self.best,
                 )
                 _backpropagate_components(
                     path_nodes,
@@ -432,28 +485,39 @@ def run_mcts_search(
             if len(node.children) < _progressive_child_limit(node, cfg) and node.unexpanded_actions:
                 action = _select_progressive_action(
                     node,
-                    rng,
+                    self.rng,
                     scorer=scorer,
                     cfg=cfg,
-                    compatibility_bank=compatibility_bank,
-                    discovered_exact_classes=discovered_exact_classes,
-                    seen_signatures=seen_signatures,
+                    compatibility_bank=self.compatibility_bank,
+                    discovered_exact_classes=self.discovered_exact_classes,
+                    seen_signatures=self.seen_signatures,
                 )
                 child_key = add_block(node.key, action)
                 child_path = [*node.path, int(action)]
-                child = _get_or_create_node(nodes, scorer, child_key, path=child_path, parent=node, action=action)
+                child = _get_or_create_node(
+                    self.nodes,
+                    scorer,
+                    child_key,
+                    path=child_path,
+                    parent=node,
+                    action=action,
+                )
                 child.prior = node.action_priors.get(action, child.prior)
                 node.children[action] = child
                 node.unexpanded_actions = [item for item in node.unexpanded_actions if item != action]
                 path_nodes.append(child)
 
-                step = node.action_scores[action]
+                action_score = node.action_scores[action]
                 if child.is_terminal or child.rank >= 25:
-                    terminal = child.terminal if child.terminal is not None else scorer.terminal_label(child.key)
-                    terminal_score = float(step.score)
-                    child_value = node_components(child.key, survival=terminal_score)
+                    terminal = (
+                        child.terminal
+                        if child.terminal is not None
+                        else scorer.terminal_label(child.key)
+                    )
+                    terminal_score = float(action_score.score)
+                    child_value = self._node_components(child.key, survival=terminal_score)
                     if terminal.is_exact:
-                        record_exact_discovery(
+                        self._record_exact_discovery(
                             terminal,
                             score=terminal_score,
                             iteration_index=iteration_index,
@@ -462,44 +526,49 @@ def run_mcts_search(
                             path=child.path,
                             rank=child.rank,
                         )
-                    best = _register_hit(
+                    self.best = _register_hit(
                         child,
                         terminal_score,
                         terminal=terminal,
-                        terminal_bests=terminal_bests,
-                        encountered=encountered,
+                        terminal_bests=self.terminal_bests,
+                        encountered=self.encountered,
                         scorer=scorer,
-                        best=best,
+                        best=self.best,
                     )
-                    record_signature(child.key)
-                    _backpropagate_components(path_nodes, child_value, survival_weight=cfg.selection_survival_weight, novelty_weight=cfg.selection_novelty_weight)
+                    self._record_signature(child.key)
+                    _backpropagate_components(
+                        path_nodes,
+                        child_value,
+                        survival_weight=cfg.selection_survival_weight,
+                        novelty_weight=cfg.selection_novelty_weight,
+                    )
                 else:
-                    _rollout_value, rollout_components, best = _rollout(
+                    _rollout_value, rollout_components, self.best = _rollout(
                         child,
                         scorer,
                         cfg,
-                        rng,
-                        terminal_bests,
-                        encountered,
-                        best,
-                        record_exact_discovery,
-                        compatibility_bank,
-                        discovered_exact_classes,
-                        seen_signatures,
+                        self.rng,
+                        self.terminal_bests,
+                        self.encountered,
+                        self.best,
+                        self._record_exact_discovery,
+                        self.compatibility_bank,
+                        self.discovered_exact_classes,
+                        self.seen_signatures,
                         iteration_index,
                     )
                     child_components = MCTSValueComponents(
                         escape=rollout_components.escape,
-                        survival=float(step.score) + rollout_components.survival,
+                        survival=float(action_score.score) + rollout_components.survival,
                         novelty=rollout_components.novelty,
                     )
-                    record_signature(child.key)
+                    self._record_signature(child.key)
                     _backpropagate_components(
                         path_nodes,
                         child_components,
                         survival_weight=cfg.selection_survival_weight,
                         novelty_weight=cfg.selection_novelty_weight,
-                )
+                    )
                 break
 
             _refresh_terminal_action_scores(
@@ -519,9 +588,9 @@ def run_mcts_search(
                     node.key,
                     scorer,
                     cfg,
-                    compatibility_bank=compatibility_bank,
-                    discovered_exact_classes=discovered_exact_classes,
-                    seen_signatures=seen_signatures,
+                    compatibility_bank=self.compatibility_bank,
+                    discovered_exact_classes=self.discovered_exact_classes,
+                    seen_signatures=self.seen_signatures,
                 )
                 _backpropagate_components(
                     path_nodes,
@@ -533,15 +602,50 @@ def run_mcts_search(
             node = next_node
             path_nodes.append(node)
 
-    return MCTSResult(
-        best=best,
-        terminal_bests=terminal_bests,
-        exact_discoveries=exact_discoveries,
-        encountered_label_counts=encountered,
-        iterations_completed=iterations_completed,
-        nodes_created=len(nodes),
-        root_visits=root.visits,
-    )
+        return list(self.exact_discoveries[discovery_start:])
+
+    def run(self) -> MCTSResult:
+        while not self.finished:
+            self.step()
+        return self.result()
+
+    def result(self) -> MCTSResult:
+        """Return a snapshot; it is also valid while the session is paused."""
+        return MCTSResult(
+            best=self.best,
+            terminal_bests=self.terminal_bests,
+            exact_discoveries=self.exact_discoveries,
+            encountered_label_counts=self.encountered,
+            iterations_completed=self.iterations_completed,
+            nodes_created=len(self.nodes),
+            root_visits=self.root.visits,
+        )
+
+    def release_tree(self) -> None:
+        for node in self.nodes.values():
+            node.parent = None
+            node.children.clear()
+            node.unexpanded_actions.clear()
+            node.action_priors.clear()
+            node.action_scores.clear()
+        self.nodes.clear()
+        if self.compatibility_bank is not None:
+            self.compatibility_bank.clear_cache()
+        self.seen_signatures.clear()
+
+
+def run_mcts_search(
+    scorer: ExpansionScorer,
+    *,
+    config: MCTSConfig | None = None,
+    start_key: BlockKey | None = None,
+) -> MCTSResult:
+    """Run add-only Monte Carlo tree search from the empty block state."""
+    return MCTSSearchSession(
+        scorer,
+        config=config,
+        start_key=start_key,
+    ).run()
 
 
 def _get_or_create_node(
@@ -870,7 +974,10 @@ def _refresh_discovery_dependent_action_scores(
             action,
             terminal_score_fn=terminal_score_fn,
         )
-        if current == score_item:
+        # Geometry is immutable for a node/action pair. Only the scalar reward
+        # depends on the discovery epoch; comparing the full dataclass can ask
+        # NumPy payloads inside supportability/validation to produce a boolean.
+        if float(current.score) == float(score_item.score):
             continue
         node.action_scores[action] = current
         changed = True
@@ -924,7 +1031,7 @@ def _rollout(
     terminal_bests: dict[str, TerminalHit],
     encountered: Counter[str],
     best: TerminalHit | None,
-    record_exact_discovery: Callable[..., None],
+    record_exact_discovery: Callable[..., float | None],
     compatibility_bank: ClassCompatibilityBank | None,
     discovered_exact_classes: set[int],
     seen_signatures: Counter[tuple[int, ...]],
@@ -934,6 +1041,7 @@ def _rollout(
     global_discovered_label_counts: Counter[str] | None = None,
     global_exact_hit_callback: ExactHitCallback | None = None,
     rollout_score_batch: int | None = None,
+    rank23_tail_fn: Rank23TailFn | None = None,
 ) -> tuple[float, MCTSValueComponents, TerminalHit | None]:
     current_key = node.key
     current_path = list(node.path)
@@ -961,7 +1069,7 @@ def _rollout(
                 terminal_score_fn=terminal_score_fn,
             )
             if terminal.is_exact:
-                record_exact_discovery(
+                resolved_score = record_exact_discovery(
                     terminal,
                     score=terminal_score,
                     iteration_index=iteration_index,
@@ -970,6 +1078,8 @@ def _rollout(
                     path=current_path,
                     rank=current_rank,
                 )
+                if resolved_score is not None:
+                    terminal_score = float(resolved_score)
             components = score_components(current_key, survival=terminal_score)
             best = _register_hit(
                 node,
@@ -988,6 +1098,30 @@ def _rollout(
                 novelty=total.novelty + discount * components.novelty,
             )
             return total.total(survival_weight=cfg.selection_survival_weight, novelty_weight=cfg.selection_novelty_weight), total, best
+
+        if current_rank == 23 and rank23_tail_fn is not None:
+            try:
+                tail = rank23_tail_fn(current_key, current_path, best)
+            except Rank23TailDeferred as pending:
+                pending.rollout_total = total
+                pending.rollout_discount = float(discount)
+                pending.rollout_best = best
+                raise
+            if tail is not None:
+                tail_components, best = tail
+                total = MCTSValueComponents(
+                    escape=total.escape + discount * tail_components.escape,
+                    survival=total.survival + discount * tail_components.survival,
+                    novelty=total.novelty + discount * tail_components.novelty,
+                )
+                return (
+                    total.total(
+                        survival_weight=cfg.selection_survival_weight,
+                        novelty_weight=cfg.selection_novelty_weight,
+                    ),
+                    total,
+                    best,
+                )
 
         actions = unselected_blocks(current_key)
         if not actions:
@@ -1032,17 +1166,20 @@ def _rollout(
         pool = scored[:limit]
         weights = _softmax([item.score for item in pool], temperature=cfg.rollout_temperature)
         step = pool[_weighted_choice_index(weights, rng)]
+        step_score = float(step.score)
         if step.terminal is not None and step.terminal.is_exact:
-            record_exact_discovery(
+            resolved_score = record_exact_discovery(
                 step.terminal,
-                score=float(step.score),
+                score=step_score,
                 iteration_index=iteration_index,
                 depth=len(current_path) + 1,
                 key=step.key,
                 path=[*current_path, int(step.action)],
                 rank=step.new_rank,
             )
-        step_components = score_components(step.key, survival=float(step.score))
+            if resolved_score is not None:
+                step_score = float(resolved_score)
+        step_components = score_components(step.key, survival=step_score)
         total = MCTSValueComponents(
             escape=total.escape + discount * step_components.escape,
             survival=total.survival + discount * step_components.survival,
@@ -1056,20 +1193,11 @@ def _rollout(
 
         if step.terminal is not None:
             if step.terminal.is_exact:
-                record_exact_discovery(
-                    step.terminal,
-                    score=float(step.score),
-                    iteration_index=iteration_index,
-                    depth=len(current_path),
-                    key=current_key,
-                    path=current_path,
-                    rank=current_rank,
-                )
                 if compatibility_bank is not None:
                     seen_signatures[compatibility_bank.active_signature(current_key, discovered_exact_classes)] += 1
             best = _register_hit(
                 node,
-                float(step.score),
+                step_score,
                 terminal=step.terminal,
                 terminal_bests=terminal_bests,
                 encountered=encountered,
@@ -1209,11 +1337,16 @@ def _register_hit(
     if terminal.is_exact:
         scorer.discovered_label_counts[terminal.label] += 1
         if global_discovered_label_counts is not None:
-            global_discovered_label_counts[terminal.label] += 1
+            increment = getattr(global_discovered_label_counts, "increment", None)
+            if callable(increment):
+                global_count = int(increment(terminal.label))
+            else:
+                global_discovered_label_counts[terminal.label] += 1
+                global_count = int(global_discovered_label_counts[terminal.label])
             if global_exact_hit_callback is not None:
                 global_exact_hit_callback(
                     terminal.label,
-                    int(global_discovered_label_counts[terminal.label]),
+                    global_count,
                 )
     previous = terminal_bests.get(terminal.label)
     if previous is None or hit.score > previous.score:

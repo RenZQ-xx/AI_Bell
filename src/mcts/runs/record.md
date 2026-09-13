@@ -704,3 +704,185 @@ Results:
 - The i300 run added classes 3 and 6 relative to hybrid i200
 - This run shows that base 300 is sufficient for this deterministic hybrid seed and task order: finding class 6 before the base limit made class 4 permanently productive, allowing its adaptive budget to reach the later class-3 discovery at iteration 440
 - Raising every pair tree from 200 to 300 added 98.122 seconds but did not change the pair discovery set; a split configuration with pair 200 and interrupt 300 should preserve the useful interrupt budget while avoiding that extra pair work
+
+## 2026-09-01 subgroup racing + four-tree identity ensemble + rank-23 tail i300
+
+Result file:
+
+- `src/mcts/runs/subgroup_interrupt_class1_i300_racing4_rank23tail.json`
+
+Configuration and method:
+
+- Initial class: 1; base/root/level-2 budget: 300; seed: 20260502
+- Every subgroup candidate receives an exact 50-iteration racing warm-up. A tree is promoted only after observing a cross-class terminal locally; otherwise it is pruned and its MCTS/scorer caches are released immediately
+- Warm-up candidates use one transient racing slot rather than retaining every unfinished tree at once
+- The identity partition uses four independent MCTS trees with seeds 20260502, 20261511, 20262520, and 20263529
+- Identity trees share global discoveries, structural caches, and terminal validation caches, but not node statistics
+- Singleton trees enumerate every two-action completion when a rollout reaches affine rank 23, capped at 24 distinct prefixes per tree
+
+Timing and workload:
+
+- Full coverage stop time: 4916.124 seconds (01:21:56.124)
+- Scheduler iterations: 12,977
+- Subgroup patterns claimed: 80; pruned after exactly 50 iterations: 43; promoted: 37
+- Pruned subgroup workload: 2,150 iterations
+- Four identity trees completed 1,269 iterations in total: 300, 300, 369, and 300
+- Rank-23 cache entries: 216 across identity and later singleton class tasks
+- Completed-run tail diagnostics: 216 prefixes, 168,324 logical action pairs, 51,857 full-rank terminals, and 595 exact supports
+- The run stopped with `target_coverage_complete`; promoted subgroup trees still holding unused budget were not required to finish
+
+Key discoveries:
+
+- Identity tree 4 found class 4 at 401.380 seconds, local iteration 47
+- Identity tree 1 found class 3 at 402.570 seconds, local iteration 48
+- Identity tree 3 found class 2 at 1212.210 seconds, local iteration 169
+- The class-2 interrupt tree found class 6 at 1493.110 seconds, local iteration 179
+- The class-19 interrupt tree found class 22 at 3841.170 seconds and class 9 at 4241.720 seconds
+- The class-20 interrupt tree found class 11 at 4747.640 seconds
+- The class-11 interrupt tree found the final class 10 at 4916.010 seconds, local iteration 222
+
+Results and comparison:
+
+- Final exact coverage: 46 / 46; missing class IDs: none
+- The previous subgroup i300 baseline covered 42 / 46 and missed classes 2, 3, 4, and 6
+- The new run found all four old misses and later completed classes 9, 10, 11, and 22
+- Relative to the old subgroup i300, scheduler work fell from 20,248 to 12,977 iterations, a 35.91% reduction
+- Elapsed time fell from 5178.740 to 4916.124 seconds, saving 262.615 seconds (5.07%) while increasing coverage from 42 to 46
+
+## 2026-09-06 serial subgroup interrupt i300 rerun
+
+Result file:
+
+- Full run: `src/mcts/runs/subgroup_interrupt_class1_i300_rerun_20260906.json`
+- Entry point: `src/mcts/subgroup_interrupt_search.py`
+- Interpreter: `E:\pycode\AI_Bell\.venv\Scripts\python.exe`
+- Command: `.\.venv\Scripts\python.exe src\mcts\subgroup_interrupt_search.py --initial-class-id 1 --iterations 300 --seed 20260502 --identity-tree-count 4 --bootstrap-root-limit 24 --subgroup-warmup-iterations 50 --rank23-tail-max-prefixes 24 --output src\mcts\runs\subgroup_interrupt_class1_i300_rerun_20260906.json`
+
+Result:
+
+- Status: `target_coverage_complete`; exact coverage: 46 / 46; missing classes: none
+- Elapsed time: 3,842.216 seconds (01:04:02.216)
+- Scheduler iterations: 12,977; completed runs: 71; discovery events: 45 plus initial class 1
+- All 45 discovery events exactly match `subgroup_interrupt_class1_i300_racing4_rank23tail.json` in class ID, scheduler/local iteration, source frame/kind/class/pattern, and support word. Wall time is the only observed timeline difference
+- Compared with the previous serial full-coverage result, elapsed time decreased by 1,073.908 seconds (21.84%) while coverage, scheduler work, completed-run count, and discovery trajectory stayed unchanged. Since the current shared interrupt implementation and machine load may differ from the earlier run, this is a new current-code timing baseline rather than evidence for one specific optimization
+- During polling, the highest observed working set was at least 7.85 GB. This is a sampled lower bound, not a measured process peak
+
+Late discovery milestones:
+
+| Class | Source | Local iteration | Scheduler iteration | Wall seconds |
+| --- | --- | ---: | ---: | ---: |
+| 18 | subgroup | 28 | 1,254 | 210.162 |
+| 4 | identity | 47 | 2,674 | 415.742 |
+| 3 | identity | 48 | 2,676 | 416.931 |
+| 5 | class 3 | 65 | 3,655 | 620.336 |
+| 12 | class 5 | 3 | 3,661 | 625.851 |
+| 2 | identity | 169 | 5,436 | 1,172.894 |
+| 6 | class 2 | 179 | 5,838 | 1,420.411 |
+| 22 | class 19 | 7 | 10,753 | 3,186.091 |
+| 9 | class 19 | 287 | 11,405 | 3,438.774 |
+| 11 | class 20 | 75 | 12,727 | 3,742.905 |
+| 10 | class 11 | 222 | 12,977 | 3,842.119 |
+
+Tail and scheduling observations:
+
+- Completed-run diagnostics report all 216 identity rank-23 prefixes completed, with 70,926 pair candidates, 51,857 full-rank terminals, 595 exact supports, and zero partial prefixes
+- The class-6 to class-22 interval accounts for 4,915 scheduler iterations and 1,765.680 seconds without a globally new class. This is the dominant observed coverage gap
+- The serial scheduler executes one `task.step()` at a time. With `rank23_tail_candidates_per_step=0`, one identity rank-23 callback enumerates its entire pair tail before returning control, causing long periods with no scheduler or JSON progress and steadily increasing memory
+- Future work will use this file as the serial baseline. The first isolated experiment should retain the same RNG and candidate ordering while making tail work resumable and measuring per-step wall time, candidate validations, and memory. Any scheduling change should be evaluated separately so the reproducible class-2 to class-6 and class-19 to class-9 paths are not confounded
+
+## 2026-09-06 atomic resumable rank-23 tail i300
+
+Result files:
+
+- Full run: `src/mcts/runs/subgroup_interrupt_class1_i300_atomic_tail_20260906.json`
+- Atomic smoke: `src/mcts/runs/subgroup_interrupt_atomic_tail_smoke_i2.json`
+- Rejected partial-exposure prototypes: `src/mcts/runs/subgroup_interrupt_class1_i300_resumable_tail_20260906.json` and `src/mcts/runs/subgroup_interrupt_class1_i300_resumable_tail_v2_20260906.json`; both were deliberately interrupted and retain `status=running`
+- Interpreter: `E:\pycode\AI_Bell\.venv\Scripts\python.exe`
+- Command: `.\.venv\Scripts\python.exe src/mcts/subgroup_interrupt_search.py --initial-class-id 1 --iterations 300 --seed 20260502 --identity-tree-count 4 --bootstrap-root-limit 24 --subgroup-warmup-iterations 50 --rank23-tail-max-prefixes 24 --rank23-tail-candidates-per-step 128 --output src/mcts/runs/subgroup_interrupt_class1_i300_atomic_tail_20260906.json`
+
+Implementation:
+
+- Rank-23 pair enumeration now converts a cursor directly to lexicographic pair indices and advances only the requested batch. Resuming a late batch no longer rescans all earlier combinations
+- A partial tail atomically suspends its entire logical MCTS iteration. Until the tail completes, the task exposes no discovery, performs no reward backpropagation, increments neither root visits nor the local iteration counter, and the serial scheduler immediately resumes the same frame
+- Rollout continuations retain the pre-tail value components and discount state. The completed tail is exposed and backpropagated exactly once, preserving the unbounded-tail trajectory
+- Diagnostics record pending-prefix pressure, batch candidates and time, suspended scheduler calls, and maximum scheduler-step latency. `release_tree()` clears all continuation state
+
+Validation:
+
+- Status: `target_coverage_complete`; exact coverage: 46 / 46; missing classes: none
+- Elapsed time: 4,522.989 seconds (01:15:22.989); scheduler calls: 13,403; logical MCTS iterations: 9,885
+- All 45 discovery events exactly match the 2026-09-06 serial baseline in class ID, local iteration, source frame/kind/class/pattern, and support word. The comparison found zero mismatched fields, and both runs executed exactly 9,885 logical iterations
+- The atomic-equivalence test uses a 17-candidate batch and confirms that partial calls expose nothing and consume no visit/iteration before producing exactly the same discoveries and values as an unbounded tail. The focused suite passed 90 tests in 8.74 seconds
+- All 216 rank-23 prefixes completed: 70,926 / 70,926 pair candidates were processed, producing 51,857 full-rank terminals and 595 exact supports. No prefix remained partial or pending
+- Tail work used 642 batches. Of these, 426 were continuation batches belonging to 201 suspended logical iterations. Total measured tail time was 23.728 seconds, active continuation time was 14.018 seconds, the longest tail batch was 0.617 seconds, and no scheduler step exceeded five seconds; the maximum completed scheduler step was 2.044 seconds
+
+Late discovery milestones:
+
+| Class | Source | Local iteration | Scheduler call | Wall seconds |
+| --- | --- | ---: | ---: | ---: |
+| 18 | subgroup | 28 | 1,415 | 206.909 |
+| 4 | identity | 47 | 2,847 | 410.087 |
+| 3 | identity | 48 | 2,850 | 411.329 |
+| 5 | class 3 | 65 | 3,869 | 618.324 |
+| 12 | class 5 | 3 | 3,885 | 623.681 |
+| 2 | identity | 169 | 5,716 | 1,184.255 |
+| 6 | class 2 | 179 | 6,157 | 1,441.227 |
+| 22 | class 19 | 7 | 11,179 | 3,567.937 |
+| 9 | class 19 | 287 | 11,831 | 3,923.793 |
+| 11 | class 20 | 75 | 13,153 | 4,375.678 |
+| 10 | class 11 | 222 | 13,403 | 4,522.884 |
+
+Comparison and conclusion:
+
+- Against the unbounded-tail serial baseline, scheduler calls increased by 426 because continuations are now observable calls, while logical work and the discovery trajectory stayed unchanged
+- Elapsed time increased by 680.773 seconds (17.72%). The measured rank-23 work accounts for only 23.728 seconds, so this pair of runs does not support attributing the regression to tail enumeration alone; machine load and broader per-step timing variation remain confounded
+- This version improves bounded latency, cancellation points, progress visibility, and semantic testability, but it is not a throughput improvement. Future speed work should compare candidate batch sizes or reduce independent per-step cost while keeping the atomic-equivalence test and the 45-event trace as regression constraints
+
+## 2026-09-07 larger atomic tail batches and budget-bound probes
+
+Result files:
+
+- 512-candidate smoke: `src/mcts/runs/subgroup_interrupt_atomic_tail_b512_smoke_i2.json`
+- Low-budget negative run: `src/mcts/runs/subgroup_interrupt_class1_i96_atomic_b512_20260907.json`
+- Smallest directly verified successful budget: `src/mcts/runs/subgroup_interrupt_class1_i287_atomic_b512_20260907.json`
+- Interpreter: `E:\pycode\AI_Bell\.venv\Scripts\python.exe`
+
+Change and smoke validation:
+
+- The serial subgroup entry point now defaults to 512 rank-23 pair candidates per atomic batch instead of 128. The option remains configurable, and the shared interrupt default remains unchanged
+- On the i2 identity smoke, the 512-candidate run exactly matched the 128-candidate discovery trace. Scheduler calls fell from 29 to 21, tail batches from 14 to 6, and continuation calls from 8 to zero
+- Smoke elapsed time changed from 12.650 to 13.104 seconds, which is too small and noisy to establish a throughput difference. The longest tail batch was 0.095 seconds and the longest scheduler step was 0.781 seconds
+
+Budget probe i96:
+
+- Command: `.\.venv\Scripts\python.exe src/mcts/subgroup_interrupt_search.py --initial-class-id 1 --iterations 96 --seed 20260502 --identity-tree-count 4 --bootstrap-root-limit 24 --subgroup-warmup-iterations 50 --rank23-tail-max-prefixes 24 --rank23-tail-candidates-per-step 512 --output src/mcts/runs/subgroup_interrupt_class1_i96_atomic_b512_20260907.json`
+- Result: 44 / 46, missing classes 9 and 10; elapsed time 3,925.596 seconds
+- The run exhausted all work: 13,721 scheduler calls, 13,690 logical MCTS iterations, and 127 completed tasks. This exceeded the successful atomic i300 run's 9,885 logical iterations because missing full coverage prevented an early global stop
+- Class 19 found class 22 at local iteration 7 but stopped at local iteration 207 with `productive_global_novelty_patience`, before the class-9 event at local iteration 287. Class 11 stopped at local iteration 200 before the class-10 event at local iteration 222
+- Maximum scheduler-step time was 1.650 seconds, no step exceeded five seconds, and the highest sampled working set was 6.19 GB
+
+Budget probe i287:
+
+- Command: `.\.venv\Scripts\python.exe src/mcts/subgroup_interrupt_search.py --initial-class-id 1 --iterations 287 --seed 20260502 --identity-tree-count 4 --bootstrap-root-limit 24 --subgroup-warmup-iterations 50 --rank23-tail-max-prefixes 24 --rank23-tail-candidates-per-step 512 --output src/mcts/runs/subgroup_interrupt_class1_i287_atomic_b512_20260907.json`
+- Result: `target_coverage_complete`, 46 / 46, no missing classes; elapsed time 4,181.480 seconds
+- All 45 discovery events match the old unbounded-tail i300 baseline in class ID, local iteration, source frame/kind/class/pattern, and support word
+- Work fell to 12,701 scheduler calls and 9,612 logical MCTS iterations. Against the atomic 128-candidate i300 run, this saves 702 scheduler calls, 273 logical iterations, and 341.509 seconds (7.55%)
+- All 216 rank-23 prefixes and 70,926 candidates completed in 247 batches. Only 31 continuation calls were needed, down from 426 with batch size 128. Total measured tail time was 22.807 seconds, the longest tail batch was 0.217 seconds, the longest scheduler step was 1.783 seconds, and no scheduler step exceeded five seconds
+- Against the older unbounded-tail i300 timing baseline, this run was still 339.263 seconds (8.83%) slower. The exact discovery trace and differing wall times again show that one timing pair cannot isolate machine load from implementation overhead
+
+Late i287 discoveries:
+
+| Class | Source | Local iteration | Scheduler call | Wall seconds |
+| --- | --- | ---: | ---: | ---: |
+| 2 | identity | 169 | 5,457 | 1,182.427 |
+| 6 | class 2 | 179 | 5,859 | 1,441.944 |
+| 22 | class 19 | 7 | 10,535 | 3,365.577 |
+| 9 | class 19 | 287 | 11,173 | 3,665.580 |
+| 11 | class 20 | 75 | 12,451 | 4,055.105 |
+| 10 | class 11 | 222 | 12,701 | 4,181.385 |
+
+Iteration-bound conclusion:
+
+- `i287` is the smallest directly verified successful budget and the smallest budget that guarantees the observed class-19 path reaches its local-287 class-9 event without relying on a compatibility-frontier extension
+- `i96` proves that the adaptive `3 x iterations` ceiling alone is insufficient: productive global-novelty patience can stop a tree before the maximum budget is reached
+- This does not prove that every value below 287 fails. A compatibility-frontier extension or a different online discovery order could permit a value in the 208-286 interval. Therefore 4,181.480 seconds is the current empirical full-coverage time at the verified safe budget, not a hardware-independent mathematical lower bound
