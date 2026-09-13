@@ -10,6 +10,7 @@ from .bell322 import iter_deterministic_states_322
 State = tuple[int, int, int, int, int, int]
 Permutation = tuple[int, ...]
 BlockKey = tuple[int, ...]
+PartitionKey = tuple[tuple[int, ...], ...]
 
 
 @dataclass(frozen=True)
@@ -142,6 +143,48 @@ def apply_permutation_to_support(support: Sequence[int], perm: Sequence[int]) ->
         if value == 1:
             moved[int(perm[index])] = 1
     return tuple(moved)
+
+
+def canonical_support_key(
+    support: Sequence[int],
+    group: Sequence[Sequence[int]] | None = None,
+) -> int:
+    """Return the smallest 64-bit support mask in a symmetry orbit."""
+    key = support_key(support)
+    permutations = build_state_group_permutations() if group is None else group
+    best: int | None = None
+    for perm in permutations:
+        moved = 0
+        for vertex, selected in enumerate(key):
+            if selected:
+                moved |= 1 << int(perm[vertex])
+        if best is None or moved < best:
+            best = moved
+    if best is None:
+        raise ValueError("group must contain at least one permutation")
+    return best
+
+
+def canonical_partition_key(
+    blocks: Sequence[Sequence[int]],
+    group: Sequence[Sequence[int]] | None = None,
+) -> PartitionKey:
+    """Return a group-canonical, block-order-independent partition key."""
+    normalized = tuple(sorted(tuple(sorted(int(vertex) for vertex in block)) for block in blocks))
+    permutations = build_state_group_permutations() if group is None else group
+    best: PartitionKey | None = None
+    for perm in permutations:
+        moved = tuple(
+            sorted(
+                tuple(sorted(int(perm[vertex]) for vertex in block))
+                for block in normalized
+            )
+        )
+        if best is None or moved < best:
+            best = moved
+    if best is None:
+        raise ValueError("group must contain at least one permutation")
+    return best
 
 
 def stabilizer_orbits(

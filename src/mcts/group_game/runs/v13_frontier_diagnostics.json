@@ -1,0 +1,29 @@
+{
+  "class_labels_used_for_scheduling": false,
+  "lane_outcomes": [
+    {
+      "lane": "ridge",
+      "dispatches": 622,
+      "new_pairs": 94
+    },
+    {
+      "lane": "completion",
+      "dispatches": 3134,
+      "new_pairs": 19
+    },
+    {
+      "lane": "orbit",
+      "dispatches": 797,
+      "new_pairs": 64
+    },
+    {
+      "lane": "delivery",
+      "dispatches": 37,
+      "new_pairs": 0
+    }
+  ],
+  "interpretation": "New geometric source-target relationships are not new classes; work batches have different costs.",
+  "replay_pressure_percent": 98.93333333333334,
+  "pending_jobs_reduction_percent": 80.05718370264474,
+  "remaining_lp_reduction_percent": 82.65848670756645
+}
