@@ -141,6 +141,21 @@ def test_generation_caches_preserve_candidates_and_within_pattern_order() -> Non
 
 def test_lazy_lane_candidates_equal_filtering_the_full_pool() -> None:
     engine = _engine()
+    def matches(action, lane):
+        if lane == "fine":
+            return action.kind == "add" and action.arity == 1 and action.block_size <= 2
+        if lane == "single":
+            return action.kind == "add" and action.arity == 1
+        if lane == "union":
+            return action.kind == "add" and action.arity > 1
+        if lane == "broad":
+            return action.kind == "add" and action.block_size >= 5
+        if lane == "rewrite":
+            return action.kind == "rewrite"
+        if lane == "remove_small":
+            return action.kind == "remove" and action.block_size <= 2
+        return action.kind == "remove" and action.block_size >= 3
+
     cases = [(engine.root, "PAIR", lane) for lane in ("fine", "single", "union", "broad")]
     corrector = GameNode(
         SymmetryState((1 << 25) - 1, "corrector", 1, "PAIR"),
@@ -150,7 +165,7 @@ def test_lazy_lane_candidates_equal_filtering_the_full_pool() -> None:
                  for lane in ("remove_small", "remove_broad", "rewrite"))
     for node, pattern_id, lane in cases:
         full = engine.candidate_actions_for_pattern(node, pattern_id)
-        expected = [action for action in full if engine._matches_action_lane(action, lane)]
+        expected = [action for action in full if matches(action, lane)]
         lazy = engine.candidate_actions_for_pattern(
             node, pattern_id, lane=lane, fallback=False)
         assert [action.action_id for action in lazy] == [action.action_id for action in expected]

@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 from functools import cached_property, lru_cache
 from typing import Literal
 
+from mcts.symmetry_game.patterns import geometric_state_key
+
 
 Role = Literal["filler", "corrector", "done"]
 ActionKind = Literal["add", "remove", "rewrite", "stop"]
@@ -88,6 +90,15 @@ class SymmetryState:
             self.repair_source_word,
         )
 
+    @property
+    def geometry_key(self) -> tuple[int, str, int, int]:
+        return geometric_state_key(
+            self.support_word,
+            self.role,
+            self.corrections_used,
+            self.repair_source_word,
+        )
+
 
 @dataclass(frozen=True)
 class MacroAction:
@@ -152,7 +163,7 @@ class MacroAction:
 @dataclass
 class EdgeStats:
     action: MacroAction
-    child_key: tuple[int, Role, int, str, int]
+    child_key: tuple
     prior: float
     rank_before: int
     rank_after: int
@@ -209,14 +220,17 @@ class GameNode:
     pattern_action_counts: dict[str, int] = field(default_factory=dict)
     rejected_action_ids: set[str] = field(default_factory=set)
     child_support_words: set[int] = field(default_factory=set)
-    child_state_keys: set[tuple[int, Role, int, str, int]] = field(default_factory=set)
+    child_state_keys: set[tuple] = field(default_factory=set)
+    context_pattern_ids: set[str] = field(default_factory=set)
     bucket_cursor: int = 0
     relation_cursor: int = 0
     action_lane_cursor: int = 0
-    action_bucket_cursor: int = 0
     knowledge_epoch_seen: int = -1
     retired_action_ids: set[str] = field(default_factory=set)
     last_recycle_visit: int = 0
+
+    def __post_init__(self) -> None:
+        self.context_pattern_ids.add(self.state.context_pattern_id)
 
     @property
     def mean_value(self) -> float:

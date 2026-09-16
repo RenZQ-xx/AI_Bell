@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import random
@@ -28,6 +29,7 @@ from mcts.subgroup_patterns import (
     canonical_support_word,
     load_subgroup_pattern_atlas,
 )
+from mcts.symmetry_game.patterns import PatternRelationIndex
 
 from .knowledge import GroupKnowledgeBase, PatternSpec
 from .facet_corrector import FacetCorrectorBank
@@ -51,6 +53,39 @@ FILLER_RELATION_LANES = (
     "switch",
     "neighbor",
     "switch",
+)
+SYMMETRY_RELATION_LANES = (
+    "continue",
+    "refine",
+    "continue",
+    "intersection",
+    "refine",
+    "identity",
+    "intersection",
+)
+DIRECTED_SYMMETRY_RELATION_LANES = (
+    "continue",
+    "coarsen",
+    "continue",
+    "refine",
+    "coarsen",
+    "intersection",
+    "identity",
+    "refine",
+    "intersection",
+)
+EMBEDDING_SYMMETRY_RELATION_LANES = (
+    "continue",
+    "reembed",
+    "coarsen",
+    "continue",
+    "refine",
+    "reembed",
+    "intersection",
+    "identity",
+    "coarsen",
+    "refine",
+    "intersection",
 )
 FILLER_ACTION_LANES = (
     "fine",
@@ -118,6 +153,10 @@ class GroupGameConfig:
     action_widening_k0: int = 4
     action_widening_alpha: float = 2.0
     action_widening_beta: float = 0.50
+    multilevel_progressive_widening: bool = True
+    size_bucket_widening: bool = True
+    action_lane_widening: bool = True
+    weighted_relation_widening: bool = True
     max_children_per_node: int = 192
     max_corrector_children_per_node: int = 128
     discovery_epoch_child_reserve: int = 8
@@ -155,6 +194,14 @@ class GroupGameConfig:
     rewrite_size_cost: float = 0.008
     corrector_new_basin_bonus: float = 0.02
     dead_end_reward: float = -0.75
+    transition_reward_shaping: bool = True
+    filler_transition_reward_shaping: bool = True
+    corrector_transition_reward_shaping: bool = True
+    terminal_support_reward_shaping: bool = True
+    terminal_frequency_reward_shaping: bool = True
+    corrector_novelty_credit: bool = True
+    endpoint_novelty_credit: bool = True
+    leaf_value_shaping: bool = True
     supportability_start_rank: int = 18
     supportability_direction_samples: int = 64
     supportability_prior_weight: float = 0.11
@@ -189,6 +236,27 @@ class GroupGameConfig:
     endpoint_target_novelty_reward: float = 0.45
     ridge_max_candidates: int = 4096
     ridge_batch_size: int = 32
+    ridge_pivot: bool = False
+    ridge_focus_batches: int = 12
+    ridge_focus_min_coverage: float = 0.50
+    eager_ridge_focus: bool = False
+    adaptive_corrector_replay: bool = False
+    adaptive_replay_min_coverage: float = 0.50
+    free_filler_initial_ratio: float = 0.75
+    free_filler_floor: float = 0.10
+    free_filler_decay_power: float = 2.0
+    geometric_transpositions: bool = False
+    hierarchical_pattern_policy: bool = False
+    directed_pattern_relations: bool = False
+    learn_relation_values: bool = False
+    adaptive_filler_reheat: bool = False
+    filler_reheat_class_patience: int = 512
+    filler_reheat_frontier_patience: int = 256
+    filler_reheat_ratio: float = 0.35
+    retain_pattern_embeddings: bool = False
+    max_pattern_embeddings_per_family: int = 4
+    share_embedding_family_values: bool = False
+    embedding_relation_policy: bool = False
     lower_face_max_attempts: int = 6
     orbit_face_max_candidates: int = 256
     orbit_face_batch_size: int = 8
@@ -245,6 +313,26 @@ class GroupGameConfig:
             raise ValueError("endpoint novelty rewards must be nonnegative")
         if self.ridge_max_candidates < 0 or self.ridge_batch_size <= 0:
             raise ValueError("invalid systematic ridge budget")
+        if self.ridge_focus_batches < 0:
+            raise ValueError("ridge_focus_batches must be nonnegative")
+        if not 0.0 <= self.ridge_focus_min_coverage <= 1.0:
+            raise ValueError("ridge_focus_min_coverage must be in [0, 1]")
+        if not 0.0 <= self.adaptive_replay_min_coverage <= 1.0:
+            raise ValueError("adaptive_replay_min_coverage must be in [0, 1]")
+        if not 0.0 <= self.free_filler_floor <= self.free_filler_initial_ratio <= 1.0:
+            raise ValueError("invalid adaptive free Filler ratios")
+        if self.free_filler_decay_power <= 0.0:
+            raise ValueError("free_filler_decay_power must be positive")
+        if self.filler_reheat_class_patience < 0:
+            raise ValueError("filler_reheat_class_patience must be nonnegative")
+        if self.filler_reheat_frontier_patience < 0:
+            raise ValueError("filler_reheat_frontier_patience must be nonnegative")
+        if not 0.0 <= self.filler_reheat_ratio <= 1.0:
+            raise ValueError("filler_reheat_ratio must be in [0, 1]")
+        if self.max_pattern_embeddings_per_family <= 0:
+            raise ValueError("max_pattern_embeddings_per_family must be positive")
+        if self.max_pattern_analyses_per_class < 0:
+            raise ValueError("max_pattern_analyses_per_class must be nonnegative")
         if self.lower_face_max_attempts < 0:
             raise ValueError("lower face completion budget must be nonnegative")
         if self.orbit_face_max_candidates < 0 or self.orbit_face_batch_size <= 0:
@@ -259,8 +347,11 @@ class GroupGameConfig:
             raise ValueError("max_children_per_node must be positive")
         if self.max_corrector_children_per_node <= 0:
             raise ValueError("max_corrector_children_per_node must be positive")
-        if self.discovery_epoch_child_recycle < 0:
-            raise ValueError("discovery_epoch_child_recycle must be nonnegative")
+        if min(
+            self.discovery_epoch_child_reserve,
+            self.discovery_epoch_child_recycle,
+        ) < 0:
+            raise ValueError("discovery epoch child budgets must be nonnegative")
         if self.stagnation_patience < 0 or self.recycle_fresh_patterns < 0:
             raise ValueError("stagnation_patience and recycle_fresh_patterns must be nonnegative")
         if self.recycle_visit_interval <= 0:
@@ -439,6 +530,7 @@ class SingleTreeGroupGame:
             self.scorer.points, seed=config.seed, max_attempts=config.facet_repair_attempts,
             min_rank=config.min_corrector_rank,
             ridge_max_candidates=config.ridge_max_candidates, ridge_batch_size=config.ridge_batch_size,
+            ridge_pivot=config.ridge_pivot,
             endpoint_dedup=config.endpoint_dedup,
             lower_face_max_attempts=config.lower_face_max_attempts,
             orbit_face_max_candidates=config.orbit_face_max_candidates,
@@ -490,7 +582,10 @@ class SingleTreeGroupGame:
             _pattern_spec(self.atlas.identity),
             *(_pattern_spec(pattern) for pattern in self.atlas.roots),
         )
-        self.knowledge = GroupKnowledgeBase(initial_specs)
+        self.knowledge = GroupKnowledgeBase(
+            initial_specs,
+            share_family_values=config.share_embedding_family_values,
+        )
         for pattern in self.atlas.level2:
             self.knowledge.register_pattern(_pattern_spec(pattern), active=False)
 
@@ -501,14 +596,15 @@ class SingleTreeGroupGame:
             context_pattern_id=IDENTITY_PATTERN_ID,
         )
         self.root = GameNode(state=root_state, rank=self._rank(0))
-        self.nodes: dict[tuple[int, str, int, str, int], GameNode] = {
-            root_state.key: self.root,
+        self.nodes: dict[tuple, GameNode] = {
+            self._state_key(root_state): self.root,
         }
+        self.pattern_relations = PatternRelationIndex(64)
         self.template_cache: dict[tuple[str, str], tuple[OrbitUnionTemplate, ...]] = {}
         self.pattern_block_word_cache: dict[str, tuple[int, ...]] = {}
         self.coherence_cache: OrderedDict[tuple[int, str], float] = OrderedDict()
         self.candidate_action_cache: OrderedDict[
-            tuple[str, int, str, str, str], tuple[MacroAction, ...]
+            tuple[object, ...], tuple[MacroAction, ...]
         ] = OrderedDict()
         self.generation_cache_stats: Counter[str] = Counter()
         self.pattern_neighbors: dict[str, set[str]] = {
@@ -531,6 +627,8 @@ class SingleTreeGroupGame:
         self.class_terminal_counts: Counter[int] = Counter()
         self.terminal_support_counts: Counter[int] = Counter()
         self.analyzed_supports: set[int] = set()
+        self.analyzed_embedding_supports: set[int] = set()
+        self.pattern_embedding_stats: Counter[str] = Counter()
         self.class_analysis_counts: Counter[int] = Counter()
         self.growth_activations: list[dict[str, object]] = []
         self.started_at = 0.0
@@ -548,25 +646,126 @@ class SingleTreeGroupGame:
         self.rollout_action_kind_counts: Counter[str] = Counter()
         self.relation_counts: Counter[str] = Counter()
         self.rollout_policy_counts: Counter[str] = Counter()
+        self.executed_action_sources: Counter[str] = Counter()
+        self.filler_execution_counts: Counter[str] = Counter()
         self.current_rollout_policy = "mixed"
         self.current_repair_policy = config.repair_saturation_cycle[0]
         self.repair_policy_counts: Counter[str] = Counter()
         self.epoch_recycled_edges = 0
         self.stagnation_recycled_edges = 0
         self.recycle_events: list[dict[str, object]] = []
+        self.adaptive_replay_balance = 0.0
+        self.adaptive_replay_stats: Counter[str] = Counter()
+        self.last_corrector_frontier_progress_iteration = 0
+        self.last_corrector_pair_progress_iteration = 0
+        self.filler_reheat_transitions: list[dict[str, object]] = []
+        self._filler_reheat_was_active = False
 
     def _rank(self, word: int) -> int:
         return int(self.scorer.affine_rank(support_word_to_key(int(word))))
 
+    def _state_key(self, state: SymmetryState) -> tuple:
+        return state.geometry_key if self.config.geometric_transpositions else state.key
+
     def _node(self, state: SymmetryState, rank: int | None = None) -> GameNode:
-        node = self.nodes.get(state.key)
+        key = self._state_key(state)
+        node = self.nodes.get(key)
         if node is None:
             node = GameNode(
                 state=state,
                 rank=self._rank(state.support_word) if rank is None else int(rank),
             )
-            self.nodes[state.key] = node
+            self.nodes[key] = node
+        else:
+            before = len(node.context_pattern_ids)
+            node.context_pattern_ids.add(state.context_pattern_id)
+            if len(node.context_pattern_ids) > before:
+                self.generation_cache_stats["merged_pattern_contexts"] += 1
         return node
+
+    def _ensure_pattern_relation(self, pattern_id: str) -> None:
+        if not self.pattern_relations.registered(pattern_id):
+            self.pattern_relations.register(
+                pattern_id,
+                self.knowledge.patterns[pattern_id].blocks,
+            )
+
+    def _pattern_family_id(self, pattern_id: str) -> str:
+        return self.knowledge.family_id(pattern_id)
+
+    def _node_pattern_relation(self, node: GameNode, pattern_id: str) -> str:
+        if pattern_id == IDENTITY_PATTERN_ID:
+            return "continue" if pattern_id in node.context_pattern_ids else "identity"
+        self._ensure_pattern_relation(pattern_id)
+        relations = []
+        for context in node.context_pattern_ids:
+            if context not in self.knowledge.patterns:
+                continue
+            if context == pattern_id:
+                relations.append("continue")
+                continue
+            if (
+                self.config.embedding_relation_policy
+                and self._pattern_family_id(context)
+                == self._pattern_family_id(pattern_id)
+            ):
+                relations.append("reembed")
+                continue
+            self._ensure_pattern_relation(context)
+            relations.append(
+                self.pattern_relations.directed_relation(context, pattern_id)
+                if self.config.directed_pattern_relations
+                else self.pattern_relations.relation(context, pattern_id)
+            )
+        for relation in (
+            "continue",
+            "reembed",
+            "refine",
+            "coarsen",
+            "intersection",
+        ):
+            if relation in relations:
+                return relation
+        return "intersection"
+
+    def _node_context_for(self, node: GameNode, pattern_id: str) -> str:
+        def relation(context: str) -> str:
+            if not self.config.hierarchical_pattern_policy:
+                return self._relation(context, pattern_id)
+            if context == pattern_id:
+                return "continue"
+            if pattern_id == IDENTITY_PATTERN_ID:
+                return "identity"
+            if (
+                self.config.embedding_relation_policy
+                and self._pattern_family_id(context)
+                == self._pattern_family_id(pattern_id)
+            ):
+                return "reembed"
+            self._ensure_pattern_relation(context)
+            self._ensure_pattern_relation(pattern_id)
+            if self.config.directed_pattern_relations:
+                return self.pattern_relations.directed_relation(context, pattern_id)
+            return self.pattern_relations.relation(context, pattern_id)
+
+        return max(
+            node.context_pattern_ids,
+            key=lambda context: (
+                {
+                    "continue": 5,
+                    "reembed": 4,
+                    "refine": 4,
+                    "coarsen": 3,
+                    "intersection": 2,
+                    "identity": 1,
+                }.get(
+                    relation(context),
+                    0,
+                ),
+                self.knowledge.transition_score(node.state.role, context, pattern_id),
+                context,
+            ),
+        )
 
     @staticmethod
     def _pattern_bucket(pattern: PatternSpec) -> str:
@@ -574,6 +773,8 @@ class SingleTreeGroupGame:
 
     def _pattern_limit(self, node: GameNode) -> int:
         config = self.config
+        if not config.multilevel_progressive_widening:
+            return len(self.knowledge.active_pattern_ids)
         value = config.pattern_widening_k0 + config.pattern_widening_alpha * (
             max(1, node.visits) ** config.pattern_widening_beta
         )
@@ -581,6 +782,8 @@ class SingleTreeGroupGame:
 
     def _block_limit(self, node: GameNode) -> int:
         config = self.config
+        if not config.multilevel_progressive_widening:
+            return self._child_limit(node)
         visits_per_pattern = max(1.0, node.visits / max(1, len(node.expanded_patterns)))
         value = config.block_widening_k0 + config.block_widening_alpha * (
             visits_per_pattern ** config.block_widening_beta
@@ -652,34 +855,75 @@ class SingleTreeGroupGame:
         if not available:
             return None
 
-        desired_relation = FILLER_RELATION_LANES[
-            node.relation_cursor % len(FILLER_RELATION_LANES)
+        if self.config.hierarchical_pattern_policy:
+            relation_lanes = (
+                EMBEDDING_SYMMETRY_RELATION_LANES
+                if self.config.embedding_relation_policy
+                else (
+                    DIRECTED_SYMMETRY_RELATION_LANES
+                    if self.config.directed_pattern_relations
+                    else SYMMETRY_RELATION_LANES
+                )
+            )
+        else:
+            relation_lanes = FILLER_RELATION_LANES
+        if not self.config.weighted_relation_widening:
+            relation_lanes = tuple(dict.fromkeys(relation_lanes))
+        desired_relation = relation_lanes[
+            node.relation_cursor % len(relation_lanes)
         ]
         node.relation_cursor += 1
         related = [
             pattern_id
             for pattern_id in available
-            if self._relation(
-                node.state.context_pattern_id,
-                pattern_id,
-            )
-            == desired_relation
+            if (
+                self._node_pattern_relation(node, pattern_id)
+                if self.config.hierarchical_pattern_policy
+                else self._relation(node.state.context_pattern_id, pattern_id)
+            ) == desired_relation
         ]
         relation_candidates = related or available
-
-        bucket_candidates: list[str] = []
-        for offset in range(len(SIZE_BUCKETS)):
-            bucket = SIZE_BUCKETS[(node.bucket_cursor + offset) % len(SIZE_BUCKETS)]
-            bucket_candidates = [
+        if self.config.embedding_relation_policy:
+            expanded_families = {
+                self._pattern_family_id(pattern_id)
+                for pattern_id in node.expanded_patterns
+            }
+            unseen_families = [
                 pattern_id
                 for pattern_id in relation_candidates
-                if self._pattern_bucket(self.knowledge.patterns[pattern_id]) == bucket
+                if self._pattern_family_id(pattern_id) not in expanded_families
             ]
-            if bucket_candidates:
-                node.bucket_cursor = (
-                    node.bucket_cursor + offset + 1
-                ) % len(SIZE_BUCKETS)
-                break
+            if unseen_families and desired_relation != "reembed":
+                relation_candidates = unseen_families
+            if desired_relation != "reembed" or not related:
+                representatives: dict[str, str] = {}
+                for pattern_id in relation_candidates:
+                    family_id = self._pattern_family_id(pattern_id)
+                    previous = representatives.get(family_id)
+                    if previous is None or (
+                        self.knowledge.pattern_score(role, pattern_id),
+                        pattern_id,
+                    ) > (
+                        self.knowledge.pattern_score(role, previous),
+                        previous,
+                    ):
+                        representatives[family_id] = pattern_id
+                relation_candidates = list(representatives.values())
+
+        bucket_candidates: list[str] = []
+        if self.config.size_bucket_widening:
+            for offset in range(len(SIZE_BUCKETS)):
+                bucket = SIZE_BUCKETS[(node.bucket_cursor + offset) % len(SIZE_BUCKETS)]
+                bucket_candidates = [
+                    pattern_id
+                    for pattern_id in relation_candidates
+                    if self._pattern_bucket(self.knowledge.patterns[pattern_id]) == bucket
+                ]
+                if bucket_candidates:
+                    node.bucket_cursor = (
+                        node.bucket_cursor + offset + 1
+                    ) % len(SIZE_BUCKETS)
+                    break
         candidates = bucket_candidates or relation_candidates
         return max(
             candidates,
@@ -688,7 +932,7 @@ class SingleTreeGroupGame:
                 + 0.18
                 * self.knowledge.transition_score(
                     role,
-                    node.state.context_pattern_id,
+                    self._node_context_for(node, pattern_id),
                     pattern_id,
                 )
                 + 0.35 * self._coherence(node.state.support_word, pattern_id),
@@ -785,10 +1029,15 @@ class SingleTreeGroupGame:
         if role not in ("filler", "corrector"):
             return []
         lane_key = "all" if lane is None else lane
+        cache_context = (
+            tuple(sorted(node.context_pattern_ids))
+            if self.config.hierarchical_pattern_policy
+            else node.state.context_pattern_id
+        )
         cache_key = (
             role,
             node.state.support_word,
-            node.state.context_pattern_id,
+            cache_context,
             pattern_id,
             lane_key,
         )
@@ -859,8 +1108,31 @@ class SingleTreeGroupGame:
             )
         if role == "corrector" and lane in (None, "rewrite"):
             candidates.extend(self._rewrite_actions(node, pattern))
-            context_id = node.state.context_pattern_id
-            if self._relation(context_id, pattern_id) == "neighbor":
+            if self.config.hierarchical_pattern_policy:
+                context_ids = sorted(
+                    (
+                        context_id for context_id in node.context_pattern_ids
+                        if context_id != pattern_id
+                        and context_id in self.knowledge.patterns
+                    ),
+                    key=lambda context_id: (
+                        self.knowledge.transition_score(
+                            role,
+                            context_id,
+                            pattern_id,
+                        ),
+                        context_id,
+                    ),
+                    reverse=True,
+                )[:2]
+            else:
+                context_id = node.state.context_pattern_id
+                context_ids = (
+                    [context_id]
+                    if self._relation(context_id, pattern_id) == "neighbor"
+                    else []
+                )
+            for context_id in context_ids:
                 candidates.extend(self._paired_rewrite_actions(
                     node,
                     remove_pattern=self.knowledge.patterns[context_id],
@@ -985,9 +1257,22 @@ class SingleTreeGroupGame:
 
     def _approximate_action_score(self, node: GameNode, action: MacroAction) -> float:
         pattern_score = self.knowledge.pattern_score(node.state.role, action.pattern_id)
+        relation = (
+            self._node_pattern_relation(node, action.pattern_id)
+            if self.config.hierarchical_pattern_policy
+            else self._relation(node.state.context_pattern_id, action.pattern_id)
+        )
         return (pattern_score + self._action_shape_score(node, action)
-                + {"continue": 0.30, "neighbor": 0.12, "switch": -0.04}[
-                    self._relation(node.state.context_pattern_id, action.pattern_id)]
+                + {
+                    "continue": 0.30,
+                    "neighbor": 0.12,
+                    "switch": -0.04,
+                    "refine": 0.18,
+                    "reembed": 0.20,
+                    "coarsen": 0.14,
+                    "intersection": -0.01,
+                    "identity": -0.04,
+                }[relation]
                 + 0.45 * self._coherence(node.state.support_word, action.pattern_id))
 
     @staticmethod
@@ -1109,13 +1394,13 @@ class SingleTreeGroupGame:
         prior = 2.0 if self._correction_limit_reached(node) else 0.25
         edge = EdgeStats(
             action=action,
-            child_key=child.state.key,
+            child_key=self._state_key(child.state),
             prior=prior,
             rank_before=node.rank,
             rank_after=child_rank,
         )
         node.edges["stop"] = edge
-        node.child_state_keys.add(child.state.key)
+        node.child_state_keys.add(self._state_key(child.state))
         return edge
 
     def _next_action_lane(self, node: GameNode) -> str:
@@ -1127,24 +1412,6 @@ class SingleTreeGroupGame:
         lane = lanes[node.action_lane_cursor % len(lanes)]
         node.action_lane_cursor += 1
         return lane
-
-    @staticmethod
-    def _matches_action_lane(action: MacroAction, lane: str) -> bool:
-        if lane == "fine":
-            return action.kind == "add" and action.arity == 1 and action.block_size <= 2
-        if lane == "single":
-            return action.kind == "add" and action.arity == 1
-        if lane == "union":
-            return action.kind == "add" and action.arity > 1
-        if lane == "broad":
-            return action.kind == "add" and action.block_size >= 5
-        if lane == "rewrite":
-            return action.kind == "rewrite"
-        if lane == "remove_small":
-            return action.kind == "remove" and action.block_size <= 2
-        if lane == "remove_broad":
-            return action.kind == "remove" and action.block_size >= 3
-        return True
 
     def _refresh_node_epoch(self, node: GameNode) -> None:
         epoch = self.knowledge.epoch
@@ -1234,18 +1501,32 @@ class SingleTreeGroupGame:
     def _facet_actions(self, node: GameNode, *, grow: bool = True) -> list[MacroAction]:
         state = node.state
         if state.repair_source_word:
-            words = self.facet_bank.exits.get((
-                state.repair_source_word, state.support_word, state.context_pattern_id,
-            ), ())
-            pattern = self.knowledge.patterns[state.context_pattern_id]
-            return [MacroAction(
-                kind="add", pattern_id=pattern.pattern_id,
-                orbit_indices=tuple(i for i, b in enumerate(pattern.blocks) if block_word(b) & word),
-                block_word=word, effective_word=word, source="facet_external_exit",
-                structure=pattern.structure, block_size=word.bit_count(),
-                arity=sum(bool(block_word(b) & word) for b in pattern.blocks),
-                source_facet_word=state.repair_source_word,
-            ) for word in words]
+            actions: dict[str, MacroAction] = {}
+            for pattern_id in sorted(node.context_pattern_ids):
+                pattern = self.knowledge.patterns.get(pattern_id)
+                if pattern is None:
+                    continue
+                words = self.facet_bank.exits.get((
+                    state.repair_source_word, state.support_word, pattern_id,
+                ), ())
+                for word in words:
+                    action = MacroAction(
+                        kind="add", pattern_id=pattern.pattern_id,
+                        orbit_indices=tuple(
+                            i for i, block in enumerate(pattern.blocks)
+                            if block_word(block) & word
+                        ),
+                        block_word=word, effective_word=word,
+                        source="facet_external_exit",
+                        structure=pattern.structure, block_size=word.bit_count(),
+                        arity=sum(
+                            bool(block_word(block) & word)
+                            for block in pattern.blocks
+                        ),
+                        source_facet_word=state.repair_source_word,
+                    )
+                    actions[action.action_id] = action
+            return list(actions.values())
         anchor = self.facet_bank.anchors.get(node.facet_word)
         if state.role != "corrector" or anchor is None:
             return []
@@ -1362,7 +1643,10 @@ class SingleTreeGroupGame:
             actions.sort(key=priority, reverse=True)
         for action in actions:
             candidate = self._ephemeral_edge(node, action)
-            if candidate is not None and (not persistent or candidate[1].key not in node.child_state_keys):
+            if candidate is not None and (
+                not persistent
+                or self._state_key(candidate[1]) not in node.child_state_keys
+            ):
                 return candidate
         return None
 
@@ -1408,7 +1692,7 @@ class SingleTreeGroupGame:
             node.state.repair_source_word,
             node.state.support_word,
             action.effective_word,
-            node.state.context_pattern_id,
+            action.pattern_id,
             node.state.corrections_used,
         )
         return 0 if key is None else self.context_endpoint_executions[key]
@@ -1444,7 +1728,7 @@ class SingleTreeGroupGame:
             node.state.repair_source_word,
             node.state.support_word,
             action.effective_word,
-            node.state.context_pattern_id,
+            action.pattern_id,
             node.state.corrections_used,
         )
         if key is None:
@@ -1464,10 +1748,28 @@ class SingleTreeGroupGame:
         if target == source:
             self.context_endpoint_stats["self_endpoint_no_novelty_reward"] += 1
             return 0.0
+        if first_pair:
+            self.last_corrector_pair_progress_iteration = self.current_iteration
+            self.adaptive_replay_stats["pair_progress_events"] += 1
+        if first_target:
+            self.last_corrector_frontier_progress_iteration = self.current_iteration
+            self.adaptive_replay_stats["frontier_progress_events"] += 1
         components = {
-            "context": self.config.endpoint_context_novelty_reward if first_context else 0.0,
-            "pair": self.config.endpoint_pair_novelty_reward if first_pair else 0.0,
-            "target": self.config.endpoint_target_novelty_reward if first_target else 0.0,
+            "context": (
+                self.config.endpoint_context_novelty_reward
+                if self.config.endpoint_novelty_credit and first_context
+                else 0.0
+            ),
+            "pair": (
+                self.config.endpoint_pair_novelty_reward
+                if self.config.endpoint_novelty_credit and first_pair
+                else 0.0
+            ),
+            "target": (
+                self.config.endpoint_target_novelty_reward
+                if self.config.endpoint_novelty_credit and first_target
+                else 0.0
+            ),
         }
         reward = float(sum(components.values()))
         for name, value in components.items():
@@ -1515,7 +1817,7 @@ class SingleTreeGroupGame:
             edge, state, rank = repaired
             self._node(state, rank)
             node.edges[edge.action.action_id] = edge
-            node.child_state_keys.add(state.key)
+            node.child_state_keys.add(self._state_key(state))
             node.child_support_words.add(state.support_word)
             pattern_id = edge.action.pattern_id
             node.pattern_action_counts[pattern_id] = node.pattern_action_counts.get(pattern_id, 0) + 1
@@ -1534,7 +1836,11 @@ class SingleTreeGroupGame:
             if pattern_id is not None:
                 node.expanded_patterns.add(pattern_id)
 
-        desired_lane = self._next_action_lane(node)
+        desired_lane = (
+            self._next_action_lane(node)
+            if self.config.action_lane_widening
+            else None
+        )
         attempts = max(1, len(node.expanded_patterns) + 2)
         for _ in range(attempts):
             block_limit = self._block_limit(node)
@@ -1561,7 +1867,7 @@ class SingleTreeGroupGame:
                     + 0.12
                     * self.knowledge.transition_score(
                         node.state.role,
-                        node.state.context_pattern_id,
+                        self._node_context_for(node, value),
                         value,
                     ),
                     value,
@@ -1579,7 +1885,7 @@ class SingleTreeGroupGame:
                 and action.action_id not in node.rejected_action_ids
                 and action.action_id not in node.retired_action_ids
             ]
-            if not candidates:
+            if not candidates and desired_lane is not None:
                 self.generation_cache_stats["lane_fallbacks"] += 1
                 candidates = [
                     action
@@ -1609,24 +1915,28 @@ class SingleTreeGroupGame:
                     node.rejected_action_ids.add(action.action_id)
                 else:
                     child_state, child_rank = materialized
-                    if child_state.key in node.child_state_keys:
+                    child_key = self._state_key(child_state)
+                    if child_key in node.child_state_keys:
                         node.rejected_action_ids.add(action.action_id)
                     else:
-                        relation = self._relation(
-                            node.state.context_pattern_id,
-                            action.pattern_id,
+                        relation = (
+                            self._node_pattern_relation(node, action.pattern_id)
+                            if self.config.hierarchical_pattern_policy
+                            else self._relation(node.state.context_pattern_id, action.pattern_id)
                         )
+                        context = self._node_context_for(node, action.pattern_id)
                         prior = self.knowledge.action_prior(
                             node.state.role,
                             action,
                             rank_before=node.rank,
                             rank_after=child_rank,
-                            context_pattern_id=node.state.context_pattern_id,
+                            context_pattern_id=context,
                             coherence=self._coherence(
                                 child_state.support_word,
                                 action.pattern_id,
                             ),
                             relation=relation,
+                            learn_relation_value=self.config.learn_relation_values,
                         )
                         prior = max(
                             0.05,
@@ -1651,20 +1961,24 @@ class SingleTreeGroupGame:
             child = self._node(child_state, child_rank)
             node.edges[action.action_id] = EdgeStats(
                 action=action,
-                child_key=child.state.key,
+                child_key=self._state_key(child.state),
                 prior=prior,
                 rank_before=node.rank,
                 rank_after=child_rank,
             )
             node.child_support_words.add(child_state.support_word)
-            node.child_state_keys.add(child_state.key)
+            node.child_state_keys.add(self._state_key(child_state))
             node.pattern_action_counts[pattern_id] = (
                 node.pattern_action_counts.get(pattern_id, 0) + 1
             )
             self.tree_expansions += 1
             self.action_kind_counts[action.kind] += 1
             self.relation_counts[
-                self._relation(node.state.context_pattern_id, action.pattern_id)
+                (
+                    self._node_pattern_relation(node, action.pattern_id)
+                    if self.config.hierarchical_pattern_policy
+                    else self._relation(node.state.context_pattern_id, action.pattern_id)
+                )
             ] += 1
             return node.edges[action.action_id]
         return None
@@ -1690,19 +2004,27 @@ class SingleTreeGroupGame:
         return max(node.edges.values(), key=score)
 
     def _transition_reward(self, edge: EdgeStats) -> float:
+        if not self.config.transition_reward_shaping:
+            return 0.0
         if edge.action.kind == "add":
+            if not self.config.filler_transition_reward_shaping:
+                return 0.0
             gain = edge.rank_after - edge.rank_before
             return (
                 self.config.rank_gain_reward * gain
                 - (self.config.flat_add_penalty if gain <= 0 else 0.0)
             )
         if edge.action.kind == "remove":
+            if not self.config.corrector_transition_reward_shaping:
+                return 0.0
             rank_loss = max(0, edge.rank_before - edge.rank_after)
             return -(
                 self.config.correction_size_cost * edge.action.block_size
                 + self.config.correction_rank_loss_cost * rank_loss
             )
         if edge.action.kind == "rewrite":
+            if not self.config.corrector_transition_reward_shaping:
+                return 0.0
             rank_loss = max(0, edge.rank_before - edge.rank_after)
             changed_size = (
                 edge.action.remove_word.bit_count()
@@ -1761,8 +2083,22 @@ class SingleTreeGroupGame:
         tight_word: int,
         class_id: int | None,
     ) -> None:
-        canonical_word = canonical_support_word(int(tight_word))
-        if canonical_word in self.analyzed_supports:
+        raw_word = int(tight_word)
+        canonical_word = canonical_support_word(raw_word)
+        family_id = f"OBS-{canonical_word:016x}"
+        if self.config.retain_pattern_embeddings:
+            if raw_word in self.analyzed_embedding_supports:
+                return
+            record = self.knowledge.observed_supports.get(canonical_word)
+            if (
+                record is not None
+                and len(record.stabilizer_pattern_ids)
+                >= self.config.max_pattern_embeddings_per_family
+            ):
+                self.pattern_embedding_stats["family_cap_skips"] += 1
+                self.analyzed_embedding_supports.add(raw_word)
+                return
+        elif canonical_word in self.analyzed_supports:
             record = self.knowledge.observed_supports.get(canonical_word)
             if record is not None:
                 record.hit_count += 1
@@ -1773,15 +2109,29 @@ class SingleTreeGroupGame:
             self.class_analysis_counts[class_id]
             >= self.config.max_pattern_analyses_per_class
         ):
+            if self.config.retain_pattern_embeddings:
+                self.pattern_embedding_stats["class_analysis_cap_skips"] += 1
+                self.analyzed_embedding_supports.add(raw_word)
             return
 
         analysis = self.atlas.analyze_support(
-            tight_word,
+            raw_word,
             include_level2=self.config.include_level2_analysis,
             max_level2_pair_checks=self.config.max_level2_pair_checks,
             max_level2_matches=self.config.max_level2_matches,
         )
-        observed_id = f"OBS-{canonical_word:016x}"
+        if self.config.retain_pattern_embeddings:
+            partition_words = sorted(
+                block_word(block) for block in analysis.stabilizer_blocks
+            )
+            fingerprint = hashlib.blake2b(
+                b"".join(word.to_bytes(8, "little") for word in partition_words),
+                digest_size=6,
+            ).hexdigest()
+            observed_id = f"{family_id}-E{fingerprint}"
+        else:
+            observed_id = family_id
+        is_new_embedding = observed_id not in self.knowledge.patterns
         observed = PatternSpec(
             pattern_id=observed_id,
             level=3,
@@ -1790,6 +2140,7 @@ class SingleTreeGroupGame:
             source="observed_stabilizer",
             parent_root_ids=analysis.root_pattern_ids,
             generator_labels=(),
+            family_id=family_id if self.config.retain_pattern_embeddings else "",
         )
         self.knowledge.record_support(
             canonical_word=canonical_word,
@@ -1807,6 +2158,12 @@ class SingleTreeGroupGame:
             self.pattern_neighbors.setdefault(root_id, set()).add(observed_id)
         self._activate_growth_children(analysis.root_pattern_ids)
         self.analyzed_supports.add(canonical_word)
+        if self.config.retain_pattern_embeddings:
+            self.analyzed_embedding_supports.add(raw_word)
+            self.pattern_embedding_stats["analyses"] += 1
+            self.pattern_embedding_stats[
+                "registered" if is_new_embedding else "duplicate_partition"
+            ] += 1
         if class_id is not None:
             self.class_analysis_counts[class_id] += 1
 
@@ -1859,6 +2216,22 @@ class SingleTreeGroupGame:
         new_class = exact_hit and class_id not in self.discovered_classes
         if new_class:
             self.discovered_classes.add(int(class_id))
+            if (
+                self.config.adaptive_corrector_replay
+                and node.facet_word
+                and self._observed_target_coverage()
+                >= self.config.ridge_focus_min_coverage
+            ):
+                focused = self.facet_bank.focus_ridges(
+                    node.facet_word,
+                    batches=self.config.ridge_focus_batches,
+                )
+                self.adaptive_replay_stats[
+                    "ridge_focus_activations" if focused else "ridge_focus_unavailable"
+                ] += 1
+                if focused and self.config.eager_ridge_focus:
+                    dispatches = self.facet_bank.prime_focused_ridges(node.facet_word)
+                    self.adaptive_replay_stats["eager_ridge_dispatches"] += dispatches
             self._assign_corrector_novelty(path, int(class_id))
             self.knowledge.begin_discovery_epoch()
             self.discovery_events.append(
@@ -1878,17 +2251,33 @@ class SingleTreeGroupGame:
             )
 
         if bool(label.is_exact):
+            known_frequency_penalty = (
+                min(
+                    self.config.known_penalty_cap,
+                    self.config.known_class_frequency_penalty
+                    * math.log1p(previous_class_hits),
+                )
+                if self.config.terminal_frequency_reward_shaping
+                else 0.0
+            )
+            corrector_frequency_penalty = (
+                min(
+                    0.20,
+                    self.config.corrector_exact_frequency_penalty
+                    * math.log1p(previous_class_hits + 1),
+                )
+                if self.config.terminal_frequency_reward_shaping
+                else 0.0
+            )
             base_utility = (
                 self.config.new_class_reward
                 if new_class
                 else self.config.known_class_reward
-                - min(self.config.known_penalty_cap, self.config.known_class_frequency_penalty
-                      * math.log1p(previous_class_hits))
+                - known_frequency_penalty
             )
             counterfactual_utility = (
                 self.config.corrector_exact_utility
-                - min(0.20, self.config.corrector_exact_frequency_penalty
-                      * math.log1p(previous_class_hits + 1))
+                - corrector_frequency_penalty
             )
         elif valid_terminal:
             base_utility = self.config.unknown_facet_reward
@@ -1897,13 +2286,21 @@ class SingleTreeGroupGame:
             base_utility = self.config.invalid_terminal_reward
             counterfactual_utility = self.config.invalid_terminal_reward
         reward = float(base_utility)
-        if previous_support_hits == 0:
-            if valid_terminal:
-                reward += self.config.novel_terminal_support_bonus
-                self._learn_terminal_pattern(tight_word=tight_word, class_id=class_id)
-        elif valid_terminal:
-            reward -= min(self.config.support_penalty_cap,
-                          self.config.repeated_terminal_penalty * math.log1p(previous_support_hits))
+        if self.config.terminal_support_reward_shaping:
+            if previous_support_hits == 0:
+                if valid_terminal:
+                    reward += self.config.novel_terminal_support_bonus
+            elif valid_terminal:
+                reward -= min(
+                    self.config.support_penalty_cap,
+                    self.config.repeated_terminal_penalty
+                    * math.log1p(previous_support_hits),
+                )
+        if valid_terminal and (
+            previous_support_hits == 0
+            or self.config.retain_pattern_embeddings
+        ):
+            self._learn_terminal_pattern(tight_word=tight_word, class_id=class_id)
         return TerminalOutcome(
             reward=float(reward),
             counterfactual_utility=float(counterfactual_utility),
@@ -1916,6 +2313,8 @@ class SingleTreeGroupGame:
         )
 
     def _assign_corrector_novelty(self, path: Sequence[PathStep], class_id: int) -> None:
+        if not self.config.corrector_novelty_credit:
+            return
         contributors = [(i, step) for i, step in enumerate(path)
                         if step.corrector_origin_utility is not None]
         if not contributors:
@@ -2007,7 +2406,7 @@ class SingleTreeGroupGame:
             )
 
     def _leaf_value(self, node: GameNode) -> float:
-        if node.state.role == "done":
+        if node.state.role == "done" or not self.config.leaf_value_shaping:
             return 0.0
         size_excess = max(0, node.state.support_size - 30)
         return 0.018 * node.rank - 0.006 * size_excess
@@ -2054,18 +2453,49 @@ class SingleTreeGroupGame:
             ]
         if not active:
             return []
-        context = node.state.context_pattern_id
-        candidates: set[str] = set()
-        if context in active:
-            candidates.add(context)
-        neighbors = sorted(
-            self.pattern_neighbors.get(context, set())
-            & set(active)
+        contexts = (
+            node.context_pattern_ids
+            if self.config.hierarchical_pattern_policy
+            else {node.state.context_pattern_id}
         )
+        candidates: set[str] = set()
+        candidates.update(contexts & set(active))
+        neighbors = sorted(set().union(*(
+            self.pattern_neighbors.get(context, set())
+            for context in contexts
+        )) & set(active))
         if neighbors:
             candidates.update(rng.sample(neighbors, min(3, len(neighbors))))
+        if self.config.embedding_relation_policy:
+            siblings = [
+                pattern_id
+                for pattern_id in active
+                if pattern_id not in contexts
+                and any(
+                    self._pattern_family_id(pattern_id)
+                    == self._pattern_family_id(context)
+                    for context in contexts
+                )
+            ]
+            if siblings:
+                candidates.update(rng.sample(siblings, min(2, len(siblings))))
+            family_representatives: dict[str, str] = {}
+            for pattern_id in active:
+                family_id = self._pattern_family_id(pattern_id)
+                previous = family_representatives.get(family_id)
+                if previous is None or (
+                    self.knowledge.pattern_score(node.state.role, pattern_id),
+                    pattern_id,
+                ) > (
+                    self.knowledge.pattern_score(node.state.role, previous),
+                    previous,
+                ):
+                    family_representatives[family_id] = pattern_id
+            top_pool = list(family_representatives.values())
+        else:
+            top_pool = active
         top = sorted(
-            active,
+            top_pool,
             key=lambda pattern_id: (
                 self.knowledge.pattern_score(node.state.role, pattern_id),
                 pattern_id,
@@ -2081,16 +2511,25 @@ class SingleTreeGroupGame:
         ranked = sorted(
             candidates,
             key=lambda pattern_id: (
-                int(policy == "coherent" and pattern_id == context)
+                int(policy == "coherent" and pattern_id in contexts)
                 + int(policy == "fine" and pattern_id == IDENTITY_PATTERN_ID),
                 self.knowledge.pattern_score(node.state.role, pattern_id)
                 + 0.30 * self._coherence(node.state.support_word, pattern_id)
                 + {
                     "continue": 0.30,
+                    "refine": 0.22,
+                    "reembed": 0.24,
+                    "coarsen": 0.18,
                     "neighbor": 0.12,
+                    "intersection": 0.10,
+                    "identity": 0.04,
                     "switch": 0.0,
                 }[
-                    self._relation(context, pattern_id)
+                    (
+                        self._node_pattern_relation(node, pattern_id)
+                        if self.config.hierarchical_pattern_policy
+                        else self._relation(node.state.context_pattern_id, pattern_id)
+                    )
                 ],
                 pattern_id,
             ),
@@ -2107,22 +2546,29 @@ class SingleTreeGroupGame:
         if materialized is None:
             return None
         child_state, child_rank = materialized
-        relation = self._relation(
-            node.state.context_pattern_id,
-            action.pattern_id,
-        )
+        if action.kind == "stop":
+            relation = "continue"
+            context = node.state.context_pattern_id
+        else:
+            relation = (
+                self._node_pattern_relation(node, action.pattern_id)
+                if self.config.hierarchical_pattern_policy
+                else self._relation(node.state.context_pattern_id, action.pattern_id)
+            )
+            context = self._node_context_for(node, action.pattern_id)
         prior = self.knowledge.action_prior(
             node.state.role,
             action,
             rank_before=node.rank,
             rank_after=child_rank,
-            context_pattern_id=node.state.context_pattern_id,
+            context_pattern_id=context,
             coherence=(
                 0.0
                 if action.kind == "stop"
                 else self._coherence(child_state.support_word, action.pattern_id)
             ),
             relation=relation,
+            learn_relation_value=self.config.learn_relation_values,
         )
         prior = max(
             0.05,
@@ -2135,7 +2581,7 @@ class SingleTreeGroupGame:
         return (
             EdgeStats(
                 action=action,
-                child_key=child_state.key,
+                child_key=self._state_key(child_state),
                 prior=prior,
                 rank_before=node.rank,
                 rank_after=child_rank,
@@ -2194,7 +2640,7 @@ class SingleTreeGroupGame:
         else:
             rough_candidates.sort(
                 key=lambda action: (
-                    int(policy == "coherent" and action.pattern_id == node.state.context_pattern_id),
+                    int(policy == "coherent" and action.pattern_id in node.context_pattern_ids),
                     self._approximate_action_score(node, action),
                 ),
                 reverse=True,
@@ -2220,7 +2666,7 @@ class SingleTreeGroupGame:
         if policy == "coherent" and node.state.role == "filler":
             continued = [
                 item for item in materialized
-                if item[1].action.pattern_id == node.state.context_pattern_id
+                if item[1].action.pattern_id in node.context_pattern_ids
             ]
             if continued and rng.random() < 0.85:
                 materialized = continued
@@ -2243,9 +2689,18 @@ class SingleTreeGroupGame:
     ) -> PathStep:
         transition_reward = self._transition_reward(edge)
         endpoint_novelty_credit = 0.0
-        if (node.state.key, edge.action.action_id) in self.frontier_replay_keys:
+        self.executed_action_sources[edge.action.source] += 1
+        if edge.action.kind == "add":
+            filler_lane = (
+                "corrector_guided_completion"
+                if edge.action.source == "facet_external_exit"
+                else "free_fill"
+            )
+            self.filler_execution_counts[filler_lane] += 1
+        replay_key = (self._state_key(node.state), edge.action.action_id)
+        if replay_key in self.frontier_replay_keys:
             self.replay_stats[f"frontier_executed_{edge.action.kind}"] += 1
-            self.frontier_replay_keys.discard((node.state.key, edge.action.action_id))
+            self.frontier_replay_keys.discard(replay_key)
         if edge.action.source in ("facet_repartition", "facet_external_exit"):
             self.facet_bank.stats[f"executed_{edge.action.source}"] += 1
         if edge.action.source == "facet_external_exit":
@@ -2280,18 +2735,100 @@ class SingleTreeGroupGame:
             )
         return step
 
+    def _observed_target_coverage(self) -> float:
+        targets = set(map(int, self.config.target_classes))
+        if not targets:
+            return 0.0
+        observed = sum(self.class_terminal_counts[class_id] > 0 for class_id in targets)
+        return observed / len(targets)
+
+    def _free_filler_ratio(self) -> float:
+        coverage = self._observed_target_coverage()
+        if coverage < self.config.adaptive_replay_min_coverage:
+            base_ratio = self.config.free_filler_initial_ratio
+        else:
+            span = self.config.free_filler_initial_ratio - self.config.free_filler_floor
+            base_ratio = self.config.free_filler_floor + span * (
+                (1.0 - coverage) ** self.config.free_filler_decay_power
+            )
+        if self._filler_reheat_active():
+            return max(base_ratio, self.config.filler_reheat_ratio)
+        return base_ratio
+
+    def _filler_reheat_active(self) -> bool:
+        if (
+            not self.config.adaptive_corrector_replay
+            or not self.config.adaptive_filler_reheat
+            or self._observed_target_coverage()
+            < self.config.adaptive_replay_min_coverage
+        ):
+            return False
+        last_discovery = self.discovery_events[-1].iteration if self.discovery_events else 0
+        return (
+            self.current_iteration - last_discovery
+            >= self.config.filler_reheat_class_patience
+            and self.current_iteration - self.last_corrector_frontier_progress_iteration
+            >= self.config.filler_reheat_frontier_patience
+        )
+
+    def _record_filler_reheat_state(self) -> None:
+        active = self._filler_reheat_active()
+        if active:
+            self.adaptive_replay_stats["filler_reheat_active_slots"] += 1
+        if active == self._filler_reheat_was_active:
+            return
+        self._filler_reheat_was_active = active
+        self.filler_reheat_transitions.append({
+            "iteration": self.current_iteration,
+            "active": active,
+            "observed_target_coverage": self._observed_target_coverage(),
+            "last_discovery_iteration": (
+                self.discovery_events[-1].iteration if self.discovery_events else 0
+            ),
+            "last_corrector_frontier_progress_iteration": (
+                self.last_corrector_frontier_progress_iteration
+            ),
+            "last_corrector_pair_progress_iteration": (
+                self.last_corrector_pair_progress_iteration
+            ),
+        })
+
+    def _corrector_replay_due(self, iteration: int) -> tuple[bool, str]:
+        interval = self.config.facet_replay_interval
+        mandatory = bool(interval and iteration % interval == 0)
+        if not self.config.adaptive_corrector_replay:
+            return mandatory, "periodic" if mandatory else "free"
+
+        self._record_filler_reheat_state()
+        free_ratio = self._free_filler_ratio()
+        target_replay_ratio = 1.0 - free_ratio
+        periodic_ratio = 0.0 if not interval else 1.0 / interval
+        self.adaptive_replay_balance += max(0.0, target_replay_ratio - periodic_ratio)
+        if mandatory:
+            self.adaptive_replay_stats["periodic_due"] += 1
+            return True, "periodic"
+        if self.adaptive_replay_balance >= 1.0:
+            self.adaptive_replay_balance -= 1.0
+            self.adaptive_replay_stats["adaptive_due"] += 1
+            return True, "adaptive"
+        self.adaptive_replay_stats["free_filler_slots"] += 1
+        return False, "free"
+
     def _choose_replay(self, iteration: int) -> tuple[MacroAction, ...]:
         self.frontier_replay_start = None
         self.frontier_replay_keys.clear()
         interval = self.config.facet_replay_interval
-        if not interval or iteration % interval:
+        due, reason = self._corrector_replay_due(iteration)
+        if not due:
             return ()
         eligible = [word for word, path in self.facet_witnesses.items()
                     if len(path) + 2 < self.config.max_depth
                     and sum(a.kind in ("remove", "rewrite") for a in path) < self.config.extended_max_corrections
                     and self.facet_bank.has_frontier(self.facet_witness_sources[word])]
+        self.adaptive_replay_stats[f"{reason}_due_slots"] += 1
         stride = self.config.frontier_replay_stride
-        if stride and (iteration // interval) % stride == 0:
+        replay_period = max(1, interval)
+        if stride and (iteration // replay_period) % stride == 0:
             pending = [w for w in eligible if self.facet_bank.has_delivery_frontier(self.facet_witness_sources[w])]
             if pending:
                 lane = None
@@ -2337,7 +2874,9 @@ class SingleTreeGroupGame:
                 else:
                     self.replay_stats["context_frontier_quota_skips"] += 1
         if not eligible:
+            self.adaptive_replay_stats[f"{reason}_no_frontier"] += 1
             return ()
+        self.adaptive_replay_stats[f"{reason}_episodes"] += 1
         word = min(eligible, key=lambda w: (self.facet_replay_counts[w], w))
         self.facet_replay_counts[word] += 1
         self.replay_stats["episodes"] += 1
@@ -2604,8 +3143,8 @@ class SingleTreeGroupGame:
         self.context_frontier_proposals[context_key] += 1
         self.frontier_replay_start = len(witness)
         self.frontier_replay_keys = {
-            (node.state.key, repair.action_id),
-            (retained_node.state.key, completion.action_id),
+            (self._state_key(node.state), repair.action_id),
+            (self._state_key(retained_node.state), completion.action_id),
         }
         self.replay_stats["context_frontier_planned_pairs"] += 1
         self.replay_stats[f"context_frontier_{lane}_planned_pairs"] += 1
@@ -2642,8 +3181,10 @@ class SingleTreeGroupGame:
             self.replay_stats["frontier_invalid_completion"] += 1
             return witness
         self.frontier_replay_start = len(witness)
-        self.frontier_replay_keys = {(node.state.key, repair.action_id),
-                                     (retained_node.state.key, completion.action_id)}
+        self.frontier_replay_keys = {
+            (self._state_key(node.state), repair.action_id),
+            (self._state_key(retained_node.state), completion.action_id),
+        }
         self.replay_stats["frontier_planned_pairs"] += 1
         return witness + (repair, completion)
 
@@ -2680,7 +3221,7 @@ class SingleTreeGroupGame:
         self._node(state, rank)
         node.edges[action.action_id] = edge
         node.retired_action_ids.discard(action.action_id)
-        node.child_state_keys.add(state.key)
+        node.child_state_keys.add(self._state_key(state))
         node.child_support_words.add(state.support_word)
         node.expanded_patterns.add(action.pattern_id)
         node.pattern_action_counts[action.pattern_id] = node.pattern_action_counts.get(action.pattern_id, 0) + 1
@@ -2708,7 +3249,7 @@ class SingleTreeGroupGame:
         tree_edge_count = 0
         tree_leaf = self.root
         expanded = False
-        last_observed_state_key: tuple[int, str, int, str, int] | None = None
+        last_observed_state_key: tuple | None = None
 
         while depth < self.config.max_depth:
             if node.state.role == "done":
@@ -2716,7 +3257,7 @@ class SingleTreeGroupGame:
             current_terminal: TerminalOutcome | None = None
             if node.state.role == "corrector":
                 current_terminal = self._observe_terminal(node, path=path)
-                last_observed_state_key = node.state.key
+                last_observed_state_key = self._state_key(node.state)
                 if path:
                     path[-1].reward += current_terminal.reward
                     path[-1].terminal_exact = current_terminal.exact_hit
@@ -2776,7 +3317,7 @@ class SingleTreeGroupGame:
                 current_terminal = None
                 if node.state.role == "corrector":
                     current_terminal = self._observe_terminal(node, path=path)
-                    last_observed_state_key = node.state.key
+                    last_observed_state_key = self._state_key(node.state)
                     if path:
                         path[-1].reward += current_terminal.reward
                         path[-1].terminal_exact = current_terminal.exact_hit
@@ -2820,7 +3361,7 @@ class SingleTreeGroupGame:
 
         if (
             node.state.role == "corrector"
-            and node.state.key != last_observed_state_key
+            and self._state_key(node.state) != last_observed_state_key
         ):
             final_terminal = self._observe_terminal(node, path=path)
             if path:
@@ -2885,6 +3426,17 @@ class SingleTreeGroupGame:
                     if role == "corrector"
                     else step.terminal_new
                 )
+                relation = (
+                    self._node_pattern_relation(
+                        step.node,
+                        step.edge.action.pattern_id,
+                    )
+                    if self.config.hierarchical_pattern_policy
+                    else self._relation(
+                        step.node.state.context_pattern_id,
+                        step.edge.action.pattern_id,
+                    )
+                )
                 self.knowledge.update_action(
                     role,
                     step.edge.action,
@@ -2893,7 +3445,12 @@ class SingleTreeGroupGame:
                     reward=learned_value,
                     exact_hit=direct_exact,
                     new_class=direct_new_class,
-                    context_pattern_id=step.node.state.context_pattern_id,
+                    context_pattern_id=self._node_context_for(
+                        step.node,
+                        step.edge.action.pattern_id,
+                    ),
+                    relation=relation,
+                    update_relation=self.config.learn_relation_values,
                 )
 
         if tree_edge_count < len(path):
@@ -2907,13 +3464,19 @@ class SingleTreeGroupGame:
     def _tree_summary(self) -> dict[str, object]:
         role_counts = Counter(node.state.role for node in self.nodes.values())
         context_counts = Counter(
-            node.state.context_pattern_id for node in self.nodes.values()
+            context
+            for node in self.nodes.values()
+            for context in node.context_pattern_ids
         )
         ranks = Counter(node.rank for node in self.nodes.values())
         edge_count = sum(len(node.edges) for node in self.nodes.values())
         return {
             "node_count": len(self.nodes),
             "edge_count": edge_count,
+            "ridge_node_count": sum(
+                node.rank == 24 and bool(node.state.repair_source_word)
+                for node in self.nodes.values()
+            ),
             "role_counts": dict(sorted(role_counts.items())),
             "context_counts": dict(context_counts.most_common()),
             "rank_counts": {str(rank): count for rank, count in sorted(ranks.items())},
@@ -2935,9 +3498,15 @@ class SingleTreeGroupGame:
             "mean_persistent_nodes_per_iteration": (
                 (len(self.nodes) - 1) / max(1, self.simulations_completed)
             ),
+            "merged_pattern_context_count": sum(
+                max(0, len(node.context_pattern_ids) - 1)
+                for node in self.nodes.values()
+            ),
             "root_child_limit": self._child_limit(self.root),
             "tree_expansion_action_kinds": dict(self.action_kind_counts),
             "rollout_action_kinds": dict(self.rollout_action_kind_counts),
+            "executed_action_sources": dict(self.executed_action_sources),
+            "filler_execution_counts": dict(self.filler_execution_counts),
             "rollout_policy_counts": dict(self.rollout_policy_counts),
             "repair_policy_counts": dict(self.repair_policy_counts),
             "epoch_recycled_edges": self.epoch_recycled_edges,
@@ -2953,6 +3522,27 @@ class SingleTreeGroupGame:
                 ).items())
             },
             "facet_replay_counts": {f"0x{w:016x}": count for w, count in self.facet_replay_counts.items()},
+            "adaptive_corrector_replay": {
+                "enabled": self.config.adaptive_corrector_replay,
+                "observed_target_coverage": self._observed_target_coverage(),
+                "current_free_filler_ratio": self._free_filler_ratio(),
+                "balance": self.adaptive_replay_balance,
+                "filler_reheat": {
+                    "enabled": self.config.adaptive_filler_reheat,
+                    "active": self._filler_reheat_active(),
+                    "ratio": self.config.filler_reheat_ratio,
+                    "class_patience": self.config.filler_reheat_class_patience,
+                    "frontier_patience": self.config.filler_reheat_frontier_patience,
+                    "last_corrector_frontier_progress_iteration": (
+                        self.last_corrector_frontier_progress_iteration
+                    ),
+                    "last_corrector_pair_progress_iteration": (
+                        self.last_corrector_pair_progress_iteration
+                    ),
+                    "transitions": self.filler_reheat_transitions,
+                },
+                "statistics": dict(self.adaptive_replay_stats),
+            },
             "context_frontier_replay_counts": [
                 {
                     "source_hex": f"0x{word:016x}",
@@ -2983,6 +3573,36 @@ class SingleTreeGroupGame:
                 "decisions": self.geometry_growth_decisions,
             },
             "tree_expansion_relations": dict(self.relation_counts),
+            "symmetry_policy": {
+                "geometric_transpositions": self.config.geometric_transpositions,
+                "hierarchical_pattern_policy": self.config.hierarchical_pattern_policy,
+                "directed_pattern_relations": self.config.directed_pattern_relations,
+                "learn_relation_values": self.config.learn_relation_values,
+                "retain_pattern_embeddings": self.config.retain_pattern_embeddings,
+                "share_embedding_family_values": (
+                    self.config.share_embedding_family_values
+                ),
+                "embedding_relation_policy": self.config.embedding_relation_policy,
+                "relation_lanes": list(
+                    EMBEDDING_SYMMETRY_RELATION_LANES
+                    if self.config.embedding_relation_policy
+                    else (
+                        DIRECTED_SYMMETRY_RELATION_LANES
+                        if self.config.directed_pattern_relations
+                        else SYMMETRY_RELATION_LANES
+                    )
+                ),
+                "registered_partitions": self.pattern_relations.pattern_count,
+                "pattern_family_count": len({
+                    self._pattern_family_id(pattern_id)
+                    for pattern_id in self.knowledge.patterns
+                }),
+                "observed_embedding_count": sum(
+                    bool(pattern.family_id)
+                    for pattern in self.knowledge.patterns.values()
+                ),
+                "embedding_statistics": dict(self.pattern_embedding_stats),
+            },
             "generation_cache": {
                 **dict(self.generation_cache_stats),
                 "coherence_entries": len(self.coherence_cache),
@@ -3033,16 +3653,48 @@ class SingleTreeGroupGame:
     def result(self, elapsed_seconds: float) -> dict[str, object]:
         targets = set(int(value) for value in self.config.target_classes)
         observed = {class_id for class_id, hits in self.class_terminal_counts.items() if hits > 0}
+        if (
+            self.config.retain_pattern_embeddings
+            and self.config.embedding_relation_policy
+            and self.config.learn_relation_values
+            and not self.config.share_embedding_family_values
+            and not self.config.adaptive_filler_reheat
+        ):
+            revision = "independent_embedding_relation_mcts_v25"
+        elif self.config.retain_pattern_embeddings:
+            revision = "family_embedding_hierarchical_mcts_v24"
+        elif (
+            self.config.directed_pattern_relations
+            or self.config.learn_relation_values
+            or self.config.adaptive_filler_reheat
+        ):
+            revision = "directed_hierarchy_reheated_filler_v23"
+        elif self.config.geometric_transpositions or self.config.hierarchical_pattern_policy:
+            revision = "scalable_hierarchical_symmetry_v22"
+        elif self.config.adaptive_corrector_replay or self.config.ridge_pivot:
+            revision = "adaptive_ridge_corrector_v21"
+        else:
+            revision = "deterministic_fair_growth_bridge_v20"
         return {
             "metadata": {
                 "algorithm": "single_tree_symmetry_filler_corrector_mcts",
-                "algorithm_revision": "deterministic_fair_growth_bridge_v20",
+                "algorithm_revision": revision,
                 "one_mcts_tree": True,
                 "persistent_expansions_per_simulation": 1,
                 "group_theory_location": "state_action_generator_and_online_knowledge",
                 "facet_examples_used_for_action_generation": False,
                 "online_validated_facets_used_for_repairs": True,
                 "unseen_class_examples_used": False,
+                "rank24_ridge_pivot": self.config.ridge_pivot,
+                "adaptive_free_filler_suppression": self.config.adaptive_corrector_replay,
+                "path_independent_geometric_nodes": self.config.geometric_transpositions,
+                "controlled_pattern_transitions": self.config.hierarchical_pattern_policy,
+                "directed_partition_relations": self.config.directed_pattern_relations,
+                "learned_relation_values": self.config.learn_relation_values,
+                "stagnation_triggered_filler_reheat": self.config.adaptive_filler_reheat,
+                "canonical_pattern_families_with_concrete_embeddings": (
+                    self.config.retain_pattern_embeddings
+                ),
                 "coverage_basis": "positive_terminal_class_hits_this_run",
                 "terminal_classification_only_after_rank25": True,
                 "atlas_path": str(self.atlas.source_path),
@@ -3151,6 +3803,47 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--no-endpoint-dedup", action="store_true")
     parser.add_argument("--ridge-max-candidates", type=int, default=4096)
     parser.add_argument("--ridge-batch-size", type=int, default=32)
+    parser.add_argument("--ridge-pivot", action="store_true")
+    parser.add_argument("--ridge-focus-batches", type=int, default=12)
+    parser.add_argument("--ridge-focus-min-coverage", type=float, default=0.50)
+    parser.add_argument("--eager-ridge-focus", action="store_true")
+    parser.add_argument("--adaptive-corrector-replay", action="store_true")
+    parser.add_argument("--adaptive-replay-min-coverage", type=float, default=0.50)
+    parser.add_argument("--free-filler-initial-ratio", type=float, default=0.75)
+    parser.add_argument("--free-filler-floor", type=float, default=0.10)
+    parser.add_argument("--free-filler-decay-power", type=float, default=2.0)
+    parser.add_argument("--geometric-transpositions", action="store_true")
+    parser.add_argument("--hierarchical-pattern-policy", action="store_true")
+    parser.add_argument("--directed-pattern-relations", action="store_true")
+    parser.add_argument("--learn-relation-values", action="store_true")
+    parser.add_argument("--adaptive-filler-reheat", action="store_true")
+    parser.add_argument("--filler-reheat-class-patience", type=int, default=512)
+    parser.add_argument("--filler-reheat-frontier-patience", type=int, default=256)
+    parser.add_argument("--filler-reheat-ratio", type=float, default=0.35)
+    parser.add_argument("--retain-pattern-embeddings", action="store_true")
+    parser.add_argument("--max-pattern-embeddings-per-family", type=int, default=4)
+    parser.add_argument("--share-embedding-family-values", action="store_true")
+    parser.add_argument("--embedding-relation-policy", action="store_true")
+    parser.add_argument("--no-multilevel-progressive-widening", action="store_true")
+    parser.add_argument("--no-size-bucket-widening", action="store_true")
+    parser.add_argument("--no-action-lane-widening", action="store_true")
+    parser.add_argument("--no-weighted-relation-widening", action="store_true")
+    parser.add_argument("--discovery-epoch-child-reserve", type=int, default=8)
+    parser.add_argument("--discovery-epoch-child-recycle", type=int, default=16)
+    parser.add_argument("--no-transition-reward-shaping", action="store_true")
+    parser.add_argument("--no-filler-transition-reward-shaping", action="store_true")
+    parser.add_argument("--no-corrector-transition-reward-shaping", action="store_true")
+    parser.add_argument("--no-terminal-support-reward-shaping", action="store_true")
+    parser.add_argument("--no-terminal-frequency-reward-shaping", action="store_true")
+    parser.add_argument("--no-corrector-novelty-credit", action="store_true")
+    parser.add_argument("--no-endpoint-novelty-credit", action="store_true")
+    parser.add_argument("--no-leaf-value-shaping", action="store_true")
+    parser.add_argument("--pattern-widening-beta", type=float, default=0.45)
+    parser.add_argument("--novel-terminal-support-bonus", type=float, default=0.35)
+    parser.add_argument("--repeated-terminal-penalty", type=float, default=0.12)
+    parser.add_argument("--known-class-frequency-penalty", type=float, default=0.18)
+    parser.add_argument("--corrector-exact-frequency-penalty", type=float, default=0.04)
+    parser.add_argument("--max-pattern-analyses-per-class", type=int, default=2)
     parser.add_argument("--lower-face-max-attempts", type=int, default=6)
     parser.add_argument("--orbit-face-max-candidates", type=int, default=256)
     parser.add_argument("--orbit-face-batch-size", type=int, default=8)
@@ -3205,6 +3898,61 @@ def main(argv: Iterable[str] | None = None) -> dict[str, object]:
         endpoint_dedup=not args.no_endpoint_dedup,
         ridge_max_candidates=int(args.ridge_max_candidates),
         ridge_batch_size=int(args.ridge_batch_size),
+        ridge_pivot=bool(args.ridge_pivot),
+        ridge_focus_batches=int(args.ridge_focus_batches),
+        ridge_focus_min_coverage=float(args.ridge_focus_min_coverage),
+        eager_ridge_focus=bool(args.eager_ridge_focus),
+        adaptive_corrector_replay=bool(args.adaptive_corrector_replay),
+        adaptive_replay_min_coverage=float(args.adaptive_replay_min_coverage),
+        free_filler_initial_ratio=float(args.free_filler_initial_ratio),
+        free_filler_floor=float(args.free_filler_floor),
+        free_filler_decay_power=float(args.free_filler_decay_power),
+        geometric_transpositions=bool(args.geometric_transpositions),
+        hierarchical_pattern_policy=bool(args.hierarchical_pattern_policy),
+        directed_pattern_relations=bool(args.directed_pattern_relations),
+        learn_relation_values=bool(args.learn_relation_values),
+        adaptive_filler_reheat=bool(args.adaptive_filler_reheat),
+        filler_reheat_class_patience=int(args.filler_reheat_class_patience),
+        filler_reheat_frontier_patience=int(args.filler_reheat_frontier_patience),
+        filler_reheat_ratio=float(args.filler_reheat_ratio),
+        retain_pattern_embeddings=bool(args.retain_pattern_embeddings),
+        max_pattern_embeddings_per_family=int(args.max_pattern_embeddings_per_family),
+        share_embedding_family_values=bool(args.share_embedding_family_values),
+        embedding_relation_policy=bool(args.embedding_relation_policy),
+        multilevel_progressive_widening=not bool(
+            args.no_multilevel_progressive_widening
+        ),
+        pattern_widening_beta=float(args.pattern_widening_beta),
+        size_bucket_widening=not bool(args.no_size_bucket_widening),
+        action_lane_widening=not bool(args.no_action_lane_widening),
+        weighted_relation_widening=not bool(
+            args.no_weighted_relation_widening
+        ),
+        discovery_epoch_child_reserve=int(args.discovery_epoch_child_reserve),
+        discovery_epoch_child_recycle=int(args.discovery_epoch_child_recycle),
+        transition_reward_shaping=not bool(args.no_transition_reward_shaping),
+        filler_transition_reward_shaping=not bool(
+            args.no_filler_transition_reward_shaping
+        ),
+        corrector_transition_reward_shaping=not bool(
+            args.no_corrector_transition_reward_shaping
+        ),
+        terminal_support_reward_shaping=not bool(
+            args.no_terminal_support_reward_shaping
+        ),
+        terminal_frequency_reward_shaping=not bool(
+            args.no_terminal_frequency_reward_shaping
+        ),
+        corrector_novelty_credit=not bool(args.no_corrector_novelty_credit),
+        endpoint_novelty_credit=not bool(args.no_endpoint_novelty_credit),
+        leaf_value_shaping=not bool(args.no_leaf_value_shaping),
+        novel_terminal_support_bonus=float(args.novel_terminal_support_bonus),
+        repeated_terminal_penalty=float(args.repeated_terminal_penalty),
+        known_class_frequency_penalty=float(args.known_class_frequency_penalty),
+        corrector_exact_frequency_penalty=float(
+            args.corrector_exact_frequency_penalty
+        ),
+        max_pattern_analyses_per_class=int(args.max_pattern_analyses_per_class),
         lower_face_max_attempts=int(args.lower_face_max_attempts),
         orbit_face_max_candidates=int(args.orbit_face_max_candidates),
         orbit_face_batch_size=int(args.orbit_face_batch_size),

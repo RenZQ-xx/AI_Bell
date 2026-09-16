@@ -1,0 +1,1038 @@
+{
+  "algorithm": "bell422_scalable_symmetry_filler_corrector_v2",
+  "problem": {
+    "scenario": "4-2-2",
+    "vertex_count": 256,
+    "ambient_dimension": 80,
+    "target_affine_rank": 79,
+    "relabeling_group_order": 98304
+  },
+  "prior_boundary": {
+    "search_reads": [
+      "complete_nodes.csv",
+      "nodes/*/orbit_blocks.csv"
+    ],
+    "terminal_only_reads": [
+      "global_facet_classes.csv"
+    ],
+    "never_read": [
+      "nodes/*/facets.csv"
+    ],
+    "initial_discovered_classes": []
+  },
+  "config": {
+    "iterations": 100,
+    "seed": 4222026,
+    "max_depth": 112,
+    "rollout_depth": 96,
+    "max_corrections": 5,
+    "min_corrector_rank": 60,
+    "exploration": 1.35,
+    "discount": 0.985,
+    "pattern_widening_k0": 3,
+    "pattern_widening_alpha": 1.15,
+    "pattern_widening_beta": 0.45,
+    "action_widening_k0": 4,
+    "action_widening_alpha": 2.0,
+    "action_widening_beta": 0.5,
+    "max_children_per_node": 160,
+    "max_corrector_children_per_node": 112,
+    "rank_checks_per_widen": 10,
+    "filler_candidate_limit": 16,
+    "corrector_candidate_limit": 24,
+    "rollout_action_candidates": 6,
+    "rollout_random_probability": 0.16,
+    "tail_checks": 8,
+    "stabilizer_probes": 192,
+    "new_class_reward": 10.0,
+    "repeated_class_reward": 0.1,
+    "repeated_frequency_penalty": 0.025,
+    "invalid_terminal_reward": -1.25,
+    "dead_end_reward": -0.6,
+    "rank_gain_reward": 0.035,
+    "correction_cost": 0.008,
+    "canonicalize_classes": true,
+    "use_catalog": true,
+    "progress_interval": 25,
+    "geometric_transpositions": true,
+    "hierarchical_pattern_policy": true,
+    "rollout_pattern_candidates": 2,
+    "ridge_pivot": true,
+    "context_free_action_cache": true,
+    "structural_novelty_reward": 0.05,
+    "repeated_basin_penalty_cap": 0.15
+  },
+  "runtime": {
+    "elapsed_seconds": 34.957281500002864,
+    "iterations_completed": 100,
+    "logical_iterations": 100
+  },
+  "coverage": {
+    "discovered_class_count": 1,
+    "discovered_class_ids": [
+      "BFS422-F-b6b3c8b38259"
+    ],
+    "discoveries": [
+      {
+        "class_id": "BFS422-F-b6b3c8b38259",
+        "catalog_index": 34835,
+        "iteration": 6,
+        "depth": 14,
+        "elapsed_seconds": 2.644272200002888,
+        "source": "rank_tail_enumeration",
+        "context_pattern_id": "BFS422-H-0987",
+        "support_word_hex": "0xfffffffffffffffffffff3f3fffff3f3fffffffffffffffffffff3f3fffff3f3",
+        "support_size": 240,
+        "h_row": [
+          1,
+          0,
+          -1,
+          0,
+          -1,
+          0,
+          -1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1,
+          0
+        ],
+        "canonical_h_row": [
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "online_pattern_ids": [
+          "ONLINE422-c3e3e3699e3da03a",
+          "BFS422-H-0987",
+          "BFS422-H-0171",
+          "BFS422-H-0228",
+          "BFS422-H-0170",
+          "BFS422-H-0210",
+          "BFS422-H-0211",
+          "BFS422-H-0251"
+        ]
+      }
+    ]
+  },
+  "tree": {
+    "node_count": 101,
+    "edge_count": 109,
+    "root_visits": 100,
+    "root_mean_value": 2.0966345896631666,
+    "merged_pattern_context_count": 0,
+    "root_edges": [
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:253,254,255:e000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000000:e000000000000000000000000000000000000000000000000000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            253,
+            254,
+            255
+          ],
+          "effective_word_hex": "0xe000000000000000000000000000000000000000000000000000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0xe000000000000000000000000000000000000000000000000000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 3,
+          "size_bucket": "small",
+          "arity": 3
+        },
+        "visits": 6,
+        "mean_value": 3.6271843355448836,
+        "prior": 1.9881368080181634,
+        "rank_after": 2,
+        "discovery_hits": 1
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:4:0000000000000000000000000000000000000000000000000000000000000010:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000010",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            4
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000010",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000010",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 6,
+        "mean_value": 2.157529166666667,
+        "prior": 2.4590262406936,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:255:8000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000000:8000000000000000000000000000000000000000000000000000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            255
+          ],
+          "effective_word_hex": "0x8000000000000000000000000000000000000000000000000000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x8000000000000000000000000000000000000000000000000000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 2.3342350000000005,
+        "prior": 2.1170497104341734,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:7:0000000000000000000000000000000000000000000000000000000000000080:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000080",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            7
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000080",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000080",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 2.211764925,
+        "prior": 2.1349439320033543,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:6:0000000000000000000000000000000000000000000000000000000000000040:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000040",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            6
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000040",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000040",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 2.1787400000000003,
+        "prior": 2.0653050498323173,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:2:0000000000000000000000000000000000000000000000000000000000000004:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000004",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            2
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000004",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000004",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 1.9608150000000002,
+        "prior": 2.32353123727628,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:3:0000000000000000000000000000000000000000000000000000000000000008:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000008",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            3
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000008",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000008",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 1.9285500000000007,
+        "prior": 2.401857417237794,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:5:0000000000000000000000000000000000000000000000000000000000000020:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000020",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            5
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000020",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000020",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 1.9198050000000006,
+        "prior": 2.522815688052227,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:1:0000000000000000000000000000000000000000000000000000000000000002:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000002",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            1
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 5,
+        "mean_value": 1.9040879500000005,
+        "prior": 2.1716475625282334,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:254:4000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000000:4000000000000000000000000000000000000000000000000000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            254
+          ],
+          "effective_word_hex": "0x4000000000000000000000000000000000000000000000000000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x4000000000000000000000000000000000000000000000000000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 2.4027557539584983,
+        "prior": 1.9239756206893763,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:8:0000000000000000000000000000000000000000000000000000000000000100:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000100",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            8
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000100",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000100",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 2.383962531250001,
+        "prior": 2.019566589325711,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:12:0000000000000000000000000000000000000000000000000000000000001000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000001000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            12
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000001000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000001000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 2.24799375,
+        "prior": 1.943042919505589,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:10:0000000000000000000000000000000000000000000000000000000000000400:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000400",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            10
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000400",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000400",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 2.0903750000000003,
+        "prior": 1.9163197762435618,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:0,1:0000000000000000000000000000000000000000000000000000000000000003:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000003",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            0,
+            1
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000003",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000003",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 2,
+          "size_bucket": "pair",
+          "arity": 2
+        },
+        "visits": 4,
+        "mean_value": 2.0825250000000004,
+        "prior": 1.9427028848917738,
+        "rank_after": 1,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:13:0000000000000000000000000000000000000000000000000000000000002000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000002000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            13
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000002000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000002000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 2.0163875000000004,
+        "prior": 1.958708419472785,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:0:0000000000000000000000000000000000000000000000000000000000000001:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000001",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            0
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 2.0039437500000004,
+        "prior": 1.907539710339949,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:15:0000000000000000000000000000000000000000000000000000000000008000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000008000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            15
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000008000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000008000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 1.97568125,
+        "prior": 2.0405012508464355,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:14:0000000000000000000000000000000000000000000000000000000000004000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000004000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            14
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000004000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000004000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 1.7778250000000002,
+        "prior": 2.001978071348659,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:11:0000000000000000000000000000000000000000000000000000000000000800:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000800",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            11
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000800",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000800",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 4,
+        "mean_value": 1.7616312500000002,
+        "prior": 1.9293806223255623,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:9:0000000000000000000000000000000000000000000000000000000000000200:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000200",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            9
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000200",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000200",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 3,
+        "mean_value": 2.393861663333333,
+        "prior": 1.3920000000000001,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-H-0070:9:0000000000000200000000000000000000000000000000000000000000000200:0000000000000000000000000000000000000000000000000000000000000000:0000000000000200000000000000000000000000000000000000000000000200",
+          "kind": "add",
+          "pattern_id": "BFS422-H-0070",
+          "block_indices": [
+            9
+          ],
+          "effective_word_hex": "0x0000000000000200000000000000000000000000000000000000000000000200",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000200000000000000000000000000000000000000000000000200",
+          "source": "handoff_subgroup",
+          "structure": "C2 x C2",
+          "block_size": 2,
+          "size_bucket": "pair",
+          "arity": 1
+        },
+        "visits": 3,
+        "mean_value": 1.485150000000001,
+        "prior": 1.3974684,
+        "rank_after": 1,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-H-0133:0,1:000000000000000000000000000000000000000000000000000000000000000f:0000000000000000000000000000000000000000000000000000000000000000:000000000000000000000000000000000000000000000000000000000000000f",
+          "kind": "add",
+          "pattern_id": "BFS422-H-0133",
+          "block_indices": [
+            0,
+            1
+          ],
+          "effective_word_hex": "0x000000000000000000000000000000000000000000000000000000000000000f",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x000000000000000000000000000000000000000000000000000000000000000f",
+          "source": "handoff_subgroup",
+          "structure": "C2 x C2",
+          "block_size": 4,
+          "size_bucket": "small",
+          "arity": 2
+        },
+        "visits": 3,
+        "mean_value": 1.4838333333333333,
+        "prior": 1.6121747468435907,
+        "rank_after": 2,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-H-0133:9:0000000000000000000000000000000000000000000000000000000000060000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000060000",
+          "kind": "add",
+          "pattern_id": "BFS422-H-0133",
+          "block_indices": [
+            9
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000060000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000060000",
+          "source": "handoff_subgroup",
+          "structure": "C2 x C2",
+          "block_size": 2,
+          "size_bucket": "pair",
+          "arity": 1
+        },
+        "visits": 3,
+        "mean_value": 1.447391666666667,
+        "prior": 1.5756583349501567,
+        "rank_after": 1,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:253:2000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000000:2000000000000000000000000000000000000000000000000000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            253
+          ],
+          "effective_word_hex": "0x2000000000000000000000000000000000000000000000000000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x2000000000000000000000000000000000000000000000000000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 2.555,
+        "prior": 1.8830968373490267,
+        "rank_after": 0,
+        "discovery_hits": 0
+      }
+    ]
+  },
+  "search_stats": {
+    "pattern_lane_continue": 32,
+    "patterns_expanded": 97,
+    "edges_created": 109,
+    "new_structural_cells": 118,
+    "rollout_policy_neighbor": 26,
+    "rollout_max_rank_79": 52,
+    "iterations": 100,
+    "pattern_lane_refine_fallback": 30,
+    "rollout_policy_coherent": 48,
+    "rollout_max_rank_71": 2,
+    "pattern_lane_continue_fallback": 22,
+    "rollout_policy_mixed": 15,
+    "pattern_lane_intersection": 12,
+    "rollout_max_rank_74": 14,
+    "new_classes": 1,
+    "repeated_classes": 5,
+    "rollout_policy_broad": 11,
+    "rollout_max_rank_78": 3,
+    "rollout_max_rank_70": 4,
+    "pattern_lane_identity_fallback": 1,
+    "rollout_max_rank_72": 2,
+    "rollout_max_rank_75": 8,
+    "rollout_max_rank_77": 2,
+    "rollout_max_rank_73": 9,
+    "rollout_max_rank_76": 4
+  },
+  "symmetry_policy": {
+    "geometric_transpositions": true,
+    "hierarchical_pattern_policy": true,
+    "relation_lanes": [
+      "continue",
+      "refine",
+      "continue",
+      "intersection",
+      "refine",
+      "identity",
+      "intersection"
+    ],
+    "registered_partitions": 59,
+    "structural_cells": 118
+  },
+  "rank_oracle": {
+    "entries": 11908,
+    "hits": 1497,
+    "misses": 11907
+  },
+  "facet_oracle": {
+    "validation_count": 438,
+    "cache_entries": 440,
+    "catalog_enabled": true,
+    "catalog_loaded": true,
+    "canonicalization_enabled": true
+  },
+  "atlas": {
+    "source_root": "E:\\pycode\\422_handoff",
+    "pattern_count": 724,
+    "structural_pattern_count": 721,
+    "online_pattern_count": 2,
+    "structures": {
+      "C2 x C2": 627,
+      "C4": 64,
+      "C6": 15,
+      "S3": 15
+    },
+    "loader_stats": {
+      "block_cache_misses": 856,
+      "block_cache_hits": 8978
+    },
+    "answer_files_read_by_atlas": []
+  },
+  "filler_corrector": {
+    "stats": {
+      "candidate_cache_misses": 9075,
+      "filler_candidates": 145942,
+      "tail_candidate_checks": 5394,
+      "tail_budget_exhausted": 672,
+      "tail_geometry_checks": 411,
+      "candidate_cache_hits": 185,
+      "tail_successes": 1,
+      "online_stabilizer_patterns": 2,
+      "online_stabilizer_order_96": 1,
+      "corrector_candidates": 516,
+      "online_stabilizer_order_32": 1
+    },
+    "candidate_cache_entries": 9075,
+    "ridge_cache_entries": 0,
+    "context_free_cache_keys": true,
+    "ridge_pivot": true,
+    "observed_facet_pattern_count": 2,
+    "facet_patterns": {
+      "0xfffffffffffffffffffff3f3fffff3f3fffffffffffffffffffff3f3fffff3f3": [
+        "ONLINE422-c3e3e3699e3da03a",
+        "BFS422-H-0987",
+        "BFS422-H-0171",
+        "BFS422-H-0228",
+        "BFS422-H-0170",
+        "BFS422-H-0210",
+        "BFS422-H-0211",
+        "BFS422-H-0251"
+      ],
+      "0xffffffffffffffffcfcfffffcfcfffffffffffffffffffffcfcfffffcfcfffff": [
+        "ONLINE422-87647d5591408aaa",
+        "BFS422-H-0517",
+        "BFS422-H-0147",
+        "BFS422-H-0190",
+        "BFS422-H-0339",
+        "BFS422-H-0451",
+        "BFS422-H-0480",
+        "BFS422-H-0485"
+      ]
+    }
+  },
+  "knowledge": {
+    "epoch": 1,
+    "total_updates": 185,
+    "observed_pattern_ids": [
+      "ONLINE422-87647d5591408aaa",
+      "ONLINE422-c3e3e3699e3da03a"
+    ],
+    "observed_support_count": 2,
+    "class_frequencies": {
+      "BFS422-F-b6b3c8b38259": 6
+    },
+    "pattern_stats": {
+      "filler:BFS422-H-0070": {
+        "visits": 5,
+        "mean_reward": 1.4850900000000011,
+        "rank_delta_sum": 10.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:BFS422-H-0133": {
+        "visits": 10,
+        "mean_reward": 1.4548675000000002,
+        "rank_delta_sum": 22.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:BFS422-IDENTITY": {
+        "visits": 170,
+        "mean_reward": 2.15233250132667,
+        "rank_delta_sum": 195.0,
+        "exact_hits": 3,
+        "discoveries": 1
+      }
+    },
+    "context_stats": {
+      "filler:r00_31:pair:add": {
+        "visits": 25,
+        "mean_reward": 1.7050700000000003,
+        "rank_delta_sum": 49.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:r00_31:singleton:add": {
+        "visits": 151,
+        "mean_reward": 2.112776782862679,
+        "rank_delta_sum": 151.0,
+        "exact_hits": 2,
+        "discoveries": 0
+      },
+      "filler:r00_31:small:add": {
+        "visits": 9,
+        "mean_reward": 2.912734001474367,
+        "rank_delta_sum": 27.0,
+        "exact_hits": 1,
+        "discoveries": 1
+      }
+    },
+    "transition_stats": {
+      "filler:BFS422-H-0070:BFS422-H-0070": {
+        "visits": 2,
+        "mean_reward": 1.4850000000000012,
+        "rank_delta_sum": 4.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:BFS422-H-0133:BFS422-H-0133": {
+        "visits": 4,
+        "mean_reward": 1.4387500000000002,
+        "rank_delta_sum": 7.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:BFS422-IDENTITY:BFS422-H-0070": {
+        "visits": 3,
+        "mean_reward": 1.485150000000001,
+        "rank_delta_sum": 6.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:BFS422-IDENTITY:BFS422-H-0133": {
+        "visits": 6,
+        "mean_reward": 1.4656125,
+        "rank_delta_sum": 15.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:BFS422-IDENTITY:BFS422-IDENTITY": {
+        "visits": 170,
+        "mean_reward": 2.15233250132667,
+        "rank_delta_sum": 195.0,
+        "exact_hits": 3,
+        "discoveries": 1
+      }
+    }
+  }
+}

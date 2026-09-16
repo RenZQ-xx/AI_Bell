@@ -20,6 +20,7 @@ from .knowledge import PatternSpec
 from .model import block_word
 from .repair_cache import SymmetryRepairCache, transported_pattern
 from .ridge_enumeration import RidgeEnumerator
+from .ridge_pivot import adjacent_facet_words
 from .completion_frontier import CompletionFrontier
 from .orbit_faces import OrbitFaceEnumerator
 from .frontier_scheduler import FrontierScheduler
@@ -61,6 +62,7 @@ class FacetCorrectorBank:
 
     def __init__(self, points: np.ndarray, *, seed: int, max_attempts: int = 48, min_rank: int = 17,
                  ridge_max_candidates: int = 0, ridge_batch_size: int = 32,
+                 ridge_pivot: bool = False,
                  endpoint_dedup: bool = False, lower_face_max_attempts: int = 0,
                  orbit_face_max_candidates: int = 0, orbit_face_batch_size: int = 8,
                  fair_frontier: bool = False, frontier_high_water: int = 24,
@@ -76,7 +78,10 @@ class FacetCorrectorBank:
         self.shared = SymmetryRepairCache()
         self.ridge_max_candidates = ridge_max_candidates
         self.ridge_batch_size = ridge_batch_size
+        self.ridge_pivot = bool(ridge_pivot)
         self.ridge_enumerators: dict[int, RidgeEnumerator] = {}
+        self.ridge_focus_remaining: Counter[int] = Counter()
+        self.ridge_delivery_priority: Counter[int] = Counter()
         self.frontier_plan_counts: Counter[tuple[int, int, str]] = Counter()
         self.endpoint_dedup = endpoint_dedup
         self.endpoint_canonical: dict[int, int] = {}
@@ -364,15 +369,18 @@ class FacetCorrectorBank:
         if affine_rank(self.points[self.indices(retained)]) != 24:
             self.stats["systematic_rank_rejected"] += 1
             return None
-        exits = []
-        for vertex in self.indices(((1 << 64) - 1) & ~anchor.word):
-            outside = 1 << vertex
-            self.stats["exit_geometry_checks"] += 1
-            self.stats["systematic_exit_checks"] += 1
-            validation = validate_facet_support(self.points, self.indices(retained | outside))
-            if validation.valid:
-                exits.append(outside)
-                self._remember_endpoint(anchor.word, retained, outside, validation)
+        exits = self._ridge_pivot_exits(anchor, retained) if self.ridge_pivot else []
+        if not exits:
+            if self.ridge_pivot:
+                self.stats["ridge_pivot_fallbacks"] += 1
+            for vertex in self.indices(((1 << 64) - 1) & ~anchor.word):
+                outside = 1 << vertex
+                self.stats["exit_geometry_checks"] += 1
+                self.stats["systematic_exit_checks"] += 1
+                validation = validate_facet_support(self.points, self.indices(retained | outside))
+                if validation.valid:
+                    exits.append(outside)
+                    self._remember_endpoint(anchor.word, retained, outside, validation)
         if not exits:
             self.stats["systematic_no_exit"] += 1
             return None
@@ -380,6 +388,32 @@ class FacetCorrectorBank:
         self.stats["systematic_exits"] += len(exits)
         anchor.seen_faces.add(retained)
         return self._publish_plan(anchor, retained, pattern, tuple(exits))
+
+    def _ridge_pivot_exits(self, anchor: FacetAnchor, retained: int) -> list[int]:
+        self.stats["ridge_pivot_calls"] += 1
+        result = adjacent_facet_words(self.points, anchor.word, retained)
+        self.stats["ridge_pivot_candidate_rays"] += result.candidate_rays
+        self.stats["ridge_pivot_feasible_rays"] += result.feasible_rays
+        self.stats["ridge_pivot_rejected_facets"] += result.rejected_facets
+        if result.reason is not None:
+            self.stats[f"ridge_pivot_{result.reason}"] += 1
+        exits = []
+        for target in result.facet_words:
+            if target == anchor.word or retained & ~target:
+                continue
+            outside = target & ~retained
+            if not outside:
+                continue
+            validation = validate_facet_support(self.points, self.indices(target))
+            if not validation.valid:
+                self.stats["ridge_pivot_validation_failures"] += 1
+                continue
+            exits.append(outside)
+            self._remember_endpoint(anchor.word, retained, outside, validation)
+        if exits:
+            self.stats["ridge_pivot_plans"] += 1
+            self.stats["ridge_pivot_exits"] += len(exits)
+        return exits
 
     def _borrow(self, anchor: FacetAnchor) -> RepairPlan | None:
         canonical, _, from_canonical = self.shared.coordinates[anchor.word]
@@ -470,7 +504,73 @@ class FacetCorrectorBank:
         for canonical, raw in sources.items():
             for lane in self.frontier_lanes(raw):
                 available.setdefault(lane, []).append(canonical)
+        delivery = [
+            canonical
+            for canonical in available.get("delivery", ())
+            if self.ridge_delivery_priority[canonical] > 0
+        ]
+        if delivery:
+            canonical = max(delivery, key=lambda word: (
+                self.ridge_delivery_priority[word],
+                -self.yield_scheduler.services[(word, "delivery")],
+                -word,
+            ))
+            self.stats["ridge_delivery_priority_choices"] += 1
+            self.yield_scheduler.services[(canonical, "delivery")] += 1
+            return "delivery", canonical
+        focused = [
+            canonical
+            for canonical in available.get("ridge", ())
+            if self.ridge_focus_remaining[canonical] > 0
+        ]
+        if focused:
+            canonical = max(focused, key=lambda word: (
+                self.ridge_focus_remaining[word],
+                -self.yield_scheduler.services[(word, "ridge")],
+                -word,
+            ))
+            self.stats["ridge_focus_choices"] += 1
+            self.yield_scheduler.services[(canonical, "ridge")] += 1
+            return "ridge", canonical
         return self.yield_scheduler.choose(available, iteration=self.current_iteration)
+
+    def focus_ridges(self, word: int, *, batches: int) -> bool:
+        """Reserve upcoming geometry dispatches for a newly useful facet."""
+
+        if batches <= 0 or word not in self.anchors:
+            return False
+        canonical = self.shared.coordinates[word][0]
+        enumerator = self.ridge_enumerators.get(canonical)
+        if enumerator is None or enumerator.finished:
+            self.stats["ridge_focus_unavailable"] += 1
+            return False
+        self.ridge_focus_remaining[canonical] = max(
+            self.ridge_focus_remaining[canonical],
+            int(batches),
+        )
+        self.stats["ridge_focus_activations"] += 1
+        return True
+
+    def prime_focused_ridges(self, word: int) -> int:
+        """Consume a bounded focused ridge budget without executing endpoints."""
+
+        if word not in self.anchors:
+            return 0
+        canonical = self.shared.coordinates[word][0]
+        enumerator = self.ridge_enumerators.get(canonical)
+        dispatches = 0
+        while (
+            enumerator is not None
+            and not enumerator.finished
+            and self.ridge_focus_remaining[canonical] > 0
+        ):
+            examined = enumerator.examined
+            self._measured_work(self.anchors[word], "ridge")
+            if enumerator.examined == examined:
+                break
+            dispatches += 1
+        self.stats["ridge_focus_eager_dispatches"] += dispatches
+        return dispatches
 
     def _measured_work(self, anchor, lane):
         workers = {"ridge": self._grow_systematic, "orbit": self._grow_orbit_faces,
@@ -478,6 +578,11 @@ class FacetCorrectorBank:
         if lane == "delivery":
             return None
         worker = workers[lane]
+        if lane == "ridge":
+            canonical = self.shared.coordinates[anchor.word][0]
+            if self.ridge_focus_remaining[canonical] > 0:
+                self.ridge_focus_remaining[canonical] -= 1
+                self.stats["ridge_focus_dispatches"] += 1
         if not self.yield_frontier or lane not in self.frontier_lanes(anchor.word):
             return worker(anchor)
         before = set(self.shared.endpoints.pairs)
@@ -487,6 +592,9 @@ class FacetCorrectorBank:
         seconds = time.perf_counter() - started
         targets, pairs = self.yield_scheduler.novelty(before, observed, self.shared.endpoints.pairs)
         source = self.shared.coordinates[anchor.word][0]
+        if lane == "ridge" and pairs:
+            self.ridge_delivery_priority[source] += pairs
+            self.stats["ridge_priority_pairs_generated"] += pairs
         self.yield_scheduler.observe(source, lane, seconds, targets, pairs)
         return plan
 
@@ -552,6 +660,9 @@ class FacetCorrectorBank:
         outside = next(w for w in cached.exits if available(cached, w))
         if endpoint is not None:
             self.shared.endpoints.proposals[(canonical, endpoint)] += 1
+            if self.ridge_delivery_priority[canonical] > 0:
+                self.ridge_delivery_priority[canonical] -= 1
+                self.stats["ridge_priority_deliveries"] += 1
         self.stats["frontier_exit_proposals"] += 1
         return self._import_plan(anchor, cached), move_support_word(outside, from_canonical)
 
@@ -696,6 +807,19 @@ class FacetCorrectorBank:
             "shared_repair_count": sum(map(len, self.shared.pools.values())),
             "systematic_ridges": {f"0x{word:016x}": e.to_dict()
                                   for word, e in self.ridge_enumerators.items()},
+            "ridge_pivot": {
+                "enabled": self.ridge_pivot,
+                "focused_batches_remaining": {
+                    f"0x{word:016x}": count
+                    for word, count in sorted(self.ridge_focus_remaining.items())
+                    if count > 0
+                },
+                "priority_deliveries_remaining": {
+                    f"0x{word:016x}": count
+                    for word, count in sorted(self.ridge_delivery_priority.items())
+                    if count > 0
+                },
+            },
             "untried_exit_counts": {f"0x{word:016x}": len(pending)
                                     for word, pending in self.shared.untried_exits.items()},
             "anchors": [{

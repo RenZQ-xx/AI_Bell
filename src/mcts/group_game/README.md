@@ -1,5 +1,9 @@
 # Single-tree symmetry Filler-Corrector MCTS
 
+当前推荐版本为 v25。完整算法流程、Filler/Corrector 结构、reward、rollout、
+progressive widening、在线群论知识库及多 seed 结果见
+[`ALGORITHM_V25.md`](ALGORITHM_V25.md)。
+
 这个目录记录一个与旧 `interrupt_search.py`、`subgroup_interrupt_search.py`
 隔离的新算法。它不是在多棵固定 pattern 树之间做调度，而是把群论结构直接放入
 一棵 MCTS 的状态和动作空间。
@@ -400,6 +404,64 @@ i6712；后者由 4 次在线 facet 修正、3 种运行中导出的 embedded pa
 `runs/v19_v20_i15000_comparison.json`。group-game 与保留的串行 interrupt/pair/
 Filler-Corrector 相关回归共 152 项通过；全仓库收集仍受环境缺少 `mpmath` 阻断。
 
+## v21: 自适应 Corrector 与 rank-24 ridge pivot
+
+v21 保留 v20 的单树结构，并在覆盖低于 50% 时保持其 replay 节奏；rank-24
+ridge 几何从搜索开始即启用。通过独立入口
+`python -m mcts.group_game.ridge_corrector_search` 启用两项通用增强。第一项在
+覆盖达到 50% 后，按当前运行中实际命中的 target 比例把自由 Filler 配额从 75%
+逐步降至 10%，空出的 simulation 用于重放已验证 Corrector frontier。第二项对
+在线发现 facet 的 rank-24 ridge 求二维法锥的极射线，直接得到该 ridge 的全部
+邻接 supporting facet；它不读取 class 标签、未知 class 样例或预制邻接表。
+
+每次后期新 class 命中都会为其 facet 预留 48 个 ridge batch，并立即进行有界
+几何生成。新产生的 source-target pair 获得 delivery 优先权，但只有实际进入
+MCTS rollout、通过 rank-25 终端验证后才算发现。默认 `mcts.group_game` 入口仍关闭
+这些开关，继续表示 v20；v21 将 ridge 候选上限设为 32768、batch 大小设为 256。
+
+固定 seed 3222026、无快照 i15000 在 **i5579 完成 46/46**，耗时 294.8124 秒，
+树为 5455 节点、5451 条边。相对无快照 v20，逻辑迭代减少 16.88%，耗时减少
+8.94%。class 3 从 i6712 提前到 i2257，class 24 从 i5720 提前到 i3650；
+class 34 从 i3512 后移到 i5579，成为最后命中。完整结果见
+`runs/single_tree_group_game_i15000_v21.json`。
+
+## v22: 几何节点与分层对称性动作
+
+v22 通过独立入口 `python -m mcts.group_game.scalable_search` 启用。节点不再因
+最后一次使用的 `pattern_id` 不同而重复；同一 support/role/correction/source
+共享 MCTS 统计，并保存所有到达它的 pattern 上下文。pattern 被重新解释为动作
+坐标系，progressive widening 按 `continue / refine / intersection / identity`
+公平轮转，再由在线收益选择具体 orbit block。
+
+Corrector 会从合并上下文中生成跨 pattern rewrite，并保留每种上下文已经验证的
+facet 外部出口。共享的 `mcts/symmetry_game` 实现任意顶点数的 partition 证书和
+任意维 ridge pivot，4-2-2 v2 直接复用。理论边界、入口和实验见
+`ALGORITHM_V22.md`；默认 `mcts.group_game` 与 v21 入口均未改变。
+
+## v23: 定向层级策略与 Filler 再升温
+
+v23 通过独立入口 `python -m mcts.group_game.hierarchical_search` 启用。它保留 v22
+有效的 hierarchical pattern policy，但关闭会混合不同 policy context 的几何节点
+合并；partition 关系增加 `coarsen`，并为每种有向 relation 学习独立 UCB 统计。
+覆盖后期若新 class 和新 canonical endpoint target 同时长期停滞，自由 Filler
+比例会从约 10% 回升到 35%，为新的源 facet basin 重新分配构造预算。
+
+固定 seed 的 i6000 测试在 i3000 已达到 45/46，最终仍缺 class 34。严格升温增加
+了 8.36% 的唯一终端 support，但未在该预算内增加 class 覆盖。实现、消融、完整
+结果和下一表示瓶颈见 `ALGORITHM_V23.md`；v20/v21/v22 默认入口均保持不变。
+
+## v24: Canonical Family 与 Concrete Embedding
+
+v24 通过 `python -m mcts.group_game.embedding_search` 启用。在线观测的 stabilizer
+不再把 canonical support ID 与首次 raw orbit partition 混为一体：同一 canonical
+family 最多保存 4 个 concrete embedding，family 共享价值，每个 embedding 保留
+自己的 blocks、action ID 和 transition 统计。新增 `reembed` widening lane，且普通
+lane 按 family-first 选择，控制多个朝向造成的候选膨胀。
+
+固定 seed i6000 在 i5770 完成 46/46，class 34 在 i4269、最后 class 24 在 i5770
+命中；v23 同预算为 45/46。完整设计和审计见 `ALGORITHM_V24.md`。旧入口默认仍不
+收集多个 embedding。
+
 ## v14: 稀疏几何收益调度
 
 从 v12 的局部工作顺序出发，默认不使用 v13 的积压配额。每 4 次强制 frontier
@@ -479,3 +541,35 @@ ridge/orbit/completion 顺序。自适应选择中，每 4 次有 1 次按通道
 
 主要输出包括发现时间线、每条发现路径中的 pattern/block、单树节点统计、Filler
 与 Corrector 的在线价值统计，以及由实际终端逐步形成的 symmetry knowledge base。
+
+## v25: 独立 Embedding Value 的精简配置
+
+v24 的固定 seed 消融显示，canonical family 共享 value 会把一个 concrete
+embedding 的成功过度传播给尚未验证的 sibling 朝向。关闭该共享后，进一步关闭
+用于补偿后期停滞的 Filler reheat，仍在 i2507、164.0679 秒完成 46/46；v24 full
+需要 i5770、341.3231 秒。
+
+新入口 `python -m mcts.group_game.lean_embedding_search` 保留多 concrete embedding、
+`reembed`/family-first policy、relation UCB、ridge 和 adaptive Corrector，但让各
+embedding 独立学习 value，并关闭 Filler reheat。原 v24 入口不变。relation UCB
+和 cap4 不能继续无损删除：lean 配置关闭 relation UCB 会在 i6000 漏 class 34，
+cap2 虽完成全覆盖但后移到 i4408。完整矩阵和交互解释见 `V24_ABLATION.md`。
+
+## v25 Progressive Widening / Reward 消融
+
+固定 seed i3000 的 22 组消融显示，pattern/block/action 三层 widening、size bucket、
+action lane、weighted relation lane、epoch reserve/recycle 均不能在当前覆盖与效率
+标准下删除。Reward 中 transition、support novelty、class frequency、Corrector
+new-class credit 和 endpoint context/pair/target credit 也分别影响尾部类别。
+
+唯一无损项是非终端 leaf heuristic：关闭后仍在 i2507 完成 46/46，发现路径和全部
+树统计与控制组一致。110 个历史结果也都没有触发 depth limit。v25 lean 入口现已
+默认附加 `--no-leaf-value-shaping`；共享 core 暂留该机制供旧版本复现和 4-2-2
+验证。另已删除生产路径中
+未使用的 `_matches_action_lane` 和 `action_bucket_cursor`。完整矩阵见
+`POLICY_REWARD_ABLATION.md`。
+
+三个历史困难 seed 的最新 lean i10000 验证均提前完成 46/46：seed 673963275、
+1706386020、210656494 分别在 i4507、i4386、i3154 收口，平均 i4015.7、最晚
+i4507。历史 v20 在相同 seed 上仅有一组全覆盖，另外两组到 i15000 仍分别缺 1、2
+类。完整时间线见 `runs/v25_multiseed_i10000_comparison.json`。

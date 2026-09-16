@@ -1,0 +1,622 @@
+{
+  "algorithm": "bell422_single_tree_symmetry_filler_corrector_v1",
+  "problem": {
+    "scenario": "4-2-2",
+    "vertex_count": 256,
+    "ambient_dimension": 80,
+    "target_affine_rank": 79,
+    "relabeling_group_order": 98304
+  },
+  "prior_boundary": {
+    "search_reads": [
+      "complete_nodes.csv",
+      "nodes/*/orbit_blocks.csv"
+    ],
+    "terminal_only_reads": [
+      "global_facet_classes.csv"
+    ],
+    "never_read": [
+      "nodes/*/facets.csv"
+    ],
+    "initial_discovered_classes": []
+  },
+  "config": {
+    "iterations": 10,
+    "seed": 4222026,
+    "max_depth": 112,
+    "rollout_depth": 96,
+    "max_corrections": 5,
+    "min_corrector_rank": 60,
+    "exploration": 1.35,
+    "discount": 0.985,
+    "pattern_widening_k0": 3,
+    "pattern_widening_alpha": 1.15,
+    "pattern_widening_beta": 0.45,
+    "action_widening_k0": 4,
+    "action_widening_alpha": 2.0,
+    "action_widening_beta": 0.5,
+    "max_children_per_node": 160,
+    "max_corrector_children_per_node": 112,
+    "rank_checks_per_widen": 10,
+    "filler_candidate_limit": 72,
+    "corrector_candidate_limit": 64,
+    "rollout_action_candidates": 12,
+    "rollout_random_probability": 0.16,
+    "tail_checks": 24,
+    "stabilizer_probes": 192,
+    "new_class_reward": 10.0,
+    "repeated_class_reward": 0.1,
+    "repeated_frequency_penalty": 0.025,
+    "invalid_terminal_reward": -1.25,
+    "dead_end_reward": -0.6,
+    "rank_gain_reward": 0.035,
+    "correction_cost": 0.008,
+    "canonicalize_classes": true,
+    "use_catalog": true,
+    "progress_interval": 2
+  },
+  "runtime": {
+    "elapsed_seconds": 5.718384700001479,
+    "iterations_completed": 10,
+    "logical_iterations": 10
+  },
+  "coverage": {
+    "discovered_class_count": 1,
+    "discovered_class_ids": [
+      "BFS422-F-b6b3c8b38259"
+    ],
+    "discoveries": [
+      {
+        "class_id": "BFS422-F-b6b3c8b38259",
+        "catalog_index": 34835,
+        "iteration": 1,
+        "depth": 22,
+        "elapsed_seconds": 1.6774807000001601,
+        "source": "rank_tail_enumeration",
+        "context_pattern_id": "BFS422-H-0650",
+        "support_word_hex": "0xffffffff3f3f3f3fffffffff3f3f3f3fffffffffffffffffffffffffffffffff",
+        "support_size": 240,
+        "h_row": [
+          1,
+          1,
+          0,
+          -1,
+          0,
+          0,
+          1,
+          1,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "canonical_h_row": [
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "online_pattern_ids": [
+          "ONLINE422-23349c06110d2895",
+          "BFS422-H-0650",
+          "BFS422-H-0482",
+          "BFS422-H-0675",
+          "BFS422-H-0802",
+          "BFS422-H-1119",
+          "BFS422-H-0505",
+          "BFS422-H-1055"
+        ]
+      }
+    ]
+  },
+  "tree": {
+    "node_count": 11,
+    "edge_count": 10,
+    "root_visits": 10,
+    "root_mean_value": 2.707535625067871,
+    "root_edges": [
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:9:0000000000000000000000000000000000000000000000000000000000000200:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000200",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            9
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000200",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000200",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 12.812671320486002,
+        "prior": 1.3920000000000001,
+        "rank_after": 0,
+        "discovery_hits": 1
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:8:0000000000000000000000000000000000000000000000000000000000000100:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000100",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            8
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000100",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000100",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 2.660000000000001,
+        "prior": 3.0,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:70:0000000000000000000000000000000000000000000000400000000000000000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000400000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            70
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000400000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000400000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 1.515000000000001,
+        "prior": 2.555972611108004,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:71:0000000000000000000000000000000000000000000000800000000000000000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000800000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            71
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000800000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000800000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 1.5150000000000006,
+        "prior": 2.9540915875435343,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:6:0000000000000000000000000000000000000000000000000000000000000040:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000040",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            6
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000040",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000040",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 1.5150000000000006,
+        "prior": 2.4170634075179964,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:69:0000000000000000000000000000000000000000000000200000000000000000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000200000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            69
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000200000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000200000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 1.5150000000000006,
+        "prior": 2.31685399066215,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:68:0000000000000000000000000000000000000000000000100000000000000000:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000100000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            68
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000100000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000100000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 1.5150000000000006,
+        "prior": 2.240887907274444,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:7:0000000000000000000000000000000000000000000000000000000000000080:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000080",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            7
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000080",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000080",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 1,
+          "size_bucket": "singleton",
+          "arity": 1
+        },
+        "visits": 1,
+        "mean_value": 1.5150000000000001,
+        "prior": 3.0,
+        "rank_after": 0,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:0,1:0000000000000000000000000000000000000000000000000000000000000003:0000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000003",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            0,
+            1
+          ],
+          "effective_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000003",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000003",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 2,
+          "size_bucket": "pair",
+          "arity": 2
+        },
+        "visits": 1,
+        "mean_value": 1.4800000000000004,
+        "prior": 2.905001066000561,
+        "rank_after": 1,
+        "discovery_hits": 0
+      },
+      {
+        "action": {
+          "action_id": "add:BFS422-IDENTITY:253,254,255:e000000000000000000000000000000000000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000000:e000000000000000000000000000000000000000000000000000000000000000",
+          "kind": "add",
+          "pattern_id": "BFS422-IDENTITY",
+          "block_indices": [
+            253,
+            254,
+            255
+          ],
+          "effective_word_hex": "0xe000000000000000000000000000000000000000000000000000000000000000",
+          "remove_word_hex": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "add_word_hex": "0xe000000000000000000000000000000000000000000000000000000000000000",
+          "source": "identity",
+          "structure": "C1",
+          "block_size": 3,
+          "size_bucket": "small",
+          "arity": 3
+        },
+        "visits": 1,
+        "mean_value": 1.4450000000000003,
+        "prior": 2.494015716683436,
+        "rank_after": 2,
+        "discovery_hits": 0
+      }
+    ]
+  },
+  "search_stats": {
+    "patterns_expanded": 6,
+    "edges_created": 10,
+    "new_classes": 1,
+    "repeated_classes": 1,
+    "rollout_policy_neighbor": 3,
+    "rollout_max_rank_78": 1,
+    "iterations": 10,
+    "rollout_policy_coherent": 5,
+    "rollout_max_rank_76": 1,
+    "rollout_policy_mixed": 1,
+    "rollout_max_rank_79": 8,
+    "rollout_policy_broad": 1
+  },
+  "rank_oracle": {
+    "entries": 1342,
+    "hits": 162,
+    "misses": 1341
+  },
+  "facet_oracle": {
+    "validation_count": 119,
+    "cache_entries": 120,
+    "catalog_enabled": true,
+    "catalog_loaded": true,
+    "canonicalization_enabled": true
+  },
+  "atlas": {
+    "source_root": "E:\\pycode\\422_handoff",
+    "pattern_count": 723,
+    "structural_pattern_count": 721,
+    "online_pattern_count": 1,
+    "structures": {
+      "C2 x C2": 627,
+      "C4": 64,
+      "C6": 15,
+      "S3": 15
+    },
+    "loader_stats": {
+      "block_cache_misses": 294,
+      "block_cache_hits": 1024
+    },
+    "answer_files_read_by_atlas": []
+  },
+  "filler_corrector": {
+    "stats": {
+      "candidate_cache_misses": 1274,
+      "filler_candidates": 80247,
+      "tail_candidate_checks": 763,
+      "tail_budget_exhausted": 31,
+      "tail_geometry_checks": 112,
+      "tail_successes": 1,
+      "online_stabilizer_patterns": 1,
+      "online_stabilizer_order_16": 1,
+      "corrector_candidates": 252,
+      "candidate_cache_hits": 20
+    },
+    "candidate_cache_entries": 1274,
+    "observed_facet_pattern_count": 1,
+    "facet_patterns": {
+      "0xffffffff3f3f3f3fffffffff3f3f3f3fffffffffffffffffffffffffffffffff": [
+        "ONLINE422-23349c06110d2895",
+        "BFS422-H-0650",
+        "BFS422-H-0482",
+        "BFS422-H-0675",
+        "BFS422-H-0802",
+        "BFS422-H-1119",
+        "BFS422-H-0505",
+        "BFS422-H-1055"
+      ]
+    }
+  },
+  "knowledge": {
+    "epoch": 1,
+    "total_updates": 10,
+    "observed_pattern_ids": [
+      "ONLINE422-23349c06110d2895"
+    ],
+    "observed_support_count": 1,
+    "class_frequencies": {
+      "BFS422-F-b6b3c8b38259": 2
+    },
+    "pattern_stats": {
+      "filler:BFS422-IDENTITY": {
+        "visits": 10,
+        "mean_reward": 2.748767132048601,
+        "rank_delta_sum": 13.0,
+        "exact_hits": 1,
+        "discoveries": 1
+      }
+    },
+    "context_stats": {
+      "filler:r00_31:pair:add": {
+        "visits": 1,
+        "mean_reward": 1.4800000000000004,
+        "rank_delta_sum": 2.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      },
+      "filler:r00_31:singleton:add": {
+        "visits": 8,
+        "mean_reward": 3.070333915060751,
+        "rank_delta_sum": 8.0,
+        "exact_hits": 1,
+        "discoveries": 1
+      },
+      "filler:r00_31:small:add": {
+        "visits": 1,
+        "mean_reward": 1.4450000000000003,
+        "rank_delta_sum": 3.0,
+        "exact_hits": 0,
+        "discoveries": 0
+      }
+    },
+    "transition_stats": {
+      "filler:BFS422-IDENTITY:BFS422-IDENTITY": {
+        "visits": 10,
+        "mean_reward": 2.748767132048601,
+        "rank_delta_sum": 13.0,
+        "exact_hits": 1,
+        "discoveries": 1
+      }
+    }
+  }
+}

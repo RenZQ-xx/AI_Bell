@@ -1595,3 +1595,204 @@ i6000:45、i6712:46。class 1 在 i2784 实际终端命中后才计入覆盖；
 `single_tree_group_game_i15000_v20_seed1706386020.json`、
 `single_tree_group_game_i15000_v20_seed210656494.json`，汇总为
 `v20_multiseed_i15000_comparison.json`。
+
+## v21: 自适应 Corrector 与确定性 ridge 邻接
+
+在不改变 v20 默认入口的前提下，新增独立入口 `ridge_corrector_search.py`。它在
+覆盖不足 50% 时保持每 4 次一次 Corrector replay；达到阈值后，依据本次运行中
+实际命中的覆盖率，将自由 Filler 比例从 75% 二次衰减到 10%。新发现 facet 获得
+48 个 systematic ridge batch，rank-24 ridge 通过二维法锥极射线计算邻接 facet，
+候选上限 32768、每批 256。生成和调度均不使用 class 标签，发现仍要求 rollout
+实际到达 rank-25 并完成终端分类。
+
+固定条件：`PYTHONHASHSEED=0`、BLAS/OMP 单线程、seed 3222026、初始已知集合为空、
+关闭中间快照。
+
+| 预算 | 完成迭代 | 覆盖 | 缺失 class | 最后新增 | 搜索耗时 | 节点 |
+| ---: | ---: | ---: | --- | --- | ---: | ---: |
+| i200 | 200 | 3/46 | 其余 43 类 | class 46, i200 | 20.7060 s | 199 |
+| i3000 | 3000 | 44/46 | 24, 34 | class 36, i2688 | 157.8994 s | 2929 |
+| i15000 | 5579 | 46/46 | 无 | class 34, i5579 | 294.8124 s | 5455 |
+
+正式运行中 class 3 在 i2257、class 24 在 i3650、class 34 在 i5579。无快照 v20
+对应值为 i6712、i5720、i3512，最终在 i6712 完成，耗时 323.7520 秒。v21 因此
+将全覆盖迭代降低 1133 次（16.88%），耗时降低 28.9396 秒（8.94%）；代价是
+class 34 的发现后移 2067 次。
+
+Corrector 共执行 701 次直接 ridge pivot，生成 250 个优先 source-target pair，
+实际优先交付 164 次；endpoint graph 最终含 445 个唯一 pair 和 46 个 canonical
+target，443 个 pair 已执行，pending nonself 为 0。后期调度产生 2202 个自适应
+replay due slot，结束时自由 Filler 比例为 10%。结果文件为
+`single_tree_group_game_i200_v21_smoke.json`、
+`single_tree_group_game_i3000_v21_probe.json` 和
+`single_tree_group_game_i15000_v21.json`；完整审计与逐 class 对照为
+`v20_v21_i15000_comparison.json`，其中 14391 个已验证候选动作全部发布。
+
+## v22: 几何 transposition 与分层 pattern 动作
+
+新增隔离入口 `mcts.group_game.scalable_search`，默认继承 v21 的 adaptive Corrector
+和 rank-24 ridge pivot，并启用两项状态语义调整：MCTS 节点 key 删除最后一次
+`pattern_id`，相同 support/role/correction/source 合并；节点另外保存所有到达过的
+pattern 上下文。orbit partition 用作群论证书，把 progressive widening 分成
+`continue/refine/intersection/identity` 通道。Corrector 的跨 pattern rewrite 与
+facet external exit 均读取合并后的上下文集合。
+
+固定环境与 v21 相同：`PYTHONHASHSEED=0`、BLAS/OMP 单线程、seed 3222026、初始
+已知集合为空、无快照。
+
+| 版本 | 完成迭代 | 覆盖 | class 3 | class 24 | class 34 | 耗时 | 节点 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| v21 | 5579 | 46/46 | 2257 | 3650 | 5579 | 294.8124 s | 5455 |
+| v22 | 11876 | 46/46 | 1778 | 4100 | 11876 | 707.4991 s | 11398 |
+
+v22 树有 11484 条边，发生 123 次跨 pattern 的几何节点合并；持久展开关系为
+continue 948、refine 1692、intersection 3779、identity 457。结果证明新节点语义
+保持全覆盖，但当前固定 seed 上总迭代增加 112.87%，耗时增加 139.98%，不能替代
+v21 性能基线。class 3 提前 479 次，但 class 34 形成 7776 次长尾。
+
+曾测试把 atlas 的父子 subgroup 邻接从 intersection 中单独设为公平 lane；该版本
+i10000 仍只有 45/46、缺 class 34，耗时 630.9342 秒，因此代码已撤回，负结果保存
+为 `single_tree_group_game_i10000_v22_neighbor_rejected.json`。正式结果保存为
+`single_tree_group_game_i15000_v22_deterministic.json`，设计说明见
+`../ALGORITHM_V22.md`。
+
+同一共享 core 已接入 4-2-2 v2。catalog 开启、seed 4222026 的 i10 对照中，旧 v1
+耗时 5.7184 秒、生成 80247 个 Filler 候选、执行 119 次终端验证；v2 耗时
+4.1819 秒、生成 15996 个候选、执行 40 次终端验证，发现数均为 1。v2 因而将
+候选物化减少 80.07%、终端验证减少 66.39%、墙钟时间减少 26.87%。i100 v2 为
+1 class、101 节点、34.9573 秒；短预算尚未显示覆盖提升。结果位于
+`../../422/runs/bell422_scalable_i10_v2_catalog.json` 和
+`../../422/runs/bell422_scalable_i100_v2.json`。
+
+## v23: hierarchy-only、定向 relation UCB 与 Filler reheat
+
+v22 的 i3000 消融显示 geometry-only 为 44/46、hierarchy-only 为 45/46，而两项
+同时启用仅 43/46。v23 新建隔离入口 `mcts.group_game.hierarchical_search`：保留
+hierarchical pattern policy，关闭 geometric policy-node merge；partition relation
+补齐 `coarsen`，并按 Filler/Corrector 分开学习 relation UCB。
+
+后期自由 Filler 使用双停滞升温：距离最后新 class 512 次、距离首次新 canonical
+target 256 次后，把自由比例从覆盖率衰减值提高到 35%。最初把新 endpoint pair
+也当作 progress 的消融中，pair 一直增长至 i5888，升温从未触发。最终判据只让
+首次新 target 重置时钟，pair 仅作诊断。
+
+固定 `PYTHONHASHSEED=0`、BLAS/OMP 单线程、seed 3222026、初始 known 为空：
+
+| 运行 | 完成迭代 | 覆盖 | 缺失 | 最后新增 | 耗时 | unique supports |
+| --- | ---: | ---: | --- | --- | ---: | ---: |
+| pair-progress 消融 | 6000 | 45/46 | 34 | class 9, i2977 | 311.5489 s | 3889 |
+| v23 最终判据 | 6000 | 45/46 | 34 | class 9, i2977 | 339.7004 s | 4214 |
+
+v23 在 i3000 已为 45/46；class 41、24、3 分别在 i2282、i2341、i2576 命中，
+消除了 v22 早期同时遗漏 24/34/41 的回退。最终判据在 i3489 启动升温，得到 2478
+个自由 Filler slot（消融为 1851）和 8.36% 更多唯一终端 support，但 i6000 仍未
+命中 class 34，且耗时增加 9.04%。
+
+后验路径审计显示，v21/v22 的 class 34 都依赖 canonical ID
+`OBS-03cf50faaf05fc30`，但两个版本为该 ID 保存的 concrete orbit blocks 不同；
+v23 又保存了第三种朝向。当前 canonical pattern ID 与 raw-coordinate blocks 混在
+同一记录中，后来的 embedding 会被 `setdefault` 丢弃。这是下一步优先修正的通用
+表示问题，不需要使用 class 34 样例指导搜索。设计和完整诊断见
+`../ALGORITHM_V23.md`，结果为 `single_tree_group_game_i6000_v23_deterministic.json`
+与 `single_tree_group_game_i6000_v23_pair_progress_ablation.json`。回归测试 104 项通过。
+
+## v24: Pattern family / embedding 分离恢复 46/46
+
+v23 后验审计确认 canonical `OBS-*` ID 与首次 raw-coordinate orbit blocks 混用，
+同一 symmetry family 的其他共轭朝向会被 canonical 分析去重和 `setdefault` 丢弃。
+v24 新建 `mcts.group_game.embedding_search`：family ID 共享在线价值，concrete
+embedding 使用 partition digest 获得独立 ID、blocks、动作与 transition；同 family
+转换作为 `reembed` relation 加入公平 widening。每个 family 和终端 class 最多分析/
+保留 4 个朝向，且普通 lane 使用 family-first 代表，避免副本淹没其他 subgroup。
+
+固定 `PYTHONHASHSEED=0`、BLAS/OMP 单线程、seed 3222026、初始 known 为空、无快照：
+
+| 版本 | 完成迭代 | 覆盖 | class 34 | 最后发现 | 耗时 | 节点 |
+| --- | ---: | ---: | ---: | --- | ---: | ---: |
+| v23 i6000 | 6000 | 45/46 | 未发现 | class 9, i2977 | 339.7004 s | 5855 |
+| v24 i6000 | 5770 | 46/46 | i4269 | class 24, i5770 | 341.3231 s | 5543 |
+
+v24 共分析 167 个实际命中的 raw 朝向，注册 124 个不同 embedding，43 次为重复
+partition。46 个 family 中 embedding 数分布为 4:15、3:13、2:7、1:11，硬上限
+未被突破。78 个非首 embedding 全部被执行，累计 5320 次；14 个非首 embedding
+动作直接进入新 class 发现路径，最终 class 24 的路径也由非首 embedding 启动。
+
+class 1 在 i2466 真实终端命中，不是由 singleton 起点默认加入。class 34 本次路径
+使用首 embedding，因此其提前不能单独归因于某一个新增朝向；严格结论是表示修复
+改变了全局调度，新增 embedding 对多条发现路径和最终收口有直接贡献。v24 比 v23
+少 230 次 simulation 并补齐缺失类，耗时仅增加 1.6227 秒；相对 v21 仍慢 46.5107
+秒。结果为 `single_tree_group_game_i6000_v24_deterministic.json`，设计见
+`../ALGORITHM_V24.md`，108 项核心回归及结果结构审计通过。
+
+## 2026-09-15: v24 机制消融与 v25 lean
+
+固定 `PYTHONHASHSEED=0`、BLAS/OMP 单线程、seed 3222026、最多 i6000。所有变体
+均从相同 identity singleton pattern 开始，未预置任何 class。
+
+| 配置 | 完成迭代 | 覆盖 | 缺失 | 耗时 | 节点 | unique supports |
+| --- | ---: | ---: | --- | ---: | ---: | ---: |
+| v24 full | 5770 | 46/46 | - | 341.3231 s | 5543 | 3850 |
+| no family value | 2534 | 46/46 | - | 165.5026 s | 2456 | 1914 |
+| no embedding policy | 4890 | 46/46 | - | 317.3409 s | 4706 | 3411 |
+| no relation UCB | 5792 | 46/46 | - | 361.0175 s | 5551 | 3968 |
+| no reheat | 6000 | 45/46 | 34 | 339.7467 s | 5783 | 3856 |
+| no family value + no embedding policy | 5617 | 46/46 | - | 344.1115 s | 5452 | 3949 |
+| no family value + no reheat | 2507 | 46/46 | - | 164.0679 s | 2432 | 1874 |
+| lean + no relation UCB | 6000 | 45/46 | 34 | 361.7244 s | 5834 | 4230 |
+| lean + embedding cap2 | 4408 | 46/46 | - | 259.2728 s | 4301 | 2974 |
+
+结论不是单因素删除：family value sharing 是主要负作用来源；移除它后，Filler
+reheat 由必要的补偿机制变成可删除机制。推荐 v25 保留 concrete embeddings、
+embedding relation policy、relation UCB 和 cap4，关闭 family value sharing 与
+adaptive Filler reheat。关闭 embedding policy 会把完成点推迟到 i5617；lean 中
+关闭 relation UCB 会漏 class 34；cap2 节省分析/存储但明显更慢。
+
+推荐入口为 `python -m mcts.group_game.lean_embedding_search`。最佳组合证据保存在
+`single_tree_group_game_i6000_v24_no_family_value_no_reheat.json`；完整消融说明见
+`../V24_ABLATION.md`。原 `embedding_search` 入口保持 v24 full 语义，便于复现。
+
+## 2026-09-15: Progressive Widening / Reward 消融
+
+在 v25 lean、seed 3222026、i3000 下增加 22 组正交消融。控制组在 i2507 完成
+46/46、166.1970 秒；与前一轮最佳结果的发现序列和树统计完全一致。
+
+Widening 结果：child-only 为 41/46；无 size bucket 为 45/46、缺 34；无 action
+lane 为 26/46；均匀 relation cycle 为 45/46、缺 34；同时关闭 epoch reserve/
+recycle 为 21/46；只关闭 recycle 为 45/46、缺 34；pattern beta 改为 0.5 为
+45/46、缺 24。上述活跃机制均保留。生产路径未使用的 `_matches_action_lane` 与
+`GameNode.action_bucket_cursor` 已删除。
+
+Reward 整组结果：无 transition 为 45/46、缺 24；无 support shaping 为 44/46、
+缺 24/34；无 frequency shaping 为 45/46、缺 34；无 Corrector new-class credit
+为 42/46、缺 24/33/34/41；无 endpoint novelty credit 为 45/46、缺 24。继续拆分
+Filler/Corrector transition、三种 endpoint credit、support bonus/penalty 与两种
+frequency penalty，仍无一在 i3000 完成全覆盖。
+
+唯一无损项为 leaf value：关闭后 i2507、46/46、163.8385 秒，发现序列、节点、边、
+tree/rollout steps、terminal counts、root value 和 unique supports 与控制组完全
+相同。110 个历史 group-game JSON 均无 `depth_limit_hits > 0`。v25 lean 入口现已
+默认关闭 leaf shaping，但共享实现暂留以供旧版本复现和 4-2-2 验证。完整数据与判定边界见
+`../POLICY_REWARD_ABLATION.md`，结果为 `single_tree_group_game_i3000_v25_*.json`。
+
+## 2026-09-16: v25 lean 三个额外 seed 的 i10000 测试
+
+使用最新 `mcts.group_game.lean_embedding_search`，该入口默认关闭非终端 leaf
+shaping。沿用 v20 多 seed 测试的 `673963275`、`1706386020`、`210656494`，固定
+`PYTHONHASHSEED=0`、BLAS/OMP 单线程，iteration 上限 10000，三组串行运行。
+
+| seed | 完成迭代 | 覆盖 | class 3 | class 24 | class 34 | class 41 | 最后发现 | 耗时 | 节点 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: |
+| 673963275 | 4507 | 46/46 | 1297 | 4507 | 3208 | 791 | class 24 | 256.4864 s | 4417 |
+| 1706386020 | 4386 | 46/46 | 1441 | 4386 | 548 | 4009 | class 24 | 236.1897 s | 4270 |
+| 210656494 | 3154 | 46/46 | 2154 | 3061 | 3154 | 1442 | class 34 | 195.6599 s | 3080 |
+
+三组平均完成点 i4015.7、最晚 i4507，平均搜索耗时 229.4453 秒；均未触发 depth
+limit。相同 seed 的 v20 i15000 结果分别为：i6824 完成 46/46；45/46 缺 class 3；
+44/46 缺 class 3、34。新版三组全部恢复全覆盖。对唯一同样完成全覆盖的 seed
+673963275，新版迭代减少 33.95%，耗时减少 24.86%；另外两个旧版未收口 seed 的
+耗时分别减少 78.80% 和 80.54%，同时覆盖提升到 46/46。
+
+原始结果为 `single_tree_group_game_i10000_v25_seed673963275.json`、
+`single_tree_group_game_i10000_v25_seed1706386020.json`、
+`single_tree_group_game_i10000_v25_seed210656494.json`；结构化汇总为
+`v25_multiseed_i10000_comparison.json`。

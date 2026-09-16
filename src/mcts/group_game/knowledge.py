@@ -53,6 +53,11 @@ class PatternSpec:
     source: str
     parent_root_ids: tuple[str, ...] = ()
     generator_labels: tuple[str, ...] = ()
+    family_id: str = ""
+
+    @property
+    def statistical_family_id(self) -> str:
+        return self.family_id or self.pattern_id
 
     @property
     def block_sizes(self) -> tuple[int, ...]:
@@ -74,6 +79,8 @@ class PatternSpec:
             "block_count": len(self.blocks),
             "block_sizes": list(self.block_sizes),
         }
+        if self.family_id:
+            payload["family_id"] = self.family_id
         if include_blocks:
             payload["blocks"] = [list(block) for block in self.blocks]
         return payload
@@ -86,6 +93,7 @@ class ObservedSupportKnowledge:
     hit_count: int = 0
     stabilizer_order: int = 1
     stabilizer_pattern_id: str = ""
+    stabilizer_pattern_ids: set[str] = field(default_factory=set)
     root_pattern_ids: tuple[str, ...] = ()
     root_subgroup_multiplicities: tuple[tuple[str, int], ...] = ()
     level2_pattern_ids: tuple[str, ...] = ()
@@ -99,6 +107,8 @@ class ObservedSupportKnowledge:
             "hit_count": self.hit_count,
             "stabilizer_order": self.stabilizer_order,
             "stabilizer_pattern_id": self.stabilizer_pattern_id,
+            "stabilizer_pattern_ids": sorted(self.stabilizer_pattern_ids),
+            "embedding_count": len(self.stabilizer_pattern_ids),
             "root_pattern_ids": list(self.root_pattern_ids),
             "root_subgroup_multiplicities": {
                 pattern_id: count
@@ -111,12 +121,21 @@ class ObservedSupportKnowledge:
 class GroupKnowledgeBase:
     """Online structural memory shared by both roles in one MCTS tree."""
 
-    def __init__(self, patterns: Iterable[PatternSpec]) -> None:
+    def __init__(
+        self,
+        patterns: Iterable[PatternSpec],
+        *,
+        share_family_values: bool = False,
+    ) -> None:
+        self.share_family_values = bool(share_family_values)
         self.patterns = {pattern.pattern_id: pattern for pattern in patterns}
         self.active_pattern_ids = set(self.patterns)
         self.pattern_stats: dict[tuple[str, str], OnlineStats] = {}
+        self.family_stats: dict[tuple[str, str], OnlineStats] = {}
         self.context_stats: dict[tuple[str, str, str, str, int], OnlineStats] = {}
         self.transition_stats: dict[tuple[str, str, str], OnlineStats] = {}
+        self.family_transition_stats: dict[tuple[str, str, str], OnlineStats] = {}
+        self.relation_stats: dict[tuple[str, str], OnlineStats] = {}
         self.observed_supports: dict[int, ObservedSupportKnowledge] = {}
         self.total_updates = 0
         self.epoch = 0
@@ -130,6 +149,19 @@ class GroupKnowledgeBase:
         for pattern_id in pattern_ids:
             if pattern_id in self.patterns:
                 self.active_pattern_ids.add(pattern_id)
+
+    def family_id(self, pattern_id: str) -> str:
+        pattern = self.patterns.get(pattern_id)
+        return pattern_id if pattern is None else pattern.statistical_family_id
+
+    def family_embeddings(self, family_id: str) -> tuple[str, ...]:
+        return tuple(
+            sorted(
+                pattern_id
+                for pattern_id, pattern in self.patterns.items()
+                if pattern.statistical_family_id == family_id
+            )
+        )
 
     def _context_key(
         self,
@@ -147,6 +179,17 @@ class GroupKnowledgeBase:
 
     def pattern_score(self, role: str, pattern_id: str) -> float:
         stats = self.pattern_stats.get((role, pattern_id))
+        embedding_score = self._pattern_stats_score(stats)
+        family_id = self.family_id(pattern_id)
+        if not self.share_family_values or family_id == pattern_id:
+            return embedding_score
+        family = self.family_stats.get((role, family_id))
+        family_score = self._pattern_stats_score(family)
+        if stats is None or stats.visits == 0:
+            return family_score + 0.12
+        return 0.70 * family_score + 0.30 * embedding_score
+
+    def _pattern_stats_score(self, stats: OnlineStats | None) -> float:
         if stats is None or stats.visits == 0:
             return 1.25
         optimism = math.sqrt(math.log(self.total_updates + 2.0) / stats.visits)
@@ -159,13 +202,36 @@ class GroupKnowledgeBase:
         current_pattern_id: str,
         target_pattern_id: str,
     ) -> float:
-        stats = self.transition_stats.get(
-            (role, current_pattern_id, target_pattern_id)
+        stats = self.transition_stats.get((role, current_pattern_id, target_pattern_id))
+        embedding_score = self._transition_stats_score(stats)
+        current_family = self.family_id(current_pattern_id)
+        target_family = self.family_id(target_pattern_id)
+        if not self.share_family_values or (
+            current_family == current_pattern_id
+            and target_family == target_pattern_id
+        ):
+            return embedding_score
+        family = self.family_transition_stats.get(
+            (role, current_family, target_family)
         )
+        family_score = self._transition_stats_score(family)
+        if stats is None or stats.visits == 0:
+            return family_score
+        return 0.70 * family_score + 0.30 * embedding_score
+
+    def _transition_stats_score(self, stats: OnlineStats | None) -> float:
         if stats is None or stats.visits == 0:
             return 0.35
         optimism = math.sqrt(math.log(self.total_updates + 2.0) / stats.visits)
         return stats.mean_reward + 0.30 * optimism
+
+    def relation_score(self, role: str, relation: str) -> float:
+        stats = self.relation_stats.get((role, relation))
+        if stats is None or stats.visits == 0:
+            return 0.20
+        optimism = math.sqrt(math.log(self.total_updates + 2.0) / stats.visits)
+        bounded_reward = min(2.0, max(-1.0, stats.mean_reward))
+        return bounded_reward + 0.30 * optimism
 
     def action_prior(
         self,
@@ -177,6 +243,7 @@ class GroupKnowledgeBase:
         context_pattern_id: str | None = None,
         coherence: float = 0.0,
         relation: str = "switch",
+        learn_relation_value: bool = False,
     ) -> float:
         pattern_value = self.pattern_score(role, action.pattern_id)
         context = self.context_stats.get(self._context_key(role, action, rank_before))
@@ -186,11 +253,25 @@ class GroupKnowledgeBase:
             action.pattern_id if context_pattern_id is None else context_pattern_id,
             action.pattern_id,
         )
-        relation_bonus = {
-            "continue": 0.28,
-            "neighbor": 0.12,
-            "switch": -0.04,
-        }.get(relation, 0.0)
+        if learn_relation_value:
+            relation_bonus = {
+                "continue": 0.28,
+                "refine": 0.18,
+                "reembed": 0.20,
+                "coarsen": 0.14,
+                "neighbor": 0.12,
+                "intersection": -0.02,
+                "identity": -0.04,
+                "switch": -0.04,
+            }.get(relation, 0.0)
+            learned_relation_value = 0.12 * self.relation_score(role, relation)
+        else:
+            relation_bonus = {
+                "continue": 0.28,
+                "neighbor": 0.12,
+                "switch": -0.04,
+            }.get(relation, 0.0)
+            learned_relation_value = 0.0
         rank_delta = rank_after - rank_before
         if role == "filler":
             geometry = 0.12 * max(rank_delta, -2)
@@ -205,6 +286,7 @@ class GroupKnowledgeBase:
             + 0.10 * transition_value
             + 0.42 * float(coherence)
             + relation_bonus
+            + learned_relation_value
             + geometry
             - oversize_penalty
         )
@@ -221,6 +303,8 @@ class GroupKnowledgeBase:
         exact_hit: bool,
         new_class: bool,
         context_pattern_id: str | None = None,
+        relation: str = "switch",
+        update_relation: bool = False,
     ) -> None:
         self.total_updates += 1
         rank_delta = rank_after - rank_before
@@ -241,6 +325,34 @@ class GroupKnowledgeBase:
         )
         for stats in (pattern, context, transition):
             stats.update(
+                reward=reward,
+                rank_delta=rank_delta,
+                exact_hit=exact_hit,
+                new_class=new_class,
+            )
+        target_family = self.family_id(action.pattern_id)
+        context_id = (
+            action.pattern_id if context_pattern_id is None else context_pattern_id
+        )
+        context_family = self.family_id(context_id)
+        if self.share_family_values and target_family != action.pattern_id:
+            family_pattern = self.family_stats.setdefault(
+                (role, target_family),
+                OnlineStats(),
+            )
+            family_transition = self.family_transition_stats.setdefault(
+                (role, context_family, target_family),
+                OnlineStats(),
+            )
+            for stats in (family_pattern, family_transition):
+                stats.update(
+                    reward=reward,
+                    rank_delta=rank_delta,
+                    exact_hit=exact_hit,
+                    new_class=new_class,
+                )
+        if update_relation:
+            self.relation_stats.setdefault((role, relation), OnlineStats()).update(
                 reward=reward,
                 rank_delta=rank_delta,
                 exact_hit=exact_hit,
@@ -273,7 +385,9 @@ class GroupKnowledgeBase:
             record.class_ids.add(int(class_id))
         record.hit_count += 1
         record.stabilizer_order = int(stabilizer_order)
-        record.stabilizer_pattern_id = stabilizer_pattern.pattern_id
+        if not record.stabilizer_pattern_id:
+            record.stabilizer_pattern_id = stabilizer_pattern.pattern_id
+        record.stabilizer_pattern_ids.add(stabilizer_pattern.pattern_id)
         record.root_pattern_ids = tuple(root_pattern_ids)
         record.root_subgroup_multiplicities = tuple(root_subgroup_multiplicities)
         record.level2_pattern_ids = tuple(level2_pattern_ids)
@@ -283,6 +397,7 @@ class GroupKnowledgeBase:
     def to_dict(self) -> dict[str, object]:
         return {
             "epoch": self.epoch,
+            "share_family_values": self.share_family_values,
             "active_pattern_ids": sorted(self.active_pattern_ids),
             "patterns": {
                 pattern_id: pattern.to_dict(
@@ -293,6 +408,10 @@ class GroupKnowledgeBase:
             "pattern_stats": {
                 f"{role}:{pattern_id}": stats.to_dict()
                 for (role, pattern_id), stats in sorted(self.pattern_stats.items())
+            },
+            "family_stats": {
+                f"{role}:{family_id}": stats.to_dict()
+                for (role, family_id), stats in sorted(self.family_stats.items())
             },
             "context_stats": {
                 ":".join((role, structure, rank_value, bucket, str(arity))): stats.to_dict()
@@ -307,6 +426,18 @@ class GroupKnowledgeBase:
                     current_pattern,
                     target_pattern,
                 ), stats in sorted(self.transition_stats.items())
+            },
+            "family_transition_stats": {
+                ":".join((role, current_family, target_family)): stats.to_dict()
+                for (
+                    role,
+                    current_family,
+                    target_family,
+                ), stats in sorted(self.family_transition_stats.items())
+            },
+            "relation_stats": {
+                f"{role}:{relation}": stats.to_dict()
+                for (role, relation), stats in sorted(self.relation_stats.items())
             },
             "observed_supports": {
                 f"0x{word:016x}": record.to_dict()

@@ -1,0 +1,68 @@
+{
+  "algorithm": "bell422_independent_embedding_relation_mcts_v25",
+  "seed": 4222025,
+  "paired_prefix_run": true,
+  "max_wall_hours": 6.0,
+  "wall_limit_triggered": false,
+  "i10000": {
+    "elapsed_seconds": 11484.723723200004,
+    "discovered_class_count": 2,
+    "node_count": 8402,
+    "edge_count": 9776,
+    "rollout_steps": 209522,
+    "facet_validations": 100459,
+    "tail_successes": 1993,
+    "ridge_pivot_successes": 489,
+    "unique_canonical_terminals": 2
+  },
+  "i15000": {
+    "elapsed_seconds": 16572.4776623,
+    "discovered_class_count": 2,
+    "node_count": 12440,
+    "edge_count": 14501,
+    "rollout_steps": 313418,
+    "facet_validations": 149741,
+    "tail_successes": 2906,
+    "ridge_pivot_successes": 647,
+    "unique_canonical_terminals": 2
+  },
+  "increment_i10000_to_i15000": {
+    "elapsed_seconds": 5087.753939099996,
+    "discovered_classes": 0,
+    "nodes": 4038,
+    "edges": 4725,
+    "tree_policy_steps": 27829,
+    "rollout_steps": 103896,
+    "filler_candidates": 13571430,
+    "corrector_candidates": 1112217,
+    "candidate_cache_hits": 8842,
+    "candidate_cache_misses": 478337,
+    "candidate_cache_evictions": 478337,
+    "rank_cache_hits": 116486,
+    "rank_cache_misses": 953852,
+    "facet_validations": 49282,
+    "tail_candidate_checks": 168957,
+    "tail_geometry_checks": 13777,
+    "tail_successes": 913,
+    "ridge_pivot_calls": 32,
+    "ridge_pivot_successes": 158,
+    "online_stabilizer_patterns": 2
+  },
+  "discoveries": [
+    {
+      "class_id": "BFS422-F-b6b3c8b38259",
+      "iteration": 1,
+      "elapsed_seconds": 1.033147000001918,
+      "depth": 18,
+      "rollout_policy": "mixed"
+    },
+    {
+      "class_id": "BFS422-F-4d5952852bdb",
+      "iteration": 66,
+      "elapsed_seconds": 84.46326380000392,
+      "depth": 19,
+      "rollout_policy": "mixed"
+    }
+  ],
+  "conclusion": "The additional 5000 iterations produced no new canonical terminal class despite substantial tail, ridge, Corrector, and exact-validation work. Coverage is action-distribution limited rather than budget limited under this configuration."
+}
