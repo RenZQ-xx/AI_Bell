@@ -1,0 +1,6062 @@
+[
+  {
+    "pattern_id": 1,
+    "seed": 20365231,
+    "conjugacy_size": 6,
+    "involution": [
+      1,
+      0,
+      3,
+      2,
+      5,
+      4,
+      7,
+      6,
+      9,
+      8,
+      11,
+      10,
+      13,
+      12,
+      15,
+      14,
+      17,
+      16,
+      19,
+      18,
+      21,
+      20,
+      23,
+      22,
+      25,
+      24,
+      27,
+      26,
+      29,
+      28,
+      31,
+      30,
+      33,
+      32,
+      35,
+      34,
+      37,
+      36,
+      39,
+      38,
+      41,
+      40,
+      43,
+      42,
+      45,
+      44,
+      47,
+      46,
+      49,
+      48,
+      51,
+      50,
+      53,
+      52,
+      55,
+      54,
+      57,
+      56,
+      59,
+      58,
+      61,
+      60,
+      63,
+      62
+    ],
+    "blocks": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        14,
+        15
+      ],
+      [
+        16,
+        17
+      ],
+      [
+        18,
+        19
+      ],
+      [
+        20,
+        21
+      ],
+      [
+        22,
+        23
+      ],
+      [
+        24,
+        25
+      ],
+      [
+        26,
+        27
+      ],
+      [
+        28,
+        29
+      ],
+      [
+        30,
+        31
+      ],
+      [
+        32,
+        33
+      ],
+      [
+        34,
+        35
+      ],
+      [
+        36,
+        37
+      ],
+      [
+        38,
+        39
+      ],
+      [
+        40,
+        41
+      ],
+      [
+        42,
+        43
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        46,
+        47
+      ],
+      [
+        48,
+        49
+      ],
+      [
+        50,
+        51
+      ],
+      [
+        52,
+        53
+      ],
+      [
+        54,
+        55
+      ],
+      [
+        56,
+        57
+      ],
+      [
+        58,
+        59
+      ],
+      [
+        60,
+        61
+      ],
+      [
+        62,
+        63
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 2.684566099931544,
+    "node_count": 488,
+    "max_tree_depth": 5,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 0,
+      "rank23_entries": 0,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "2": 46,
+      "4": 372,
+      "5": 6,
+      "6": 1104,
+      "7": 40,
+      "8": 2134,
+      "9": 73,
+      "10": 2939,
+      "11": 135,
+      "12": 3925,
+      "13": 220,
+      "14": 5288,
+      "15": 335,
+      "16": 7377,
+      "17": 504,
+      "18": 10996
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 674,
+      "missing_class_survival": 674,
+      "orbit_normalized_survival": 674,
+      "random_representative": 673,
+      "target_mask_survival": 674
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 12885,
+      "expansion_full_rank_actions": 12885,
+      "iterations": 500,
+      "rollout_action_checks": 87399,
+      "rollout_dead_ends": 500,
+      "rollout_full_rank_actions": 52482,
+      "rollout_rank_pruned_actions": 34917,
+      "tree_action_checks": 6299,
+      "tree_full_rank_actions": 5722,
+      "tree_rank_pruned_actions": 577
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 2,
+    "seed": 20469960,
+    "conjugacy_size": 24,
+    "involution": [
+      1,
+      0,
+      3,
+      2,
+      5,
+      4,
+      7,
+      6,
+      9,
+      8,
+      11,
+      10,
+      13,
+      12,
+      15,
+      14,
+      33,
+      32,
+      35,
+      34,
+      37,
+      36,
+      39,
+      38,
+      41,
+      40,
+      43,
+      42,
+      45,
+      44,
+      47,
+      46,
+      17,
+      16,
+      19,
+      18,
+      21,
+      20,
+      23,
+      22,
+      25,
+      24,
+      27,
+      26,
+      29,
+      28,
+      31,
+      30,
+      49,
+      48,
+      51,
+      50,
+      53,
+      52,
+      55,
+      54,
+      57,
+      56,
+      59,
+      58,
+      61,
+      60,
+      63,
+      62
+    ],
+    "blocks": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        14,
+        15
+      ],
+      [
+        16,
+        33
+      ],
+      [
+        17,
+        32
+      ],
+      [
+        18,
+        35
+      ],
+      [
+        19,
+        34
+      ],
+      [
+        20,
+        37
+      ],
+      [
+        21,
+        36
+      ],
+      [
+        22,
+        39
+      ],
+      [
+        23,
+        38
+      ],
+      [
+        24,
+        41
+      ],
+      [
+        25,
+        40
+      ],
+      [
+        26,
+        43
+      ],
+      [
+        27,
+        42
+      ],
+      [
+        28,
+        45
+      ],
+      [
+        29,
+        44
+      ],
+      [
+        30,
+        47
+      ],
+      [
+        31,
+        46
+      ],
+      [
+        48,
+        49
+      ],
+      [
+        50,
+        51
+      ],
+      [
+        52,
+        53
+      ],
+      [
+        54,
+        55
+      ],
+      [
+        56,
+        57
+      ],
+      [
+        58,
+        59
+      ],
+      [
+        60,
+        61
+      ],
+      [
+        62,
+        63
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 4.379169299907517,
+    "node_count": 494,
+    "max_tree_depth": 6,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 2874,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "2": 24,
+      "4": 170,
+      "5": 2,
+      "6": 403,
+      "7": 32,
+      "8": 765,
+      "9": 93,
+      "10": 1156,
+      "11": 201,
+      "12": 1584,
+      "13": 327,
+      "14": 2032,
+      "15": 544,
+      "16": 2638,
+      "17": 836,
+      "18": 3469,
+      "19": 1317,
+      "20": 4438,
+      "21": 1966,
+      "22": 5660,
+      "23": 18657,
+      "24": 38823
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 859,
+      "missing_class_survival": 859,
+      "orbit_normalized_survival": 859,
+      "random_representative": 858,
+      "target_mask_survival": 859
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 13569,
+      "expansion_full_rank_actions": 13569,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 2874,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 7626,
+      "rank23_tail_action_checks": 57480,
+      "rank23_tail_prefixes": 2874,
+      "rank23_tail_rank_pruned_actions": 57480,
+      "rollout_action_checks": 96272,
+      "rollout_full_rank_actions": 76459,
+      "rollout_rank_pruned_actions": 19813,
+      "tree_action_checks": 6745,
+      "tree_full_rank_actions": 6527,
+      "tree_rank_pruned_actions": 218
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 3,
+    "seed": 20574689,
+    "conjugacy_size": 24,
+    "involution": [
+      1,
+      0,
+      3,
+      2,
+      9,
+      8,
+      11,
+      10,
+      5,
+      4,
+      7,
+      6,
+      13,
+      12,
+      15,
+      14,
+      33,
+      32,
+      35,
+      34,
+      41,
+      40,
+      43,
+      42,
+      37,
+      36,
+      39,
+      38,
+      45,
+      44,
+      47,
+      46,
+      17,
+      16,
+      19,
+      18,
+      25,
+      24,
+      27,
+      26,
+      21,
+      20,
+      23,
+      22,
+      29,
+      28,
+      31,
+      30,
+      49,
+      48,
+      51,
+      50,
+      57,
+      56,
+      59,
+      58,
+      53,
+      52,
+      55,
+      54,
+      61,
+      60,
+      63,
+      62
+    ],
+    "blocks": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        8
+      ],
+      [
+        6,
+        11
+      ],
+      [
+        7,
+        10
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        14,
+        15
+      ],
+      [
+        16,
+        33
+      ],
+      [
+        17,
+        32
+      ],
+      [
+        18,
+        35
+      ],
+      [
+        19,
+        34
+      ],
+      [
+        20,
+        41
+      ],
+      [
+        21,
+        40
+      ],
+      [
+        22,
+        43
+      ],
+      [
+        23,
+        42
+      ],
+      [
+        24,
+        37
+      ],
+      [
+        25,
+        36
+      ],
+      [
+        26,
+        39
+      ],
+      [
+        27,
+        38
+      ],
+      [
+        28,
+        45
+      ],
+      [
+        29,
+        44
+      ],
+      [
+        30,
+        47
+      ],
+      [
+        31,
+        46
+      ],
+      [
+        48,
+        49
+      ],
+      [
+        50,
+        51
+      ],
+      [
+        52,
+        57
+      ],
+      [
+        53,
+        56
+      ],
+      [
+        54,
+        59
+      ],
+      [
+        55,
+        58
+      ],
+      [
+        60,
+        61
+      ],
+      [
+        62,
+        63
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.872244900019723,
+    "node_count": 492,
+    "max_tree_depth": 5,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {
+      "18": 64
+    },
+    "representable_class_ids": [
+      18
+    ],
+    "new_global_class_ids": [
+      18
+    ],
+    "exact_hit_counts": {
+      "18": 540
+    },
+    "exact_terminal_support_count": 64,
+    "tail_cache": {
+      "rank21_entries": 488,
+      "rank23_entries": 5558,
+      "rank21_hits": 24,
+      "rank23_hits": 310
+    },
+    "rank_prune_counts": {
+      "2": 12,
+      "4": 122,
+      "5": 1,
+      "6": 454,
+      "7": 10,
+      "8": 728,
+      "9": 20,
+      "10": 958,
+      "11": 32,
+      "12": 1226,
+      "13": 51,
+      "14": 1563,
+      "15": 75,
+      "16": 1969,
+      "17": 129,
+      "18": 2437,
+      "19": 194,
+      "20": 3155,
+      "21": 296,
+      "22": 4096,
+      "23": 14600,
+      "24": 56738
+    },
+    "policy_bucket_counts": {
+      "focused_target": 3430,
+      "low_aggression_survival": 208,
+      "missing_class_survival": 208,
+      "orbit_normalized_survival": 208,
+      "random_representative": 208,
+      "target_mask_survival": 208
+    },
+    "stats": {
+      "corrector_proposal_checks": 8554,
+      "corrector_remove1_events": 12,
+      "corrector_remove2_events": 12,
+      "exact_terminal_hits": 540,
+      "expanded_nodes": 500,
+      "expansion_action_checks": 13860,
+      "expansion_full_rank_actions": 13860,
+      "focused_rollouts": 429,
+      "iterations": 500,
+      "new_global_classes": 1,
+      "nonreference_terminals": 39282,
+      "rank21_tail_action_checks": 10248,
+      "rank21_tail_cache_hits": 24,
+      "rank21_tail_full_rank_actions": 5856,
+      "rank21_tail_prefixes": 488,
+      "rank21_tail_rank_pruned_actions": 4392,
+      "rank23_tail_action_checks": 111160,
+      "rank23_tail_cache_hits": 310,
+      "rank23_tail_full_rank_actions": 39822,
+      "rank23_tail_prefixes": 5558,
+      "rank23_tail_rank_pruned_actions": 71338,
+      "rollout_action_checks": 101317,
+      "rollout_full_rank_actions": 88400,
+      "rollout_rank_pruned_actions": 12917,
+      "terminal_evaluations": 39822,
+      "tree_action_checks": 6966,
+      "tree_full_rank_actions": 6747,
+      "tree_rank_pruned_actions": 219
+    },
+    "corrector_events": [
+      {
+        "event_index": 1,
+        "pattern_id": 3,
+        "local_iteration": 8,
+        "global_iteration": 129,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          5,
+          7,
+          10,
+          14,
+          16,
+          17,
+          20,
+          25,
+          26,
+          28,
+          30
+        ],
+        "deleted_blocks": [
+          28
+        ],
+        "corrected_blocks": [
+          0,
+          3,
+          5,
+          7,
+          10,
+          14,
+          16,
+          17,
+          20,
+          25,
+          26,
+          30
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0008749000044190325
+      },
+      {
+        "event_index": 2,
+        "pattern_id": 3,
+        "local_iteration": 8,
+        "global_iteration": 129,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          5,
+          7,
+          10,
+          14,
+          16,
+          17,
+          20,
+          25,
+          26,
+          28,
+          30
+        ],
+        "deleted_blocks": [
+          0,
+          25
+        ],
+        "corrected_blocks": [
+          3,
+          5,
+          7,
+          10,
+          14,
+          16,
+          17,
+          20,
+          26,
+          28,
+          30
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 360,
+        "full_rank_terminal_candidates": 184,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.008638600003905594
+      },
+      {
+        "event_index": 3,
+        "pattern_id": 3,
+        "local_iteration": 16,
+        "global_iteration": 273,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          4,
+          7,
+          9,
+          11,
+          12,
+          18,
+          19,
+          20,
+          22,
+          25,
+          26,
+          30
+        ],
+        "deleted_blocks": [
+          30
+        ],
+        "corrected_blocks": [
+          0,
+          4,
+          7,
+          9,
+          11,
+          12,
+          18,
+          19,
+          20,
+          22,
+          25,
+          26
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": true,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 8,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.00026079999952344224
+      },
+      {
+        "event_index": 4,
+        "pattern_id": 3,
+        "local_iteration": 16,
+        "global_iteration": 273,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          5,
+          7,
+          8,
+          14,
+          15,
+          16,
+          22,
+          25,
+          26,
+          28,
+          30
+        ],
+        "deleted_blocks": [
+          26,
+          28
+        ],
+        "corrected_blocks": [
+          0,
+          3,
+          5,
+          7,
+          8,
+          14,
+          15,
+          16,
+          22,
+          25,
+          30
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 240,
+        "full_rank_terminal_candidates": 72,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.005974300001980737
+      },
+      {
+        "event_index": 5,
+        "pattern_id": 3,
+        "local_iteration": 24,
+        "global_iteration": 417,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          2,
+          4,
+          7,
+          8,
+          12,
+          18,
+          19,
+          22,
+          25,
+          27,
+          29,
+          30
+        ],
+        "deleted_blocks": [
+          4
+        ],
+        "corrected_blocks": [
+          0,
+          2,
+          7,
+          8,
+          12,
+          18,
+          19,
+          22,
+          25,
+          27,
+          29,
+          30
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0007631000044057146
+      },
+      {
+        "event_index": 6,
+        "pattern_id": 3,
+        "local_iteration": 24,
+        "global_iteration": 417,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          2,
+          4,
+          7,
+          8,
+          14,
+          16,
+          17,
+          22,
+          25,
+          27,
+          29,
+          30
+        ],
+        "deleted_blocks": [
+          2,
+          29
+        ],
+        "corrected_blocks": [
+          0,
+          4,
+          7,
+          8,
+          14,
+          16,
+          17,
+          22,
+          25,
+          27,
+          30
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 240,
+        "full_rank_terminal_candidates": 72,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.006753200003004167
+      },
+      {
+        "event_index": 7,
+        "pattern_id": 3,
+        "local_iteration": 32,
+        "global_iteration": 561,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          2,
+          4,
+          7,
+          8,
+          12,
+          18,
+          19,
+          22,
+          25,
+          27,
+          29,
+          30
+        ],
+        "deleted_blocks": [
+          27
+        ],
+        "corrected_blocks": [
+          0,
+          2,
+          4,
+          7,
+          8,
+          12,
+          18,
+          19,
+          22,
+          25,
+          29,
+          30
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": true,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0002651000031619333
+      },
+      {
+        "event_index": 8,
+        "pattern_id": 3,
+        "local_iteration": 32,
+        "global_iteration": 561,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          7,
+          9,
+          11,
+          15,
+          16,
+          17,
+          20,
+          22,
+          25,
+          29,
+          30
+        ],
+        "deleted_blocks": [
+          22,
+          30
+        ],
+        "corrected_blocks": [
+          0,
+          3,
+          7,
+          9,
+          11,
+          15,
+          16,
+          17,
+          20,
+          25,
+          29
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 260,
+        "full_rank_terminal_candidates": 94,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.006364500004565343
+      },
+      {
+        "event_index": 9,
+        "pattern_id": 3,
+        "local_iteration": 40,
+        "global_iteration": 705,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          5,
+          7,
+          9,
+          15,
+          16,
+          17,
+          23,
+          25,
+          26,
+          28,
+          30
+        ],
+        "deleted_blocks": [
+          28
+        ],
+        "corrected_blocks": [
+          0,
+          3,
+          5,
+          7,
+          9,
+          15,
+          16,
+          17,
+          23,
+          25,
+          26,
+          30
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0007752999954391271
+      },
+      {
+        "event_index": 10,
+        "pattern_id": 3,
+        "local_iteration": 40,
+        "global_iteration": 705,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          5,
+          7,
+          9,
+          15,
+          16,
+          17,
+          23,
+          25,
+          26,
+          28,
+          30
+        ],
+        "deleted_blocks": [
+          25,
+          28
+        ],
+        "corrected_blocks": [
+          0,
+          3,
+          5,
+          7,
+          9,
+          15,
+          16,
+          17,
+          23,
+          26,
+          30
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 280,
+        "full_rank_terminal_candidates": 114,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.005390399994212203
+      },
+      {
+        "event_index": 11,
+        "pattern_id": 3,
+        "local_iteration": 48,
+        "global_iteration": 849,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          3,
+          5,
+          6,
+          11,
+          13,
+          18,
+          19,
+          21,
+          24,
+          26,
+          28,
+          31
+        ],
+        "deleted_blocks": [
+          28
+        ],
+        "corrected_blocks": [
+          1,
+          3,
+          5,
+          6,
+          11,
+          13,
+          18,
+          19,
+          21,
+          24,
+          26,
+          31
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0007552999959443696
+      },
+      {
+        "event_index": 12,
+        "pattern_id": 3,
+        "local_iteration": 48,
+        "global_iteration": 849,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          2,
+          4,
+          7,
+          11,
+          13,
+          18,
+          19,
+          21,
+          25,
+          27,
+          29,
+          30
+        ],
+        "deleted_blocks": [
+          7,
+          25
+        ],
+        "corrected_blocks": [
+          0,
+          2,
+          4,
+          11,
+          13,
+          18,
+          19,
+          21,
+          27,
+          29,
+          30
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 360,
+        "full_rank_terminal_candidates": 184,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.008740400000533555
+      },
+      {
+        "event_index": 13,
+        "pattern_id": 3,
+        "local_iteration": 56,
+        "global_iteration": 993,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          3,
+          5,
+          6,
+          11,
+          13,
+          18,
+          19,
+          21,
+          24,
+          26,
+          28,
+          31
+        ],
+        "deleted_blocks": [
+          6
+        ],
+        "corrected_blocks": [
+          1,
+          3,
+          5,
+          11,
+          13,
+          18,
+          19,
+          21,
+          24,
+          26,
+          28,
+          31
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 8,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0011841000014101155
+      },
+      {
+        "event_index": 14,
+        "pattern_id": 3,
+        "local_iteration": 56,
+        "global_iteration": 993,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          5,
+          7,
+          9,
+          11,
+          12,
+          13,
+          18,
+          20,
+          22,
+          25,
+          27,
+          30
+        ],
+        "deleted_blocks": [
+          13,
+          30
+        ],
+        "corrected_blocks": [
+          0,
+          5,
+          7,
+          9,
+          11,
+          12,
+          18,
+          20,
+          22,
+          25,
+          27
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 260,
+        "full_rank_terminal_candidates": 110,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.00812450000375975
+      },
+      {
+        "event_index": 15,
+        "pattern_id": 3,
+        "local_iteration": 64,
+        "global_iteration": 1137,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          2,
+          6,
+          9,
+          11,
+          14,
+          16,
+          17,
+          20,
+          22,
+          24,
+          28,
+          31
+        ],
+        "deleted_blocks": [
+          9
+        ],
+        "corrected_blocks": [
+          1,
+          2,
+          6,
+          11,
+          14,
+          16,
+          17,
+          20,
+          22,
+          24,
+          28,
+          31
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": true,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.00025639999512350187
+      },
+      {
+        "event_index": 16,
+        "pattern_id": 3,
+        "local_iteration": 64,
+        "global_iteration": 1137,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          3,
+          5,
+          6,
+          8,
+          12,
+          18,
+          19,
+          22,
+          24,
+          26,
+          28,
+          31
+        ],
+        "deleted_blocks": [
+          6,
+          8
+        ],
+        "corrected_blocks": [
+          1,
+          3,
+          5,
+          12,
+          18,
+          19,
+          22,
+          24,
+          26,
+          28,
+          31
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 300,
+        "full_rank_terminal_candidates": 98,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.007034700000076555
+      },
+      {
+        "event_index": 17,
+        "pattern_id": 3,
+        "local_iteration": 72,
+        "global_iteration": 1281,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          4,
+          6,
+          9,
+          11,
+          14,
+          15,
+          17,
+          20,
+          22,
+          24,
+          26,
+          31
+        ],
+        "deleted_blocks": [
+          9
+        ],
+        "corrected_blocks": [
+          1,
+          4,
+          6,
+          11,
+          14,
+          15,
+          17,
+          20,
+          22,
+          24,
+          26,
+          31
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 6,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0006522999974549748
+      },
+      {
+        "event_index": 18,
+        "pattern_id": 3,
+        "local_iteration": 72,
+        "global_iteration": 1281,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          4,
+          6,
+          9,
+          11,
+          12,
+          13,
+          19,
+          20,
+          22,
+          24,
+          26,
+          31
+        ],
+        "deleted_blocks": [
+          20,
+          22
+        ],
+        "corrected_blocks": [
+          1,
+          4,
+          6,
+          9,
+          11,
+          12,
+          13,
+          19,
+          24,
+          26,
+          31
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 240,
+        "full_rank_terminal_candidates": 72,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.006224999997357372
+      },
+      {
+        "event_index": 19,
+        "pattern_id": 3,
+        "local_iteration": 80,
+        "global_iteration": 1425,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          2,
+          6,
+          9,
+          11,
+          14,
+          16,
+          17,
+          20,
+          22,
+          24,
+          28,
+          31
+        ],
+        "deleted_blocks": [
+          17
+        ],
+        "corrected_blocks": [
+          1,
+          2,
+          6,
+          9,
+          11,
+          14,
+          16,
+          20,
+          22,
+          24,
+          28,
+          31
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": true,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 8,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0002992999943671748
+      },
+      {
+        "event_index": 20,
+        "pattern_id": 3,
+        "local_iteration": 80,
+        "global_iteration": 1425,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          2,
+          6,
+          9,
+          11,
+          14,
+          16,
+          17,
+          20,
+          22,
+          24,
+          28,
+          31
+        ],
+        "deleted_blocks": [
+          2,
+          11
+        ],
+        "corrected_blocks": [
+          1,
+          6,
+          9,
+          14,
+          16,
+          17,
+          20,
+          22,
+          24,
+          28,
+          31
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 200,
+        "full_rank_terminal_candidates": 48,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.006008899996231776
+      },
+      {
+        "event_index": 21,
+        "pattern_id": 3,
+        "local_iteration": 88,
+        "global_iteration": 1569,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          3,
+          6,
+          9,
+          11,
+          14,
+          15,
+          16,
+          20,
+          22,
+          24,
+          29,
+          31
+        ],
+        "deleted_blocks": [
+          1
+        ],
+        "corrected_blocks": [
+          3,
+          6,
+          9,
+          11,
+          14,
+          15,
+          16,
+          20,
+          22,
+          24,
+          29,
+          31
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 12,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0007947000049171038
+      },
+      {
+        "event_index": 22,
+        "pattern_id": 3,
+        "local_iteration": 88,
+        "global_iteration": 1569,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          3,
+          7,
+          8,
+          10,
+          12,
+          13,
+          18,
+          21,
+          23,
+          25,
+          29,
+          30
+        ],
+        "deleted_blocks": [
+          18,
+          30
+        ],
+        "corrected_blocks": [
+          0,
+          3,
+          7,
+          8,
+          10,
+          12,
+          13,
+          21,
+          23,
+          25,
+          29
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 260,
+        "full_rank_terminal_candidates": 94,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.00701689999550581
+      },
+      {
+        "event_index": 23,
+        "pattern_id": 3,
+        "local_iteration": 96,
+        "global_iteration": 1713,
+        "delete_count": 1,
+        "source_class_id": 18,
+        "source_blocks": [
+          0,
+          5,
+          7,
+          8,
+          10,
+          15,
+          16,
+          17,
+          21,
+          23,
+          25,
+          27,
+          30
+        ],
+        "deleted_blocks": [
+          30
+        ],
+        "corrected_blocks": [
+          0,
+          5,
+          7,
+          8,
+          10,
+          15,
+          16,
+          17,
+          21,
+          23,
+          25,
+          27
+        ],
+        "corrected_rank": 23,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 20,
+        "full_rank_terminal_candidates": 8,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0006503999975393526
+      },
+      {
+        "event_index": 24,
+        "pattern_id": 3,
+        "local_iteration": 96,
+        "global_iteration": 1713,
+        "delete_count": 2,
+        "source_class_id": 18,
+        "source_blocks": [
+          1,
+          3,
+          6,
+          9,
+          11,
+          14,
+          15,
+          16,
+          20,
+          22,
+          24,
+          29,
+          31
+        ],
+        "deleted_blocks": [
+          1,
+          3
+        ],
+        "corrected_blocks": [
+          6,
+          9,
+          11,
+          14,
+          15,
+          16,
+          20,
+          22,
+          24,
+          29,
+          31
+        ],
+        "corrected_rank": 21,
+        "compatible_missing_class_ids": [],
+        "tail_cache_hit": false,
+        "logical_terminal_candidates": 260,
+        "full_rank_terminal_candidates": 80,
+        "exact_class_ids": [
+          18
+        ],
+        "new_class_ids": [],
+        "reward": 10.0,
+        "elapsed_seconds": 0.0057304000001749955
+      }
+    ]
+  },
+  {
+    "pattern_id": 4,
+    "seed": 20679418,
+    "conjugacy_size": 48,
+    "involution": [
+      1,
+      0,
+      3,
+      2,
+      17,
+      16,
+      19,
+      18,
+      33,
+      32,
+      35,
+      34,
+      49,
+      48,
+      51,
+      50,
+      5,
+      4,
+      7,
+      6,
+      21,
+      20,
+      23,
+      22,
+      37,
+      36,
+      39,
+      38,
+      53,
+      52,
+      55,
+      54,
+      9,
+      8,
+      11,
+      10,
+      25,
+      24,
+      27,
+      26,
+      41,
+      40,
+      43,
+      42,
+      57,
+      56,
+      59,
+      58,
+      13,
+      12,
+      15,
+      14,
+      29,
+      28,
+      31,
+      30,
+      45,
+      44,
+      47,
+      46,
+      61,
+      60,
+      63,
+      62
+    ],
+    "blocks": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        17
+      ],
+      [
+        5,
+        16
+      ],
+      [
+        6,
+        19
+      ],
+      [
+        7,
+        18
+      ],
+      [
+        8,
+        33
+      ],
+      [
+        9,
+        32
+      ],
+      [
+        10,
+        35
+      ],
+      [
+        11,
+        34
+      ],
+      [
+        12,
+        49
+      ],
+      [
+        13,
+        48
+      ],
+      [
+        14,
+        51
+      ],
+      [
+        15,
+        50
+      ],
+      [
+        20,
+        21
+      ],
+      [
+        22,
+        23
+      ],
+      [
+        24,
+        37
+      ],
+      [
+        25,
+        36
+      ],
+      [
+        26,
+        39
+      ],
+      [
+        27,
+        38
+      ],
+      [
+        28,
+        53
+      ],
+      [
+        29,
+        52
+      ],
+      [
+        30,
+        55
+      ],
+      [
+        31,
+        54
+      ],
+      [
+        40,
+        41
+      ],
+      [
+        42,
+        43
+      ],
+      [
+        44,
+        57
+      ],
+      [
+        45,
+        56
+      ],
+      [
+        46,
+        59
+      ],
+      [
+        47,
+        58
+      ],
+      [
+        60,
+        61
+      ],
+      [
+        62,
+        63
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.121149599945056,
+    "node_count": 492,
+    "max_tree_depth": 6,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 4248,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "2": 10,
+      "4": 119,
+      "5": 4,
+      "6": 324,
+      "7": 42,
+      "8": 472,
+      "9": 107,
+      "10": 638,
+      "11": 201,
+      "12": 810,
+      "13": 326,
+      "14": 1050,
+      "15": 573,
+      "16": 1369,
+      "17": 882,
+      "18": 1898,
+      "19": 1277,
+      "20": 2767,
+      "21": 1945,
+      "22": 4307,
+      "23": 25108,
+      "24": 59852
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 903,
+      "missing_class_survival": 903,
+      "orbit_normalized_survival": 903,
+      "random_representative": 903,
+      "target_mask_survival": 903
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14027,
+      "expansion_full_rank_actions": 14027,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 4248,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 6252,
+      "rank23_tail_action_checks": 84960,
+      "rank23_tail_prefixes": 4248,
+      "rank23_tail_rank_pruned_actions": 84960,
+      "rollout_action_checks": 102642,
+      "rollout_full_rank_actions": 89887,
+      "rollout_rank_pruned_actions": 12755,
+      "tree_action_checks": 6289,
+      "tree_full_rank_actions": 6175,
+      "tree_rank_pruned_actions": 114
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 5,
+    "seed": 20784147,
+    "conjugacy_size": 3,
+    "involution": [
+      3,
+      2,
+      1,
+      0,
+      7,
+      6,
+      5,
+      4,
+      11,
+      10,
+      9,
+      8,
+      15,
+      14,
+      13,
+      12,
+      19,
+      18,
+      17,
+      16,
+      23,
+      22,
+      21,
+      20,
+      27,
+      26,
+      25,
+      24,
+      31,
+      30,
+      29,
+      28,
+      35,
+      34,
+      33,
+      32,
+      39,
+      38,
+      37,
+      36,
+      43,
+      42,
+      41,
+      40,
+      47,
+      46,
+      45,
+      44,
+      51,
+      50,
+      49,
+      48,
+      55,
+      54,
+      53,
+      52,
+      59,
+      58,
+      57,
+      56,
+      63,
+      62,
+      61,
+      60
+    ],
+    "blocks": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        8,
+        11
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        13,
+        14
+      ],
+      [
+        16,
+        19
+      ],
+      [
+        17,
+        18
+      ],
+      [
+        20,
+        23
+      ],
+      [
+        21,
+        22
+      ],
+      [
+        24,
+        27
+      ],
+      [
+        25,
+        26
+      ],
+      [
+        28,
+        31
+      ],
+      [
+        29,
+        30
+      ],
+      [
+        32,
+        35
+      ],
+      [
+        33,
+        34
+      ],
+      [
+        36,
+        39
+      ],
+      [
+        37,
+        38
+      ],
+      [
+        40,
+        43
+      ],
+      [
+        41,
+        42
+      ],
+      [
+        44,
+        47
+      ],
+      [
+        45,
+        46
+      ],
+      [
+        48,
+        51
+      ],
+      [
+        49,
+        50
+      ],
+      [
+        52,
+        55
+      ],
+      [
+        53,
+        54
+      ],
+      [
+        56,
+        59
+      ],
+      [
+        57,
+        58
+      ],
+      [
+        60,
+        63
+      ],
+      [
+        61,
+        62
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 2.857991799923184,
+    "node_count": 490,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 0,
+      "rank23_entries": 0,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "2": 46,
+      "4": 506,
+      "5": 5,
+      "6": 1455,
+      "7": 22,
+      "8": 2204,
+      "9": 59,
+      "10": 3013,
+      "11": 121,
+      "12": 3953,
+      "13": 210,
+      "14": 5298,
+      "15": 324,
+      "16": 7340,
+      "17": 489,
+      "18": 11011
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 711,
+      "missing_class_survival": 712,
+      "orbit_normalized_survival": 711,
+      "random_representative": 711,
+      "target_mask_survival": 711
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 13350,
+      "expansion_full_rank_actions": 13350,
+      "iterations": 500,
+      "rollout_action_checks": 92813,
+      "rollout_dead_ends": 500,
+      "rollout_full_rank_actions": 57248,
+      "rollout_rank_pruned_actions": 35565,
+      "tree_action_checks": 6307,
+      "tree_full_rank_actions": 5816,
+      "tree_rank_pruned_actions": 491
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 6,
+    "seed": 20888876,
+    "conjugacy_size": 12,
+    "involution": [
+      3,
+      2,
+      1,
+      0,
+      7,
+      6,
+      5,
+      4,
+      11,
+      10,
+      9,
+      8,
+      15,
+      14,
+      13,
+      12,
+      35,
+      34,
+      33,
+      32,
+      39,
+      38,
+      37,
+      36,
+      43,
+      42,
+      41,
+      40,
+      47,
+      46,
+      45,
+      44,
+      19,
+      18,
+      17,
+      16,
+      23,
+      22,
+      21,
+      20,
+      27,
+      26,
+      25,
+      24,
+      31,
+      30,
+      29,
+      28,
+      51,
+      50,
+      49,
+      48,
+      55,
+      54,
+      53,
+      52,
+      59,
+      58,
+      57,
+      56,
+      63,
+      62,
+      61,
+      60
+    ],
+    "blocks": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        8,
+        11
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        13,
+        14
+      ],
+      [
+        16,
+        35
+      ],
+      [
+        17,
+        34
+      ],
+      [
+        18,
+        33
+      ],
+      [
+        19,
+        32
+      ],
+      [
+        20,
+        39
+      ],
+      [
+        21,
+        38
+      ],
+      [
+        22,
+        37
+      ],
+      [
+        23,
+        36
+      ],
+      [
+        24,
+        43
+      ],
+      [
+        25,
+        42
+      ],
+      [
+        26,
+        41
+      ],
+      [
+        27,
+        40
+      ],
+      [
+        28,
+        47
+      ],
+      [
+        29,
+        46
+      ],
+      [
+        30,
+        45
+      ],
+      [
+        31,
+        44
+      ],
+      [
+        48,
+        51
+      ],
+      [
+        49,
+        50
+      ],
+      [
+        52,
+        55
+      ],
+      [
+        53,
+        54
+      ],
+      [
+        56,
+        59
+      ],
+      [
+        57,
+        58
+      ],
+      [
+        60,
+        63
+      ],
+      [
+        61,
+        62
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 4.4185983000134,
+    "node_count": 488,
+    "max_tree_depth": 5,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 2698,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "2": 26,
+      "4": 239,
+      "5": 7,
+      "6": 676,
+      "7": 41,
+      "8": 1091,
+      "9": 105,
+      "10": 1426,
+      "11": 198,
+      "12": 1825,
+      "13": 336,
+      "14": 2313,
+      "15": 517,
+      "16": 2955,
+      "17": 817,
+      "18": 3747,
+      "19": 1292,
+      "20": 4699,
+      "21": 1924,
+      "22": 5878,
+      "23": 16428,
+      "24": 37532
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 897,
+      "missing_class_survival": 898,
+      "orbit_normalized_survival": 897,
+      "random_representative": 897,
+      "target_mask_survival": 897
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 13634,
+      "expansion_full_rank_actions": 13634,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 2698,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 7802,
+      "rank23_tail_action_checks": 53960,
+      "rank23_tail_prefixes": 2698,
+      "rank23_tail_rank_pruned_actions": 53960,
+      "rollout_action_checks": 101801,
+      "rollout_full_rank_actions": 79751,
+      "rollout_rank_pruned_actions": 22050,
+      "tree_action_checks": 6047,
+      "tree_full_rank_actions": 5787,
+      "tree_rank_pruned_actions": 260
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 7,
+    "seed": 20993605,
+    "conjugacy_size": 12,
+    "involution": [
+      3,
+      2,
+      1,
+      0,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      15,
+      14,
+      13,
+      12,
+      35,
+      34,
+      33,
+      32,
+      43,
+      42,
+      41,
+      40,
+      39,
+      38,
+      37,
+      36,
+      47,
+      46,
+      45,
+      44,
+      19,
+      18,
+      17,
+      16,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      31,
+      30,
+      29,
+      28,
+      51,
+      50,
+      49,
+      48,
+      59,
+      58,
+      57,
+      56,
+      55,
+      54,
+      53,
+      52,
+      63,
+      62,
+      61,
+      60
+    ],
+    "blocks": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        11
+      ],
+      [
+        5,
+        10
+      ],
+      [
+        6,
+        9
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        12,
+        15
+      ],
+      [
+        13,
+        14
+      ],
+      [
+        16,
+        35
+      ],
+      [
+        17,
+        34
+      ],
+      [
+        18,
+        33
+      ],
+      [
+        19,
+        32
+      ],
+      [
+        20,
+        43
+      ],
+      [
+        21,
+        42
+      ],
+      [
+        22,
+        41
+      ],
+      [
+        23,
+        40
+      ],
+      [
+        24,
+        39
+      ],
+      [
+        25,
+        38
+      ],
+      [
+        26,
+        37
+      ],
+      [
+        27,
+        36
+      ],
+      [
+        28,
+        47
+      ],
+      [
+        29,
+        46
+      ],
+      [
+        30,
+        45
+      ],
+      [
+        31,
+        44
+      ],
+      [
+        48,
+        51
+      ],
+      [
+        49,
+        50
+      ],
+      [
+        52,
+        59
+      ],
+      [
+        53,
+        58
+      ],
+      [
+        54,
+        57
+      ],
+      [
+        55,
+        56
+      ],
+      [
+        60,
+        63
+      ],
+      [
+        61,
+        62
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.9016283999881125,
+    "node_count": 486,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 5748,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "2": 14,
+      "4": 128,
+      "5": 5,
+      "6": 378,
+      "7": 27,
+      "8": 528,
+      "9": 97,
+      "10": 691,
+      "11": 191,
+      "12": 864,
+      "13": 318,
+      "14": 1102,
+      "15": 525,
+      "16": 1343,
+      "17": 841,
+      "18": 1651,
+      "19": 1304,
+      "20": 2080,
+      "21": 2078,
+      "22": 2674,
+      "23": 37774,
+      "24": 38212
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 910,
+      "missing_class_survival": 911,
+      "orbit_normalized_survival": 911,
+      "random_representative": 910,
+      "target_mask_survival": 910
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14131,
+      "expansion_full_rank_actions": 14131,
+      "iterations": 500,
+      "nonreference_terminals": 38974,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 5748,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 4752,
+      "rank23_tail_action_checks": 114960,
+      "rank23_tail_full_rank_actions": 38974,
+      "rank23_tail_prefixes": 5748,
+      "rank23_tail_rank_pruned_actions": 75986,
+      "rollout_action_checks": 103692,
+      "rollout_full_rank_actions": 91752,
+      "rollout_rank_pruned_actions": 11940,
+      "terminal_evaluations": 38974,
+      "tree_action_checks": 7057,
+      "tree_full_rank_actions": 6910,
+      "tree_rank_pruned_actions": 147
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 8,
+    "seed": 21098334,
+    "conjugacy_size": 24,
+    "involution": [
+      3,
+      2,
+      1,
+      0,
+      19,
+      18,
+      17,
+      16,
+      35,
+      34,
+      33,
+      32,
+      51,
+      50,
+      49,
+      48,
+      7,
+      6,
+      5,
+      4,
+      23,
+      22,
+      21,
+      20,
+      39,
+      38,
+      37,
+      36,
+      55,
+      54,
+      53,
+      52,
+      11,
+      10,
+      9,
+      8,
+      27,
+      26,
+      25,
+      24,
+      43,
+      42,
+      41,
+      40,
+      59,
+      58,
+      57,
+      56,
+      15,
+      14,
+      13,
+      12,
+      31,
+      30,
+      29,
+      28,
+      47,
+      46,
+      45,
+      44,
+      63,
+      62,
+      61,
+      60
+    ],
+    "blocks": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        19
+      ],
+      [
+        5,
+        18
+      ],
+      [
+        6,
+        17
+      ],
+      [
+        7,
+        16
+      ],
+      [
+        8,
+        35
+      ],
+      [
+        9,
+        34
+      ],
+      [
+        10,
+        33
+      ],
+      [
+        11,
+        32
+      ],
+      [
+        12,
+        51
+      ],
+      [
+        13,
+        50
+      ],
+      [
+        14,
+        49
+      ],
+      [
+        15,
+        48
+      ],
+      [
+        20,
+        23
+      ],
+      [
+        21,
+        22
+      ],
+      [
+        24,
+        39
+      ],
+      [
+        25,
+        38
+      ],
+      [
+        26,
+        37
+      ],
+      [
+        27,
+        36
+      ],
+      [
+        28,
+        55
+      ],
+      [
+        29,
+        54
+      ],
+      [
+        30,
+        53
+      ],
+      [
+        31,
+        52
+      ],
+      [
+        40,
+        43
+      ],
+      [
+        41,
+        42
+      ],
+      [
+        44,
+        59
+      ],
+      [
+        45,
+        58
+      ],
+      [
+        46,
+        57
+      ],
+      [
+        47,
+        56
+      ],
+      [
+        60,
+        63
+      ],
+      [
+        61,
+        62
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.035452499920211,
+    "node_count": 493,
+    "max_tree_depth": 5,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 4271,
+      "rank21_hits": 0,
+      "rank23_hits": 1
+    },
+    "rank_prune_counts": {
+      "2": 8,
+      "4": 95,
+      "5": 4,
+      "6": 239,
+      "7": 26,
+      "8": 407,
+      "9": 77,
+      "10": 567,
+      "11": 172,
+      "12": 757,
+      "13": 316,
+      "14": 985,
+      "15": 551,
+      "16": 1334,
+      "17": 882,
+      "18": 1861,
+      "19": 1343,
+      "20": 2772,
+      "21": 1949,
+      "22": 4279,
+      "23": 25600,
+      "24": 59820
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 886,
+      "missing_class_survival": 887,
+      "orbit_normalized_survival": 886,
+      "random_representative": 886,
+      "target_mask_survival": 886
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 13941,
+      "expansion_full_rank_actions": 13941,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 4272,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 6228,
+      "rank23_tail_action_checks": 85420,
+      "rank23_tail_cache_hits": 1,
+      "rank23_tail_prefixes": 4271,
+      "rank23_tail_rank_pruned_actions": 85420,
+      "rollout_action_checks": 100212,
+      "rollout_full_rank_actions": 87903,
+      "rollout_rank_pruned_actions": 12309,
+      "tree_action_checks": 6017,
+      "tree_full_rank_actions": 5930,
+      "tree_rank_pruned_actions": 87
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 9,
+    "seed": 21203063,
+    "conjugacy_size": 12,
+    "involution": [
+      5,
+      4,
+      7,
+      6,
+      1,
+      0,
+      3,
+      2,
+      13,
+      12,
+      15,
+      14,
+      9,
+      8,
+      11,
+      10,
+      21,
+      20,
+      23,
+      22,
+      17,
+      16,
+      19,
+      18,
+      29,
+      28,
+      31,
+      30,
+      25,
+      24,
+      27,
+      26,
+      37,
+      36,
+      39,
+      38,
+      33,
+      32,
+      35,
+      34,
+      45,
+      44,
+      47,
+      46,
+      41,
+      40,
+      43,
+      42,
+      53,
+      52,
+      55,
+      54,
+      49,
+      48,
+      51,
+      50,
+      61,
+      60,
+      63,
+      62,
+      57,
+      56,
+      59,
+      58
+    ],
+    "blocks": [
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        8,
+        13
+      ],
+      [
+        9,
+        12
+      ],
+      [
+        10,
+        15
+      ],
+      [
+        11,
+        14
+      ],
+      [
+        16,
+        21
+      ],
+      [
+        17,
+        20
+      ],
+      [
+        18,
+        23
+      ],
+      [
+        19,
+        22
+      ],
+      [
+        24,
+        29
+      ],
+      [
+        25,
+        28
+      ],
+      [
+        26,
+        31
+      ],
+      [
+        27,
+        30
+      ],
+      [
+        32,
+        37
+      ],
+      [
+        33,
+        36
+      ],
+      [
+        34,
+        39
+      ],
+      [
+        35,
+        38
+      ],
+      [
+        40,
+        45
+      ],
+      [
+        41,
+        44
+      ],
+      [
+        42,
+        47
+      ],
+      [
+        43,
+        46
+      ],
+      [
+        48,
+        53
+      ],
+      [
+        49,
+        52
+      ],
+      [
+        50,
+        55
+      ],
+      [
+        51,
+        54
+      ],
+      [
+        56,
+        61
+      ],
+      [
+        57,
+        60
+      ],
+      [
+        58,
+        63
+      ],
+      [
+        59,
+        62
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.198544199825847,
+    "node_count": 483,
+    "max_tree_depth": 6,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 4686,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 8,
+      "6": 15,
+      "7": 39,
+      "8": 61,
+      "9": 93,
+      "10": 143,
+      "11": 192,
+      "12": 284,
+      "13": 326,
+      "14": 474,
+      "15": 579,
+      "16": 781,
+      "17": 908,
+      "18": 1235,
+      "19": 1397,
+      "20": 2138,
+      "21": 2200,
+      "22": 3614,
+      "23": 32717,
+      "24": 61003
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 878,
+      "missing_class_survival": 879,
+      "orbit_normalized_survival": 879,
+      "random_representative": 878,
+      "target_mask_survival": 879
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14038,
+      "expansion_full_rank_actions": 14038,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 4686,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 5814,
+      "rank23_tail_action_checks": 93720,
+      "rank23_tail_prefixes": 4686,
+      "rank23_tail_rank_pruned_actions": 93720,
+      "rollout_action_checks": 99153,
+      "rollout_full_rank_actions": 90489,
+      "rollout_rank_pruned_actions": 8664,
+      "tree_action_checks": 6058,
+      "tree_full_rank_actions": 6049,
+      "tree_rank_pruned_actions": 9
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 10,
+    "seed": 21307792,
+    "conjugacy_size": 24,
+    "involution": [
+      5,
+      4,
+      7,
+      6,
+      1,
+      0,
+      3,
+      2,
+      13,
+      12,
+      15,
+      14,
+      9,
+      8,
+      11,
+      10,
+      37,
+      36,
+      39,
+      38,
+      33,
+      32,
+      35,
+      34,
+      45,
+      44,
+      47,
+      46,
+      41,
+      40,
+      43,
+      42,
+      21,
+      20,
+      23,
+      22,
+      17,
+      16,
+      19,
+      18,
+      29,
+      28,
+      31,
+      30,
+      25,
+      24,
+      27,
+      26,
+      53,
+      52,
+      55,
+      54,
+      49,
+      48,
+      51,
+      50,
+      61,
+      60,
+      63,
+      62,
+      57,
+      56,
+      59,
+      58
+    ],
+    "blocks": [
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        8,
+        13
+      ],
+      [
+        9,
+        12
+      ],
+      [
+        10,
+        15
+      ],
+      [
+        11,
+        14
+      ],
+      [
+        16,
+        37
+      ],
+      [
+        17,
+        36
+      ],
+      [
+        18,
+        39
+      ],
+      [
+        19,
+        38
+      ],
+      [
+        20,
+        33
+      ],
+      [
+        21,
+        32
+      ],
+      [
+        22,
+        35
+      ],
+      [
+        23,
+        34
+      ],
+      [
+        24,
+        45
+      ],
+      [
+        25,
+        44
+      ],
+      [
+        26,
+        47
+      ],
+      [
+        27,
+        46
+      ],
+      [
+        28,
+        41
+      ],
+      [
+        29,
+        40
+      ],
+      [
+        30,
+        43
+      ],
+      [
+        31,
+        42
+      ],
+      [
+        48,
+        53
+      ],
+      [
+        49,
+        52
+      ],
+      [
+        50,
+        55
+      ],
+      [
+        51,
+        54
+      ],
+      [
+        56,
+        61
+      ],
+      [
+        57,
+        60
+      ],
+      [
+        58,
+        63
+      ],
+      [
+        59,
+        62
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.272208200003661,
+    "node_count": 495,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 6594,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 17,
+      "6": 9,
+      "7": 46,
+      "8": 35,
+      "9": 91,
+      "10": 78,
+      "11": 181,
+      "12": 156,
+      "13": 336,
+      "14": 256,
+      "15": 548,
+      "16": 397,
+      "17": 882,
+      "18": 658,
+      "19": 1386,
+      "20": 1086,
+      "21": 2149,
+      "22": 1757,
+      "23": 44734,
+      "24": 35470
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 910,
+      "missing_class_survival": 911,
+      "orbit_normalized_survival": 910,
+      "random_representative": 910,
+      "target_mask_survival": 910
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14389,
+      "expansion_full_rank_actions": 14389,
+      "iterations": 500,
+      "nonreference_terminals": 51676,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 6594,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 3906,
+      "rank23_tail_action_checks": 131880,
+      "rank23_tail_full_rank_actions": 51676,
+      "rank23_tail_prefixes": 6594,
+      "rank23_tail_rank_pruned_actions": 80204,
+      "rollout_action_checks": 103662,
+      "rollout_full_rank_actions": 97508,
+      "rollout_rank_pruned_actions": 6154,
+      "terminal_evaluations": 51676,
+      "tree_action_checks": 7236,
+      "tree_full_rank_actions": 7228,
+      "tree_rank_pruned_actions": 8
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 11,
+    "seed": 21412521,
+    "conjugacy_size": 12,
+    "involution": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56
+    ],
+    "blocks": [
+      [
+        0,
+        7
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        13
+      ],
+      [
+        11,
+        12
+      ],
+      [
+        16,
+        23
+      ],
+      [
+        17,
+        22
+      ],
+      [
+        18,
+        21
+      ],
+      [
+        19,
+        20
+      ],
+      [
+        24,
+        31
+      ],
+      [
+        25,
+        30
+      ],
+      [
+        26,
+        29
+      ],
+      [
+        27,
+        28
+      ],
+      [
+        32,
+        39
+      ],
+      [
+        33,
+        38
+      ],
+      [
+        34,
+        37
+      ],
+      [
+        35,
+        36
+      ],
+      [
+        40,
+        47
+      ],
+      [
+        41,
+        46
+      ],
+      [
+        42,
+        45
+      ],
+      [
+        43,
+        44
+      ],
+      [
+        48,
+        55
+      ],
+      [
+        49,
+        54
+      ],
+      [
+        50,
+        53
+      ],
+      [
+        51,
+        52
+      ],
+      [
+        56,
+        63
+      ],
+      [
+        57,
+        62
+      ],
+      [
+        58,
+        61
+      ],
+      [
+        59,
+        60
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.235847900046792,
+    "node_count": 490,
+    "max_tree_depth": 5,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 4631,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 6,
+      "6": 13,
+      "7": 41,
+      "8": 46,
+      "9": 101,
+      "10": 138,
+      "11": 199,
+      "12": 269,
+      "13": 351,
+      "14": 458,
+      "15": 613,
+      "16": 805,
+      "17": 945,
+      "18": 1330,
+      "19": 1478,
+      "20": 2120,
+      "21": 2250,
+      "22": 3619,
+      "23": 32378,
+      "24": 60242
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 884,
+      "missing_class_survival": 884,
+      "orbit_normalized_survival": 884,
+      "random_representative": 883,
+      "target_mask_survival": 884
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14094,
+      "expansion_full_rank_actions": 14094,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 4631,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 5869,
+      "rank23_tail_action_checks": 92620,
+      "rank23_tail_prefixes": 4631,
+      "rank23_tail_rank_pruned_actions": 92620,
+      "rollout_action_checks": 99877,
+      "rollout_full_rank_actions": 90973,
+      "rollout_rank_pruned_actions": 8904,
+      "tree_action_checks": 6490,
+      "tree_full_rank_actions": 6481,
+      "tree_rank_pruned_actions": 9
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 12,
+    "seed": 21517250,
+    "conjugacy_size": 24,
+    "involution": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56
+    ],
+    "blocks": [
+      [
+        0,
+        7
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        8,
+        15
+      ],
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        13
+      ],
+      [
+        11,
+        12
+      ],
+      [
+        16,
+        39
+      ],
+      [
+        17,
+        38
+      ],
+      [
+        18,
+        37
+      ],
+      [
+        19,
+        36
+      ],
+      [
+        20,
+        35
+      ],
+      [
+        21,
+        34
+      ],
+      [
+        22,
+        33
+      ],
+      [
+        23,
+        32
+      ],
+      [
+        24,
+        47
+      ],
+      [
+        25,
+        46
+      ],
+      [
+        26,
+        45
+      ],
+      [
+        27,
+        44
+      ],
+      [
+        28,
+        43
+      ],
+      [
+        29,
+        42
+      ],
+      [
+        30,
+        41
+      ],
+      [
+        31,
+        40
+      ],
+      [
+        48,
+        55
+      ],
+      [
+        49,
+        54
+      ],
+      [
+        50,
+        53
+      ],
+      [
+        51,
+        52
+      ],
+      [
+        56,
+        63
+      ],
+      [
+        57,
+        62
+      ],
+      [
+        58,
+        61
+      ],
+      [
+        59,
+        60
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.359932299979846,
+    "node_count": 490,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 6617,
+      "rank21_hits": 0,
+      "rank23_hits": 1
+    },
+    "rank_prune_counts": {
+      "5": 5,
+      "6": 8,
+      "7": 29,
+      "8": 24,
+      "9": 87,
+      "10": 55,
+      "11": 200,
+      "12": 114,
+      "13": 358,
+      "14": 215,
+      "15": 581,
+      "16": 381,
+      "17": 943,
+      "18": 602,
+      "19": 1426,
+      "20": 1026,
+      "21": 2174,
+      "22": 1708,
+      "23": 44561,
+      "24": 34945
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 910,
+      "missing_class_survival": 911,
+      "orbit_normalized_survival": 911,
+      "random_representative": 910,
+      "target_mask_survival": 911
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14385,
+      "expansion_full_rank_actions": 14385,
+      "iterations": 500,
+      "nonreference_terminals": 52834,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 6618,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 3882,
+      "rank23_tail_action_checks": 132340,
+      "rank23_tail_cache_hits": 1,
+      "rank23_tail_full_rank_actions": 52834,
+      "rank23_tail_prefixes": 6617,
+      "rank23_tail_rank_pruned_actions": 79506,
+      "rollout_action_checks": 103720,
+      "rollout_full_rank_actions": 97667,
+      "rollout_rank_pruned_actions": 6053,
+      "terminal_evaluations": 52834,
+      "tree_action_checks": 7088,
+      "tree_full_rank_actions": 7087,
+      "tree_rank_pruned_actions": 1
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 13,
+    "seed": 21621979,
+    "conjugacy_size": 3,
+    "involution": [
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48
+    ],
+    "blocks": [
+      [
+        0,
+        15
+      ],
+      [
+        1,
+        14
+      ],
+      [
+        2,
+        13
+      ],
+      [
+        3,
+        12
+      ],
+      [
+        4,
+        11
+      ],
+      [
+        5,
+        10
+      ],
+      [
+        6,
+        9
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        16,
+        31
+      ],
+      [
+        17,
+        30
+      ],
+      [
+        18,
+        29
+      ],
+      [
+        19,
+        28
+      ],
+      [
+        20,
+        27
+      ],
+      [
+        21,
+        26
+      ],
+      [
+        22,
+        25
+      ],
+      [
+        23,
+        24
+      ],
+      [
+        32,
+        47
+      ],
+      [
+        33,
+        46
+      ],
+      [
+        34,
+        45
+      ],
+      [
+        35,
+        44
+      ],
+      [
+        36,
+        43
+      ],
+      [
+        37,
+        42
+      ],
+      [
+        38,
+        41
+      ],
+      [
+        39,
+        40
+      ],
+      [
+        48,
+        63
+      ],
+      [
+        49,
+        62
+      ],
+      [
+        50,
+        61
+      ],
+      [
+        51,
+        60
+      ],
+      [
+        52,
+        59
+      ],
+      [
+        53,
+        58
+      ],
+      [
+        54,
+        57
+      ],
+      [
+        55,
+        56
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 5.226283799944213,
+    "node_count": 487,
+    "max_tree_depth": 6,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 4673,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 5,
+      "6": 9,
+      "7": 42,
+      "8": 58,
+      "9": 101,
+      "10": 141,
+      "11": 211,
+      "12": 284,
+      "13": 364,
+      "14": 472,
+      "15": 587,
+      "16": 787,
+      "17": 957,
+      "18": 1298,
+      "19": 1401,
+      "20": 2048,
+      "21": 2237,
+      "22": 3590,
+      "23": 32820,
+      "24": 60640
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 893,
+      "missing_class_survival": 894,
+      "orbit_normalized_survival": 894,
+      "random_representative": 893,
+      "target_mask_survival": 893
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14172,
+      "expansion_full_rank_actions": 14172,
+      "iterations": 500,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 4673,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 5827,
+      "rank23_tail_action_checks": 93460,
+      "rank23_tail_prefixes": 4673,
+      "rank23_tail_rank_pruned_actions": 93460,
+      "rollout_action_checks": 101257,
+      "rollout_full_rank_actions": 92496,
+      "rollout_rank_pruned_actions": 8761,
+      "tree_action_checks": 5924,
+      "tree_full_rank_actions": 5920,
+      "tree_rank_pruned_actions": 4
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 14,
+    "seed": 21726708,
+    "conjugacy_size": 6,
+    "involution": [
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48
+    ],
+    "blocks": [
+      [
+        0,
+        15
+      ],
+      [
+        1,
+        14
+      ],
+      [
+        2,
+        13
+      ],
+      [
+        3,
+        12
+      ],
+      [
+        4,
+        11
+      ],
+      [
+        5,
+        10
+      ],
+      [
+        6,
+        9
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        16,
+        47
+      ],
+      [
+        17,
+        46
+      ],
+      [
+        18,
+        45
+      ],
+      [
+        19,
+        44
+      ],
+      [
+        20,
+        43
+      ],
+      [
+        21,
+        42
+      ],
+      [
+        22,
+        41
+      ],
+      [
+        23,
+        40
+      ],
+      [
+        24,
+        39
+      ],
+      [
+        25,
+        38
+      ],
+      [
+        26,
+        37
+      ],
+      [
+        27,
+        36
+      ],
+      [
+        28,
+        35
+      ],
+      [
+        29,
+        34
+      ],
+      [
+        30,
+        33
+      ],
+      [
+        31,
+        32
+      ],
+      [
+        48,
+        63
+      ],
+      [
+        49,
+        62
+      ],
+      [
+        50,
+        61
+      ],
+      [
+        51,
+        60
+      ],
+      [
+        52,
+        59
+      ],
+      [
+        53,
+        58
+      ],
+      [
+        54,
+        57
+      ],
+      [
+        55,
+        56
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.236688999990292,
+    "node_count": 490,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 6548,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 7,
+      "6": 10,
+      "7": 38,
+      "8": 38,
+      "9": 93,
+      "10": 83,
+      "11": 197,
+      "12": 159,
+      "13": 363,
+      "14": 266,
+      "15": 602,
+      "16": 426,
+      "17": 920,
+      "18": 683,
+      "19": 1408,
+      "20": 1115,
+      "21": 2194,
+      "22": 1758,
+      "23": 45112,
+      "24": 34956
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 910,
+      "missing_class_survival": 910,
+      "orbit_normalized_survival": 910,
+      "random_representative": 910,
+      "target_mask_survival": 910
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14381,
+      "expansion_full_rank_actions": 14381,
+      "iterations": 500,
+      "nonreference_terminals": 50892,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 6548,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 3952,
+      "rank23_tail_action_checks": 130960,
+      "rank23_tail_full_rank_actions": 50892,
+      "rank23_tail_prefixes": 6548,
+      "rank23_tail_rank_pruned_actions": 80068,
+      "rollout_action_checks": 103634,
+      "rollout_full_rank_actions": 97230,
+      "rollout_rank_pruned_actions": 6404,
+      "terminal_evaluations": 50892,
+      "tree_action_checks": 7174,
+      "tree_full_rank_actions": 7170,
+      "tree_rank_pruned_actions": 4
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 15,
+    "seed": 21831437,
+    "conjugacy_size": 8,
+    "involution": [
+      21,
+      20,
+      23,
+      22,
+      17,
+      16,
+      19,
+      18,
+      29,
+      28,
+      31,
+      30,
+      25,
+      24,
+      27,
+      26,
+      5,
+      4,
+      7,
+      6,
+      1,
+      0,
+      3,
+      2,
+      13,
+      12,
+      15,
+      14,
+      9,
+      8,
+      11,
+      10,
+      53,
+      52,
+      55,
+      54,
+      49,
+      48,
+      51,
+      50,
+      61,
+      60,
+      63,
+      62,
+      57,
+      56,
+      59,
+      58,
+      37,
+      36,
+      39,
+      38,
+      33,
+      32,
+      35,
+      34,
+      45,
+      44,
+      47,
+      46,
+      41,
+      40,
+      43,
+      42
+    ],
+    "blocks": [
+      [
+        0,
+        21
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        2,
+        23
+      ],
+      [
+        3,
+        22
+      ],
+      [
+        4,
+        17
+      ],
+      [
+        5,
+        16
+      ],
+      [
+        6,
+        19
+      ],
+      [
+        7,
+        18
+      ],
+      [
+        8,
+        29
+      ],
+      [
+        9,
+        28
+      ],
+      [
+        10,
+        31
+      ],
+      [
+        11,
+        30
+      ],
+      [
+        12,
+        25
+      ],
+      [
+        13,
+        24
+      ],
+      [
+        14,
+        27
+      ],
+      [
+        15,
+        26
+      ],
+      [
+        32,
+        53
+      ],
+      [
+        33,
+        52
+      ],
+      [
+        34,
+        55
+      ],
+      [
+        35,
+        54
+      ],
+      [
+        36,
+        49
+      ],
+      [
+        37,
+        48
+      ],
+      [
+        38,
+        51
+      ],
+      [
+        39,
+        50
+      ],
+      [
+        40,
+        61
+      ],
+      [
+        41,
+        60
+      ],
+      [
+        42,
+        63
+      ],
+      [
+        43,
+        62
+      ],
+      [
+        44,
+        57
+      ],
+      [
+        45,
+        56
+      ],
+      [
+        46,
+        59
+      ],
+      [
+        47,
+        58
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.706549400063523,
+    "node_count": 492,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 7604,
+      "rank21_hits": 0,
+      "rank23_hits": 1
+    },
+    "rank_prune_counts": {
+      "5": 5,
+      "7": 33,
+      "9": 84,
+      "11": 164,
+      "12": 1,
+      "13": 331,
+      "14": 8,
+      "15": 565,
+      "16": 37,
+      "17": 915,
+      "18": 111,
+      "19": 1395,
+      "20": 283,
+      "21": 2178,
+      "22": 717,
+      "23": 53908,
+      "24": 23930
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 910,
+      "missing_class_survival": 910,
+      "orbit_normalized_survival": 910,
+      "random_representative": 909,
+      "target_mask_survival": 910
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14405,
+      "expansion_full_rank_actions": 14405,
+      "iterations": 500,
+      "nonreference_terminals": 74242,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 7605,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 2895,
+      "rank23_tail_action_checks": 152080,
+      "rank23_tail_cache_hits": 1,
+      "rank23_tail_full_rank_actions": 74242,
+      "rank23_tail_prefixes": 7604,
+      "rank23_tail_rank_pruned_actions": 77838,
+      "rollout_action_checks": 103604,
+      "rollout_full_rank_actions": 99672,
+      "rollout_rank_pruned_actions": 3932,
+      "terminal_evaluations": 74242,
+      "tree_action_checks": 7354,
+      "tree_full_rank_actions": 7354
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 16,
+    "seed": 21936166,
+    "conjugacy_size": 12,
+    "involution": [
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40
+    ],
+    "blocks": [
+      [
+        0,
+        23
+      ],
+      [
+        1,
+        22
+      ],
+      [
+        2,
+        21
+      ],
+      [
+        3,
+        20
+      ],
+      [
+        4,
+        19
+      ],
+      [
+        5,
+        18
+      ],
+      [
+        6,
+        17
+      ],
+      [
+        7,
+        16
+      ],
+      [
+        8,
+        31
+      ],
+      [
+        9,
+        30
+      ],
+      [
+        10,
+        29
+      ],
+      [
+        11,
+        28
+      ],
+      [
+        12,
+        27
+      ],
+      [
+        13,
+        26
+      ],
+      [
+        14,
+        25
+      ],
+      [
+        15,
+        24
+      ],
+      [
+        32,
+        55
+      ],
+      [
+        33,
+        54
+      ],
+      [
+        34,
+        53
+      ],
+      [
+        35,
+        52
+      ],
+      [
+        36,
+        51
+      ],
+      [
+        37,
+        50
+      ],
+      [
+        38,
+        49
+      ],
+      [
+        39,
+        48
+      ],
+      [
+        40,
+        63
+      ],
+      [
+        41,
+        62
+      ],
+      [
+        42,
+        61
+      ],
+      [
+        43,
+        60
+      ],
+      [
+        44,
+        59
+      ],
+      [
+        45,
+        58
+      ],
+      [
+        46,
+        57
+      ],
+      [
+        47,
+        56
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.635950099931506,
+    "node_count": 490,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 7535,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 9,
+      "7": 39,
+      "9": 87,
+      "10": 1,
+      "11": 190,
+      "12": 3,
+      "13": 329,
+      "14": 17,
+      "15": 533,
+      "16": 41,
+      "17": 866,
+      "18": 122,
+      "19": 1397,
+      "20": 336,
+      "21": 2188,
+      "22": 777,
+      "23": 54030,
+      "24": 24530
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 911,
+      "missing_class_survival": 911,
+      "orbit_normalized_survival": 911,
+      "random_representative": 911,
+      "target_mask_survival": 911
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14380,
+      "expansion_full_rank_actions": 14380,
+      "iterations": 500,
+      "nonreference_terminals": 72140,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 7535,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 2965,
+      "rank23_tail_action_checks": 150700,
+      "rank23_tail_full_rank_actions": 72140,
+      "rank23_tail_prefixes": 7535,
+      "rank23_tail_rank_pruned_actions": 78560,
+      "rollout_action_checks": 103778,
+      "rollout_full_rank_actions": 99809,
+      "rollout_rank_pruned_actions": 3969,
+      "terminal_evaluations": 72140,
+      "tree_action_checks": 7000,
+      "tree_full_rank_actions": 6999,
+      "tree_rank_pruned_actions": 1
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 17,
+    "seed": 22040895,
+    "conjugacy_size": 6,
+    "involution": [
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32
+    ],
+    "blocks": [
+      [
+        0,
+        31
+      ],
+      [
+        1,
+        30
+      ],
+      [
+        2,
+        29
+      ],
+      [
+        3,
+        28
+      ],
+      [
+        4,
+        27
+      ],
+      [
+        5,
+        26
+      ],
+      [
+        6,
+        25
+      ],
+      [
+        7,
+        24
+      ],
+      [
+        8,
+        23
+      ],
+      [
+        9,
+        22
+      ],
+      [
+        10,
+        21
+      ],
+      [
+        11,
+        20
+      ],
+      [
+        12,
+        19
+      ],
+      [
+        13,
+        18
+      ],
+      [
+        14,
+        17
+      ],
+      [
+        15,
+        16
+      ],
+      [
+        32,
+        63
+      ],
+      [
+        33,
+        62
+      ],
+      [
+        34,
+        61
+      ],
+      [
+        35,
+        60
+      ],
+      [
+        36,
+        59
+      ],
+      [
+        37,
+        58
+      ],
+      [
+        38,
+        57
+      ],
+      [
+        39,
+        56
+      ],
+      [
+        40,
+        55
+      ],
+      [
+        41,
+        54
+      ],
+      [
+        42,
+        53
+      ],
+      [
+        43,
+        52
+      ],
+      [
+        44,
+        51
+      ],
+      [
+        45,
+        50
+      ],
+      [
+        46,
+        49
+      ],
+      [
+        47,
+        48
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.661802000111493,
+    "node_count": 490,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 7507,
+      "rank21_hits": 0,
+      "rank23_hits": 1
+    },
+    "rank_prune_counts": {
+      "5": 10,
+      "7": 44,
+      "9": 86,
+      "11": 170,
+      "12": 1,
+      "13": 314,
+      "14": 4,
+      "15": 556,
+      "16": 32,
+      "17": 900,
+      "18": 97,
+      "19": 1439,
+      "20": 282,
+      "21": 2282,
+      "22": 710,
+      "23": 54852,
+      "24": 23544
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 910,
+      "missing_class_survival": 911,
+      "orbit_normalized_survival": 911,
+      "random_representative": 910,
+      "target_mask_survival": 910
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14387,
+      "expansion_full_rank_actions": 14387,
+      "iterations": 500,
+      "nonreference_terminals": 71744,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 7508,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 2992,
+      "rank23_tail_action_checks": 150140,
+      "rank23_tail_cache_hits": 1,
+      "rank23_tail_full_rank_actions": 71744,
+      "rank23_tail_prefixes": 7507,
+      "rank23_tail_rank_pruned_actions": 78396,
+      "rollout_action_checks": 103691,
+      "rollout_full_rank_actions": 99759,
+      "rollout_rank_pruned_actions": 3932,
+      "terminal_evaluations": 71744,
+      "tree_action_checks": 7147,
+      "tree_full_rank_actions": 7144,
+      "tree_rank_pruned_actions": 3
+    },
+    "corrector_events": []
+  },
+  {
+    "pattern_id": 18,
+    "seed": 22145624,
+    "conjugacy_size": 1,
+    "involution": [
+      63,
+      62,
+      61,
+      60,
+      59,
+      58,
+      57,
+      56,
+      55,
+      54,
+      53,
+      52,
+      51,
+      50,
+      49,
+      48,
+      47,
+      46,
+      45,
+      44,
+      43,
+      42,
+      41,
+      40,
+      39,
+      38,
+      37,
+      36,
+      35,
+      34,
+      33,
+      32,
+      31,
+      30,
+      29,
+      28,
+      27,
+      26,
+      25,
+      24,
+      23,
+      22,
+      21,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "blocks": [
+      [
+        0,
+        63
+      ],
+      [
+        1,
+        62
+      ],
+      [
+        2,
+        61
+      ],
+      [
+        3,
+        60
+      ],
+      [
+        4,
+        59
+      ],
+      [
+        5,
+        58
+      ],
+      [
+        6,
+        57
+      ],
+      [
+        7,
+        56
+      ],
+      [
+        8,
+        55
+      ],
+      [
+        9,
+        54
+      ],
+      [
+        10,
+        53
+      ],
+      [
+        11,
+        52
+      ],
+      [
+        12,
+        51
+      ],
+      [
+        13,
+        50
+      ],
+      [
+        14,
+        49
+      ],
+      [
+        15,
+        48
+      ],
+      [
+        16,
+        47
+      ],
+      [
+        17,
+        46
+      ],
+      [
+        18,
+        45
+      ],
+      [
+        19,
+        44
+      ],
+      [
+        20,
+        43
+      ],
+      [
+        21,
+        42
+      ],
+      [
+        22,
+        41
+      ],
+      [
+        23,
+        40
+      ],
+      [
+        24,
+        39
+      ],
+      [
+        25,
+        38
+      ],
+      [
+        26,
+        37
+      ],
+      [
+        27,
+        36
+      ],
+      [
+        28,
+        35
+      ],
+      [
+        29,
+        34
+      ],
+      [
+        30,
+        33
+      ],
+      [
+        31,
+        32
+      ]
+    ],
+    "iterations": 500,
+    "elapsed_seconds": 6.630580100041698,
+    "node_count": 493,
+    "max_tree_depth": 4,
+    "root_visits": 500,
+    "root_child_count": 23,
+    "representable_target_mask_counts": {},
+    "representable_class_ids": [],
+    "new_global_class_ids": [],
+    "exact_hit_counts": {},
+    "exact_terminal_support_count": 0,
+    "tail_cache": {
+      "rank21_entries": 500,
+      "rank23_entries": 7507,
+      "rank21_hits": 0,
+      "rank23_hits": 0
+    },
+    "rank_prune_counts": {
+      "5": 6,
+      "7": 39,
+      "9": 101,
+      "10": 2,
+      "11": 190,
+      "12": 2,
+      "13": 335,
+      "14": 9,
+      "15": 549,
+      "16": 38,
+      "17": 871,
+      "18": 124,
+      "19": 1385,
+      "20": 323,
+      "21": 2259,
+      "22": 734,
+      "23": 54334,
+      "24": 23950
+    },
+    "policy_bucket_counts": {
+      "low_aggression_survival": 909,
+      "missing_class_survival": 910,
+      "orbit_normalized_survival": 909,
+      "random_representative": 909,
+      "target_mask_survival": 909
+    },
+    "stats": {
+      "expanded_nodes": 500,
+      "expansion_action_checks": 14392,
+      "expansion_full_rank_actions": 14392,
+      "iterations": 500,
+      "nonreference_terminals": 71856,
+      "rank21_tail_action_checks": 10500,
+      "rank21_tail_full_rank_actions": 7507,
+      "rank21_tail_prefixes": 500,
+      "rank21_tail_rank_pruned_actions": 2993,
+      "rank23_tail_action_checks": 150140,
+      "rank23_tail_full_rank_actions": 71856,
+      "rank23_tail_prefixes": 7507,
+      "rank23_tail_rank_pruned_actions": 78284,
+      "rollout_action_checks": 103517,
+      "rollout_full_rank_actions": 99544,
+      "rollout_rank_pruned_actions": 3973,
+      "terminal_evaluations": 71856,
+      "tree_action_checks": 7291,
+      "tree_full_rank_actions": 7290,
+      "tree_rank_pruned_actions": 1
+    },
+    "corrector_events": []
+  }
+]

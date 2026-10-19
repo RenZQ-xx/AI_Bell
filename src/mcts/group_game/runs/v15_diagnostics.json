@@ -1,0 +1,77 @@
+{
+  "revision": "cached_generation_saturated_repair_gate_v15",
+  "run": "single_tree_group_game_i15000_v15.json",
+  "coverage": 45,
+  "missing_class_ids": [34],
+  "elapsed_seconds": 883.0739099999919,
+  "last_discovery": {
+    "class_id": 24,
+    "iteration": 7864,
+    "elapsed_seconds": 435.62545999999566
+  },
+  "tail_iterations": 7136,
+  "tail_seconds": 447.4484499999962,
+  "comparisons": {
+    "v12": {
+      "coverage_delta": 0,
+      "gained_class_ids": [3],
+      "lost_class_ids": [34],
+      "seconds_delta": 201.64422729999205,
+      "time_change_percent": 29.591347782360412
+    },
+    "v14": {
+      "coverage_delta": 1,
+      "gained_class_ids": [3],
+      "lost_class_ids": [],
+      "seconds_delta": 174.45780179998837,
+      "time_change_percent": 24.619508331970973
+    }
+  },
+  "saturation_gate": {
+    "offers": 15837,
+    "skips": 13302,
+    "open_source_offers": 826,
+    "external_executions": 10626,
+    "repeat_pair_executions": 10227,
+    "self_pair_executions": 2109,
+    "unique_source_target_pairs": 399,
+    "canonical_targets": 45,
+    "pending_nonself_pairs": 0
+  },
+  "generation_cache": {
+    "coherence_hits": 1306815,
+    "coherence_misses": 1889988,
+    "coherence_entries": 30000,
+    "coherence_evictions": 1859988,
+    "candidate_hits": 10007,
+    "candidate_misses": 674941,
+    "candidate_entries": 6000,
+    "candidate_evictions": 668941
+  },
+  "profile_i500_gate_disabled": {
+    "v14_search_elapsed_seconds": 58.706229600007646,
+    "v15_search_elapsed_seconds": 47.1909214000043,
+    "search_time_change_percent": -19.615101946950853,
+    "v14_profile_function_calls": 175915690,
+    "v15_profile_function_calls": 120239131,
+    "interpretation": "The gate was disabled to isolate equivalent computation changes. This is one profiler run, not a stable full-run speedup estimate."
+  },
+  "class3_discovery": {
+    "iteration": 4796,
+    "elapsed_seconds": 257.9156958999956,
+    "corrections_used": 3,
+    "selected_support_word_hex": "0x153530acca53aac8",
+    "path_summary": [
+      "atlas pair BFS322-C2-15",
+      "30-point orbit from the online-observed class 45 stabilizer",
+      "three online-validated facet repartition plus singleton-exit pairs"
+    ],
+    "unseen_class_examples_used": false
+  },
+  "interpretation": [
+    "The gate greatly reduces repeated and self endpoint execution and increases unique terminal supports.",
+    "The released budget performs more expensive generic action generation, so total runtime increases despite equivalent-computation cache speedups.",
+    "Global canonical endpoint saturation is too coarse for long correction chains: a previously executed relation can remain useful in a different path context or correction depth.",
+    "The next gate should track context-conditioned bridge use rather than further reducing the global revisit probability."
+  ]
+}

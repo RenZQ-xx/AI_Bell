@@ -1,0 +1,8 @@
+{
+  "same_tree": true,
+  "same_discovery_paths_and_iterations": true,
+  "same_geometry_statistics": true,
+  "same_completion_jobs": true,
+  "same_orbit_frontiers": true,
+  "scheduler_disabled": true
+}

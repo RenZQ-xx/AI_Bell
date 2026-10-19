@@ -1,0 +1,58 @@
+{
+  "algorithm": "v25_lean_embedding_no_leaf_value",
+  "iteration_limit": 10000,
+  "environment": {
+    "pythonhashseed": 0,
+    "blas_threads": 1,
+    "omp_threads": 1
+  },
+  "runs": [
+    {
+      "seed": 673963275,
+      "iterations_completed": 4507,
+      "elapsed_seconds": 256.48642029999974,
+      "discovered_class_count": 46,
+      "missing_class_ids": [],
+      "last_discovery": {"class_id": 24, "iteration": 4507},
+      "selected_tail_iterations": {"3": 1297, "24": 4507, "34": 3208, "41": 791},
+      "node_count": 4417,
+      "edge_count": 4405,
+      "unique_terminal_supports": 2982,
+      "depth_limit_hits": 0
+    },
+    {
+      "seed": 1706386020,
+      "iterations_completed": 4386,
+      "elapsed_seconds": 236.18968460000178,
+      "discovered_class_count": 46,
+      "missing_class_ids": [],
+      "last_discovery": {"class_id": 24, "iteration": 4386},
+      "selected_tail_iterations": {"3": 1441, "24": 4386, "34": 548, "41": 4009},
+      "node_count": 4270,
+      "edge_count": 4294,
+      "unique_terminal_supports": 2714,
+      "depth_limit_hits": 0
+    },
+    {
+      "seed": 210656494,
+      "iterations_completed": 3154,
+      "elapsed_seconds": 195.65993460000027,
+      "discovered_class_count": 46,
+      "missing_class_ids": [],
+      "last_discovery": {"class_id": 34, "iteration": 3154},
+      "selected_tail_iterations": {"3": 2154, "24": 3061, "34": 3154, "41": 1442},
+      "node_count": 3080,
+      "edge_count": 3040,
+      "unique_terminal_supports": 2531,
+      "depth_limit_hits": 0
+    }
+  ],
+  "aggregate": {
+    "full_coverage_runs": 3,
+    "run_count": 3,
+    "mean_iterations_completed": 4015.6666666666665,
+    "max_iterations_completed": 4507,
+    "mean_elapsed_seconds": 229.4453465,
+    "max_elapsed_seconds": 256.48642029999974
+  }
+}

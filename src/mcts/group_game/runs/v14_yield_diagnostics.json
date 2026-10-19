@@ -1,0 +1,69 @@
+{
+  "run": "single_tree_group_game_i15000_v14.json",
+  "summary": {
+    "iterations_completed": 15000,
+    "elapsed_seconds": 708.6161082000035,
+    "discovered_class_count": 44,
+    "missing_target_class_ids": [
+      3,
+      34
+    ]
+  },
+  "last_discovery": {
+    "class_id": 13,
+    "iteration": 6552,
+    "elapsed_seconds": 309.4351794999966
+  },
+  "tail_iterations": 8448,
+  "tail_seconds": 399.1809287000069,
+  "adaptive_choices": 464,
+  "frontier_episodes": 1858,
+  "adaptive_lanes": {
+    "orbit": 87,
+    "completion": 93,
+    "delivery": 11,
+    "ridge": 273
+  },
+  "adaptive_reasons": {
+    "probe": 116,
+    "yield": 348
+  },
+  "lane_work": {
+    "ridge": {
+      "observations": 732,
+      "seconds": 3.5755589999462245,
+      "new_targets": 12,
+      "new_pairs": 114
+    },
+    "orbit": {
+      "observations": 1752,
+      "seconds": 10.775670199844171,
+      "new_targets": 15,
+      "new_pairs": 105
+    },
+    "completion": {
+      "observations": 2744,
+      "seconds": 14.294037399740773,
+      "new_targets": 2,
+      "new_pairs": 7
+    }
+  },
+  "measured_work_seconds": 28.64526659953117,
+  "measured_fraction_percent": 4.042423855180862,
+  "endpoint_graph": {
+    "class_labels_used": false,
+    "lookahead_is_discovery": false,
+    "verified_action_keys": 21089,
+    "unique_source_target_pairs": 391,
+    "lookahead_canonical_targets": 44,
+    "self_action_keys": 1296,
+    "distinct_executed_pairs": 391,
+    "pending_nonself_pairs": 0,
+    "statistics": {
+      "mapped_executions": 27081,
+      "self_pair_executions": 11456,
+      "repeat_pair_executions": 26690
+    }
+  },
+  "interpretation": "Measured batches exclude other geometry, MCTS and instrumentation overhead; not a full profile. Seed alone cannot reproduce timing-dependent choices. Geometric novelty is not class novelty."
+}

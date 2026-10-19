@@ -129,12 +129,33 @@ class SupportabilityAnalyzer:
             direction_bank=bank_mode,
             cache_key=cache_key if cache_key is not None else indices,
         )
-        signed = projected @ directions.T
-        positive_shift = np.maximum(np.max(signed, axis=0), 0.0)
-        negative_shift = np.maximum(np.max(-signed, axis=0), 0.0)
+
+        # To avoid large temporary allocations like `signed = projected @ directions.T`,
+        # compute per-direction extrema in blocks and use float32 to reduce memory.
+        proj = projected.astype(np.float32, copy=False)
+        dirs = directions.astype(np.float32, copy=False)
+        num_dirs = dirs.shape[0]
+        # initialize maxima for positive and negative (max of -signed)
+        max_pos = np.full((num_dirs,), -np.inf, dtype=np.float32)
+        max_neg = np.full((num_dirs,), -np.inf, dtype=np.float32)
+        block_size = 256
+        for start in range(0, num_dirs, block_size):
+            end = min(start + block_size, num_dirs)
+            # block_dirs shape: (null_dim, b)
+            block_dirs = dirs[start:end].T
+            # signed_block shape: (num_points, b)
+            signed_block = proj @ block_dirs
+            # update maxima per-direction
+            max_pos[start:end] = np.maximum(max_pos[start:end], np.max(signed_block, axis=0))
+            max_neg[start:end] = np.maximum(max_neg[start:end], np.max(-signed_block, axis=0))
+
+        positive_shift = np.maximum(max_pos.astype(float), 0.0)
+        negative_shift = np.maximum(max_neg.astype(float), 0.0)
         shifts = np.minimum(positive_shift, negative_shift) ** 2
         best_index = int(np.argmin(shifts))
-        best_signed = signed[:, best_index]
+        # compute best_signed for the chosen best direction only
+        best_dir = dirs[best_index].astype(np.float64, copy=False)
+        best_signed = projected @ best_dir
         positive = int(np.sum(best_signed > self.support_tol))
         negative = int(np.sum(best_signed < -self.support_tol))
         out = SupportabilityMetrics(

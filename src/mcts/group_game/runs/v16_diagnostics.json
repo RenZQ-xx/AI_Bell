@@ -1,0 +1,173 @@
+{
+  "algorithm_revision": "lazy_lane_context_bridge_gate_v16",
+  "formal_run": {
+    "iterations": 15000,
+    "seed": 3222026,
+    "elapsed_seconds": 757.3269965000072,
+    "coverage": 44,
+    "missing_class_ids": [3, 34],
+    "last_discovery": {
+      "class_id": 24,
+      "iteration": 6896,
+      "elapsed_seconds": 335.9735980999976
+    },
+    "tail_iterations": 8104,
+    "tail_seconds": 421.3533984000096
+  },
+  "coverage_checkpoints": {
+    "1000": 13,
+    "2000": 19,
+    "3000": 32,
+    "4000": 39,
+    "5000": 41,
+    "6000": 43,
+    "7000": 44,
+    "8000": 44,
+    "10000": 44,
+    "15000": 44
+  },
+  "formal_comparisons": {
+    "v12": {
+      "coverage": 45,
+      "missing_class_ids": [3],
+      "elapsed_seconds": 681.4296827,
+      "v16_coverage_delta": -1,
+      "v16_seconds_delta": 75.8973138000074,
+      "v16_time_change_percent": 11.137952414882001
+    },
+    "v14": {
+      "coverage": 44,
+      "missing_class_ids": [3, 34],
+      "elapsed_seconds": 708.6161082000035,
+      "v16_coverage_delta": 0,
+      "v16_seconds_delta": 48.71088830000372,
+      "v16_time_change_percent": 6.874087074274549
+    },
+    "v15": {
+      "coverage": 45,
+      "missing_class_ids": [34],
+      "elapsed_seconds": 883.0739099999919,
+      "v16_coverage_delta": -1,
+      "v16_lost_class_ids": [3],
+      "v16_seconds_delta": -125.74691349998466,
+      "v16_time_change_percent": -14.239681647936564
+    }
+  },
+  "lazy_generation": {
+    "formal_candidate_misses": {
+      "v15": 674941,
+      "v16": 611032,
+      "change_percent": -9.468827645675695
+    },
+    "formal_coherence_misses": {
+      "v15": 1889988,
+      "v16": 1701055,
+      "change_percent": -9.996518496413733
+    },
+    "v15_v16_i500_gate_disabled_profile": {
+      "same_observed_class_ids": [43, 44],
+      "candidate_cumulative_seconds": {
+        "v15": 9.8778653,
+        "v16": 4.5526095,
+        "change_percent": -53.91099836115401
+      },
+      "search_elapsed_seconds": {
+        "v15": 47.1909214000043,
+        "v16": 41.17764960000932,
+        "change_percent": -12.742433547810395
+      }
+    },
+    "v14_v16_i200_yield_and_gate_disabled": {
+      "behaviorally_identical": true,
+      "identical_fields": [
+        "observed classes",
+        "node and edge counts",
+        "tree and rollout steps",
+        "action-kind counts",
+        "facet geometry statistics"
+      ],
+      "elapsed_seconds": {
+        "v14": 17.045156599997426,
+        "v16": 13.204977599991253,
+        "change_percent": -22.529443936037254
+      }
+    }
+  },
+  "context_gate": {
+    "class_labels_used": false,
+    "key_fields": [
+      "canonical_source",
+      "canonical_target",
+      "repair_pattern_id",
+      "corrections_used"
+    ],
+    "distinct_contexts": 4637,
+    "mapped_executions": 15045,
+    "repeat_context_executions": 10408,
+    "repeat_context_fraction": 0.6917912927883017,
+    "global_saturated_context_open_offers": 4291,
+    "context_open_facet_repair_offers": 4565,
+    "fully_saturated_facet_repair_offers": 13246,
+    "fully_saturated_facet_repair_skips": 11112,
+    "distinct_contexts_by_corrections_used": {
+      "1": 627,
+      "2": 995,
+      "3": 1023,
+      "4": 805,
+      "5": 580,
+      "6": 293,
+      "7": 184,
+      "8": 130
+    }
+  },
+  "endpoint_graph": {
+    "unique_source_target_pairs": 409,
+    "canonical_targets": 44,
+    "distinct_executed_pairs": 409,
+    "pending_nonself_pairs": 0,
+    "mapped_executions": 15045,
+    "repeat_pair_executions": 14636,
+    "self_pair_executions": 2886
+  },
+  "search_outputs": {
+    "unique_terminal_supports": 12596,
+    "terminal_observations": 57032,
+    "discovery_correction_depths": {
+      "1": 6,
+      "2": 8,
+      "3": 6,
+      "4": 7,
+      "5": 8,
+      "6": 5,
+      "7": 2,
+      "8": 2
+    },
+    "external_steps_on_discovery_paths": 152,
+    "tree_nodes": 14531,
+    "tree_edges": 14319,
+    "tree_expansions": 14996,
+    "epoch_recycled_edges": 203,
+    "stagnation_recycled_edges": 347
+  },
+  "historical_missing_path_audit": {
+    "uses_class_examples_for_search": false,
+    "analysis_is_post_run_only": true,
+    "class_3_v15_path": {
+      "historical_external_steps": 3,
+      "exact_context_executions_in_v16": [91, 0, 0],
+      "final_target_generated_in_v16": false
+    },
+    "class_34_v12_path": {
+      "historical_external_steps": 7,
+      "exact_context_executions_in_v16": [8, 1, 2, 0, 0, 0, 0],
+      "fourth_source_target_global_executions": 3,
+      "final_target_generated_in_v16": false
+    }
+  },
+  "interpretation": [
+    "Lazy lane generation is behavior-preserving under the deterministic ablation and materially reduces candidate construction cost.",
+    "Context-sensitive saturation restores many long-chain repairs, but most external executions still repeat an already executed full context.",
+    "The missing classes were not published endpoints left pending; their historical chains diverged before the final targets were generated.",
+    "The next general improvement should couple first-context geometric novelty to Corrector credit and schedule exact open contexts fairly, while decaying context repeats that have produced no downstream novelty."
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "same_tree": true,
+  "same_discovery_paths_and_iterations": true,
+  "same_geometry_statistics": true,
+  "no_completion_jobs": true
+}
