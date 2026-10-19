@@ -235,7 +235,9 @@ class Bell422V25Search:
         self.pattern_order = self.atlas.fair_order(config.seed)
         root_state = SearchState(0, "filler", 0, IDENTITY_PATTERN_ID)
         self.root = GameNode(root_state, self.rank_oracle.rank(0))
-        self.nodes: dict[tuple, GameNode] = {root_state.key: self.root}
+        self.nodes: dict[tuple, GameNode] = {
+            self._state_key(root_state): self.root
+        }
         self.pattern_relations = PatternRelationIndex(VERTEX_COUNT)
         self.pattern_bucket_cache: dict[str, str] = {}
         self.rng = random.Random(config.seed)
@@ -266,6 +268,16 @@ class Bell422V25Search:
         self.adaptive_replay_balance = 0.0
         self.started_at = 0.0
 
+    def _state_key(self, state: SearchState) -> tuple:
+        """Return the persistent-tree identity for a search state.
+
+        v25 keeps concrete embedding context in the key. Later variants may
+        merge the same geometric state while retaining embedding-specific
+        action and transition statistics.
+        """
+
+        return state.key
+
     @staticmethod
     def _family_key(facet: FacetResult) -> tuple[int, ...]:
         if facet.canonical_h_row is not None:
@@ -282,10 +294,16 @@ class Bell422V25Search:
         return f"OBS422-{digest}"
 
     def _node(self, state: SearchState, rank: int) -> GameNode:
-        node = self.nodes.get(state.key)
+        key = self._state_key(state)
+        node = self.nodes.get(key)
         if node is None:
             node = GameNode(state, rank)
-            self.nodes[state.key] = node
+            self.nodes[key] = node
+        else:
+            before = len(node.context_pattern_ids)
+            node.context_pattern_ids.add(state.context_pattern_id)
+            if len(node.context_pattern_ids) > before:
+                self.stats["merged_pattern_contexts"] += 1
         return node
 
     def _ensure_relation(self, pattern_id: str) -> None:
@@ -631,7 +649,13 @@ class Bell422V25Search:
             relation=relation,
         )
         return (
-            EdgeStats(action, moved.state.key, prior, node.rank, moved.rank),
+            EdgeStats(
+                action,
+                self._state_key(moved.state),
+                prior,
+                node.rank,
+                moved.rank,
+            ),
             moved,
         )
 
@@ -661,7 +685,7 @@ class Bell422V25Search:
         edge.prior = 2.0 if self._correction_limit_reached(node) else 0.25
         self._node(moved.state, moved.rank)
         node.edges["stop"] = edge
-        node.child_keys.add(moved.state.key)
+        node.child_keys.add(self._state_key(moved.state))
         return edge
 
     def _tail_candidate(
@@ -760,7 +784,7 @@ class Bell422V25Search:
     ) -> EdgeStats:
         self._node(moved.state, moved.rank)
         node.edges[edge.action.action_id] = edge
-        node.child_keys.add(moved.state.key)
+        node.child_keys.add(self._state_key(moved.state))
         node.pattern_action_counts[edge.action.pattern_id] = (
             node.pattern_action_counts.get(edge.action.pattern_id, 0) + 1
         )
@@ -785,7 +809,10 @@ class Bell422V25Search:
         tail = self._tail_candidate(node, rng=self.rng)
         if tail is not None:
             action, moved = tail
-            if action.action_id not in node.edges and moved.state.key not in node.child_keys:
+            if (
+                action.action_id not in node.edges
+                and self._state_key(moved.state) not in node.child_keys
+            ):
                 candidate = self._edge_for(node, action, moved)
                 if candidate is not None:
                     return self._install_edge(node, *candidate)
@@ -843,7 +870,7 @@ class Bell422V25Search:
                     node.rejected_action_ids.add(action.action_id)
                     self.stats["actions_rejected"] += 1
                     continue
-                if moved.state.key in node.child_keys:
+                if self._state_key(moved.state) in node.child_keys:
                     node.rejected_action_ids.add(action.action_id)
                     self.stats["duplicate_children"] += 1
                     continue
@@ -948,6 +975,11 @@ class Bell422V25Search:
                 "rollout_policy": self.current_rollout_policy,
                 "support_word_hex": f"0x{facet.support_word:064x}",
                 "support_size": facet.support_word.bit_count(),
+                "canonical_h_row": (
+                    list(facet.canonical_h_row)
+                    if facet.canonical_h_row is not None
+                    else None
+                ),
                 "family_id": family_id,
                 "online_pattern_ids": list(patterns),
                 "path": [step.edge.action.to_dict() for step in path],
@@ -1393,7 +1425,7 @@ class Bell422V25Search:
             return None, False
         edge, moved = candidate
         for old in node.edges.values():
-            if old.child_key == moved.state.key:
+            if old.child_key == self._state_key(moved.state):
                 return old, False
         if len(node.edges) >= self._child_limit(node):
             removable = [
@@ -1418,6 +1450,11 @@ class Bell422V25Search:
         self._install_edge(node, edge, moved)
         return edge, True
 
+    def _iteration_start(
+        self, iteration: int
+    ) -> tuple[GameNode, tuple[MacroAction, ...]]:
+        return self.root, self._choose_replay(iteration)
+
     def run_iteration(self, iteration: int) -> None:
         self.current_iteration = iteration
         self.iteration_facet_counts.clear()
@@ -1425,12 +1462,11 @@ class Bell422V25Search:
             (iteration - 1) % len(ROLLOUT_POLICY_CYCLE)
         ]
         self.stats[f"rollout_policy_{self.current_rollout_policy}"] += 1
-        replay = self._choose_replay(iteration)
-        node = self.root
+        node, replay = self._iteration_start(iteration)
         path: list[PathStep] = []
         pending_corrector: int | None = None
         persistent = True
-        tree_leaf = self.root
+        tree_leaf = node
         depth = 0
         leaf_value = 0.0
         last_observed_key: tuple | None = None
@@ -1462,7 +1498,7 @@ class Bell422V25Search:
                     depth=depth,
                     source="tree" if persistent else "rollout",
                 )
-                last_observed_key = node.state.key
+                last_observed_key = self._state_key(node.state)
                 if path:
                     path[-1].reward += current_terminal.reward
                     path[-1].terminal_exact = current_terminal.exact_hit
@@ -1539,7 +1575,7 @@ class Bell422V25Search:
             self.stats["depth_limit_hits"] += 1
         if (
             node.state.role == "corrector"
-            and node.state.key != last_observed_key
+            and self._state_key(node.state) != last_observed_key
         ):
             final = self._observe_terminal(
                 node,
@@ -1686,6 +1722,9 @@ class Bell422V25Search:
                 "vertex_count": VERTEX_COUNT,
                 "ambient_dimension": 80,
                 "target_affine_rank": TARGET_AFFINE_RANK,
+                "total_class_count_known": False,
+                "catalog_is_complete": False,
+                "catalog_record_count": 34_836,
                 "catalog_class_count": 34_836,
                 "relabeling_group_order": 98_304,
             },

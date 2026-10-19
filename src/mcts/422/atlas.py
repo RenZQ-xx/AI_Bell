@@ -60,8 +60,19 @@ class HandoffPatternAtlas:
     facet catalog, so known classes cannot influence Filler or Corrector.
     """
 
-    def __init__(self, root: Path | str = DEFAULT_HANDOFF_ROOT, *, cache_size: int = 96):
+    def __init__(
+        self,
+        root: Path | str = DEFAULT_HANDOFF_ROOT,
+        *,
+        cache_size: int = 96,
+        allowed_pattern_ids: Iterable[str] | None = None,
+    ):
         self.root = Path(root).resolve()
+        allowed = (
+            None
+            if allowed_pattern_ids is None
+            else frozenset(map(str, allowed_pattern_ids))
+        )
         index_path = self.root / "02_complete_nodes" / "complete_nodes.csv"
         if not index_path.is_file():
             raise FileNotFoundError(f"missing 4-2-2 handoff index: {index_path}")
@@ -79,6 +90,8 @@ class HandoffPatternAtlas:
         patterns: list[PatternRef] = []
         with index_path.open(newline="", encoding="utf-8") as handle:
             for row in csv.DictReader(handle):
+                if allowed is not None and row["node_id"] not in allowed:
+                    continue
                 generators = json.loads(row["generators"])
                 words = tuple(str(item["str"]) for item in generators)
                 tokens = frozenset(token for word in words for token in _GENERATOR_TOKEN.findall(word))
@@ -105,6 +118,7 @@ class HandoffPatternAtlas:
             for structure in ("C2 x C2", "C4", "C6", "S3")
         }
         self.stats = defaultdict(int)
+        self.pattern_filter_active = allowed is not None
 
     def __len__(self) -> int:
         return len(self.patterns)
@@ -245,4 +259,5 @@ class HandoffPatternAtlas:
             },
             "loader_stats": dict(self.stats),
             "answer_files_read_by_atlas": [],
+            "pattern_filter_active": self.pattern_filter_active,
         }

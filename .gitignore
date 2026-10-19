@@ -16,3 +16,6 @@ artifacts/
 tmp_page_*.txt
 src/data_generation/
 *.zip
+
+# Local MCTS experiment outputs; already tracked historical files are unaffected.
+/src/mcts/**/runs/

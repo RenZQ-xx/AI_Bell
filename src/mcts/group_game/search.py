@@ -2195,7 +2195,7 @@ class SingleTreeGroupGame:
         )
         if node.facet_word:
             self.iteration_facet_counts[canonical_tight] += 1
-            witness = tuple(step.edge.action for step in path)
+            witness = self._validation_witness(path)
             old = self.facet_witnesses.get(canonical_tight)
             def cost(actions):
                 return sum(a.kind in ("remove", "rewrite") for a in actions), len(actions)
@@ -2246,7 +2246,7 @@ class SingleTreeGroupGame:
                     tight_support_size=tight_word.bit_count(),
                     corrections_used=node.state.corrections_used,
                     rollout_policy=self.current_rollout_policy,
-                    path=[step.edge.action.to_dict() for step in path],
+                    path=[action.to_dict() for action in self._validation_witness(path)],
                 )
             )
 
@@ -3230,6 +3230,12 @@ class SingleTreeGroupGame:
         self.replay_stats["persistent_witness_edges"] += 1
         return edge, True
 
+    def _validation_witness(self, path: Sequence[PathStep]) -> tuple[MacroAction, ...]:
+        return tuple(step.edge.action for step in path)
+
+    def _iteration_start(self, iteration: int) -> tuple[GameNode, tuple[MacroAction, ...]]:
+        return self.root, self._choose_replay(iteration)
+
     def run_iteration(self, iteration: int) -> None:
         self.current_iteration = int(iteration)
         self.facet_bank.current_iteration = int(iteration)
@@ -3237,17 +3243,16 @@ class SingleTreeGroupGame:
         repair_cycle = self.config.repair_saturation_cycle
         self.current_repair_policy = repair_cycle[(iteration - 1) % len(repair_cycle)]
         self.repair_policy_counts[self.current_repair_policy] += 1
-        replay = self._choose_replay(iteration)
+        node, replay = self._iteration_start(iteration)
         cycle = self.config.rollout_policy_cycle
         self.current_rollout_policy = cycle[(iteration - 1) % len(cycle)]
         self.rollout_policy_counts[self.current_rollout_policy] += 1
-        node = self.root
         path: list[PathStep] = []
         pending_corrector_index: int | None = None
         leaf_value: float | None = None
         depth = 0
         tree_edge_count = 0
-        tree_leaf = self.root
+        tree_leaf = node
         expanded = False
         last_observed_state_key: tuple | None = None
 

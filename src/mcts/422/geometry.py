@@ -64,6 +64,7 @@ class RankOracle:
         self.cache: OrderedDict[int, int] = OrderedDict({0: -1})
         self.hits = 0
         self.misses = 0
+        self.evictions = 0
 
     def rank(self, word: int) -> int:
         cached = self.cache.get(int(word))
@@ -80,14 +81,17 @@ class RankOracle:
         self.cache[int(word)] = value
         if len(self.cache) > self.max_entries:
             self.cache.popitem(last=False)
+            self.evictions += 1
         self.misses += 1
         return value
 
     def to_dict(self) -> dict[str, int]:
         return {
             "entries": len(self.cache),
+            "max_entries": self.max_entries,
             "hits": self.hits,
             "misses": self.misses,
+            "evictions": self.evictions,
         }
 
 
